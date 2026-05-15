@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://www.tutu-tools.cn/sitemap.xml
+Sitemap: https://www.gubaby.cn/sitemap.xml

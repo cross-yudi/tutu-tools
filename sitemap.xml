@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.tutu-tools.cn/</loc>
+    <loc>https://www.gubaby.cn/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.tutu-tools.cn/tools/case-converter/</loc>
+    <loc>https://www.gubaby.cn/tools/case-converter/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.tutu-tools.cn/tools/word-counter/</loc>
+    <loc>https://www.gubaby.cn/tools/word-counter/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.tutu-tools.cn/tools/password-gen/</loc>
+    <loc>https://www.gubaby.cn/tools/password-gen/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.tutu-tools.cn/tools/base64/</loc>
+    <loc>https://www.gubaby.cn/tools/base64/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.tutu-tools.cn/tools/url-encode/</loc>
+    <loc>https://www.gubaby.cn/tools/url-encode/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.tutu-tools.cn/tools/timestamp/</loc>
+    <loc>https://www.gubaby.cn/tools/timestamp/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.tutu-tools.cn/tools/json-formatter/</loc>
+    <loc>https://www.gubaby.cn/tools/json-formatter/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.tutu-tools.cn/tools/color-tool/</loc>
+    <loc>https://www.gubaby.cn/tools/color-tool/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON 格式化 JSON Formatter - 兔兔工具站</title>
+  <meta name="description" content="在线 JSON 格式化、压缩、校验、语法高亮工具。Online JSON formatter — format, compress, validate & syntax highlight your JSON data.">
+  <meta name="keywords" content="JSON格式化,JSON校验,JSON压缩,JSON formatter,JSON validator,JSON beautifier">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text">
+        <span class="logo-cn">兔兔工具站</span>
+        <span class="logo-en">Tutu Tools</span>
+      </span>
+    </a>
+  </div>
+</header>
+
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / JSON 格式化 JSON Formatter</div>
+    <h2>📋 JSON 格式化</h2>
+    <p class="desc">在线 JSON 格式化、压缩、校验、语法高亮</p>
+    <p class="desc-en">Format, compress, validate and syntax highlight your JSON</p>
+  </div>
+
+  <div class="tool-body">
+    <div class="tool-panel">
+      <label>输入 JSON <span class="label-en">Input JSON</span></label>
+      <textarea id="input" placeholder='粘贴 JSON 数据，如：{"name":"兔兔","age":18}  Paste your JSON here...'></textarea>
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="btn btn-primary" onclick="format(2)">🔧 格式化 Format</button>
+        <button class="btn btn-primary" onclick="format(4)">格式化 (4空格)</button>
+        <button class="btn btn-outline" onclick="compress()">📦 压缩 Compress</button>
+        <button class="btn btn-outline" onclick="validate()">✅ 校验 Validate</button>
+        <button class="btn btn-outline" onclick="clearInput('input')">清空 Clear</button>
+      </div>
+    </div>
+
+    <div class="tool-panel">
+      <label>转换结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output"></div>
+      <div class="info-bar">
+        <span id="statusTip"></span>
+        <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+
+<script src="../../js/common.js"></script>
+<script>
+function format(indent) {
+  try {
+    var obj = JSON.parse(document.getElementById('input').value);
+    var result = JSON.stringify(obj, null, indent);
+    document.getElementById('output').innerHTML = syntaxHighlight(result);
+    document.getElementById('statusTip').textContent = '✅ 有效 Valid | ' + result.length + ' 字符 chars';
+  } catch (e) {
+    document.getElementById('output').textContent = '❌ JSON 格式错误 Invalid JSON: ' + e.message;
+    document.getElementById('statusTip').textContent = '❌ 格式无效 Invalid';
+  }
+}
+
+function compress() {
+  try {
+    var obj = JSON.parse(document.getElementById('input').value);
+    var result = JSON.stringify(obj);
+    document.getElementById('output').textContent = result;
+    document.getElementById('statusTip').textContent = '✅ 已压缩 Compressed | ' + result.length + ' 字符 chars';
+  } catch (e) {
+    document.getElementById('output').textContent = '❌ JSON 格式错误 Invalid JSON: ' + e.message;
+    document.getElementById('statusTip').textContent = '❌ 格式无效 Invalid';
+  }
+}
+
+function validate() {
+  try {
+    var obj = JSON.parse(document.getElementById('input').value);
+    document.getElementById('output').textContent = '✅ JSON 格式正确！Valid JSON!\n\n类型 Type：' + (Array.isArray(obj) ? '数组 Array' : typeof obj === 'object' ? '对象 Object' : typeof obj) + '\n顶层键数 Keys：' + (typeof obj === 'object' && obj !== null && !Array.isArray(obj) ? Object.keys(obj).length : 'N/A');
+    document.getElementById('statusTip').textContent = '✅ 校验通过 Valid';
+  } catch (e) {
+    document.getElementById('output').textContent = '❌ JSON 格式错误 Invalid JSON: ' + e.message;
+    document.getElementById('statusTip').textContent = '❌ 格式无效 Invalid';
+  }
+}
+
+function syntaxHighlight(json) {
+  json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^"\\])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+    var cls = 'number';
+    if (/^"/.test(match)) {
+      if (/:$/.test(match)) cls = 'key';
+      else cls = 'string';
+    } else if (/true|false/.test(match)) cls = 'boolean';
+    else if (/null/.test(match)) cls = 'null';
+    return '<span style="color:' + ({key:'#881391',string:'#1a6b3c',number:'#1750eb',boolean:'#b84309','null':'#808080'}[cls]) + ';">' + match + '</span>';
+  });
+}
+</script>
+</body>
+</html>

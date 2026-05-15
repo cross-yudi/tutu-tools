@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字数统计 Word Counter - 兔兔工具站</title>
+  <meta name="description" content="在线字数统计工具，统计字符数、单词数、行数、中文字数。Online word counter — count characters, words, lines, Chinese characters.">
+  <meta name="keywords" content="字数统计,字符计数,单词统计,word counter,character count,字数计算">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text">
+        <span class="logo-cn">兔兔工具站</span>
+        <span class="logo-en">Tutu Tools</span>
+      </span>
+    </a>
+  </div>
+</header>
+
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 字数统计 Word Counter</div>
+    <h2>📊 字数统计</h2>
+    <p class="desc">输入文本，自动统计字符数、单词数、行数等多项数据</p>
+    <p class="desc-en">Paste your text to instantly count characters, words, lines, and more</p>
+  </div>
+
+  <div class="tool-body">
+    <div class="tool-panel">
+      <label>输入文本 <span class="label-en">Input Text</span></label>
+      <textarea id="input" placeholder="在这里输入或粘贴文本... Type or paste your text here..." style="min-height:250px;"></textarea>
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="btn btn-outline" onclick="clearInput('input')">清空 Clear</button>
+      </div>
+    </div>
+
+    <div class="tool-panel">
+      <label>统计结果 <span class="label-en">Statistics</span></label>
+      <div class="result-area" id="output">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-family:inherit;">
+          <div>总字符数：<strong id="rChars">0</strong> <span style="color:var(--text-en);font-size:.75rem;">Chars</span></div>
+          <div>单词数：<strong id="rWords">0</strong> <span style="color:var(--text-en);font-size:.75rem;">Words</span></div>
+          <div>中文字数：<strong id="rCn">0</strong> <span style="color:var(--text-en);font-size:.75rem;">CN Chars</span></div>
+          <div>英文字母：<strong id="rEn">0</strong> <span style="color:var(--text-en);font-size:.75rem;">Letters</span></div>
+          <div>数字数量：<strong id="rNum">0</strong> <span style="color:var(--text-en);font-size:.75rem;">Digits</span></div>
+          <div>标点符号：<strong id="rPunct">0</strong> <span style="color:var(--text-en);font-size:.75rem;">Punctuation</span></div>
+          <div>行数：<strong id="rLines">0</strong> <span style="color:var(--text-en);font-size:.75rem;">Lines</span></div>
+          <div>段落数：<strong id="rPara">0</strong> <span style="color:var(--text-en);font-size:.75rem;">Paragraphs</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+
+<script src="../../js/common.js"></script>
+<script>
+var input = document.getElementById('input');
+input.addEventListener('input', update);
+
+function update() {
+  var text = input.value;
+  document.getElementById('rChars').textContent = text.length;
+  document.getElementById('rWords').textContent = text.trim() ? text.trim().split(/\s+/).length : 0;
+  document.getElementById('rCn').textContent = (text.match(/[一-鿿]/g) || []).length;
+  document.getElementById('rEn').textContent = (text.match(/[a-zA-Z]/g) || []).length;
+  document.getElementById('rNum').textContent = (text.match(/[0-9]/g) || []).length;
+  document.getElementById('rPunct').textContent = (text.match(/[，。！？、；：""''（）【】《》,.!?;:'"()\[\]{}<>\/\\@#$%^&*+=~`|]/g) || []).length;
+  document.getElementById('rLines').textContent = text ? text.split(/\n/).length : 0;
+  document.getElementById('rPara').textContent = text.trim() ? text.trim().split(/\n\s*\n/).length : 0;
+}
+</script>
+</body>
+</html>

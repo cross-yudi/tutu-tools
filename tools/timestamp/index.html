@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>时间戳转换 Timestamp Converter - 兔兔工具站</title>
+  <meta name="description" content="在线 Unix 时间戳转换工具，支持时间戳转日期和日期转时间戳。Online Unix timestamp converter — timestamp to date & date to timestamp.">
+  <meta name="keywords" content="时间戳转换,Unix时间戳,timestamp converter,unix timestamp,日期转时间戳">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text">
+        <span class="logo-cn">兔兔工具站</span>
+        <span class="logo-en">Tutu Tools</span>
+      </span>
+    </a>
+  </div>
+</header>
+
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 时间戳转换 Timestamp</div>
+    <h2>⏰ 时间戳转换</h2>
+    <p class="desc">Unix 时间戳与日期时间互相转换</p>
+    <p class="desc-en">Convert between Unix timestamp and human-readable date time</p>
+  </div>
+
+  <div class="tool-body">
+    <div class="tool-panel">
+      <label>当前时间戳 <span class="label-en">Current Timestamp</span> <span style="font-weight:400;font-size:.7rem;color:var(--text-en);">(实时更新 Live)</span></label>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px;">
+        <div>
+          <span style="color:var(--text-secondary);font-size:.8rem;">秒级 Seconds：</span>
+          <strong id="nowSec" style="font-family:monospace;font-size:1.2rem;"></strong>
+          <button class="btn btn-outline btn-sm copy-btn" style="margin-left:8px;" onclick="copyText(document.getElementById('nowSec').textContent)">复制 Copy</button>
+        </div>
+        <div>
+          <span style="color:var(--text-secondary);font-size:.8rem;">毫秒级 Ms：</span>
+          <strong id="nowMs" style="font-family:monospace;font-size:1.2rem;"></strong>
+          <button class="btn btn-outline btn-sm copy-btn" style="margin-left:8px;" onclick="copyText(document.getElementById('nowMs').textContent)">复制 Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-panel">
+      <label>时间戳 → 日期 <span class="label-en">Timestamp to Date</span></label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <input type="text" id="tsInput" placeholder="输入时间戳，如 1715875200" style="flex:1;min-width:180px;">
+        <button class="btn btn-primary" onclick="tsToDate()">转换 Convert</button>
+      </div>
+      <div class="result-area" id="tsResult" style="margin-top:10px;"></div>
+      <div class="info-bar">
+        <span></span>
+        <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('tsResult').textContent)">📋 复制 Copy</button>
+      </div>
+    </div>
+
+    <div class="tool-panel">
+      <label>日期 → 时间戳 <span class="label-en">Date to Timestamp</span></label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <input type="datetime-local" id="dtInput" style="flex:1;min-width:180px;">
+        <button class="btn btn-primary" onclick="dateToTs()">转换 Convert</button>
+      </div>
+      <div class="result-area" id="dtResult" style="margin-top:10px;"></div>
+      <div class="info-bar">
+        <span></span>
+        <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('dtResult').textContent)">📋 复制 Copy</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+
+<script src="../../js/common.js"></script>
+<script>
+setInterval(function () {
+  var now = Date.now();
+  document.getElementById('nowSec').textContent = Math.floor(now / 1000);
+  document.getElementById('nowMs').textContent = now;
+}, 1000);
+
+var now = Date.now();
+document.getElementById('nowSec').textContent = Math.floor(now / 1000);
+document.getElementById('nowMs').textContent = now;
+
+var dtInput = document.getElementById('dtInput');
+var tzOffset = new Date().getTimezoneOffset();
+var local = new Date(Date.now() - tzOffset * 60000);
+dtInput.value = local.toISOString().slice(0, 16);
+
+function tsToDate() {
+  var ts = document.getElementById('tsInput').value.trim();
+  if (!ts) { document.getElementById('tsResult').textContent = '请输入时间戳 Enter a timestamp'; return; }
+  ts = parseInt(ts);
+  if (ts > 99999999999) ts = Math.floor(ts / 1000);
+  var d = new Date(ts * 1000);
+  if (isNaN(d.getTime())) { document.getElementById('tsResult').textContent = '无效的时间戳 Invalid timestamp'; return; }
+  document.getElementById('tsResult').textContent =
+    'ISO：' + d.toISOString().replace('T',' ').slice(0,19) + '\n' +
+    '本地 Local：' + d.toLocaleString('zh-CN') + '\n' +
+    '中文：' + d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日 ' +
+    String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0') + ':' + String(d.getSeconds()).padStart(2,'0');
+}
+
+function dateToTs() {
+  var val = document.getElementById('dtInput').value;
+  if (!val) { document.getElementById('dtResult').textContent = '请选择日期时间 Select a date'; return; }
+  var d = new Date(val);
+  var sec = Math.floor(d.getTime() / 1000);
+  document.getElementById('dtResult').textContent =
+    '秒级 Seconds：' + sec + '\n' +
+    '毫秒级 Ms：' + d.getTime();
+}
+</script>
+</body>
+</html>

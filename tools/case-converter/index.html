@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英文字母大小写转换 Case Converter - 兔兔工具站</title>
+  <meta name="description" content="在线英文字母大小写转换工具，支持大写、小写、首字母大写、大小写反转。Online case converter - uppercase, lowercase, title case, toggle case.">
+  <meta name="keywords" content="大小写转换,英文大写,英文小写,case converter,uppercase,lowercase,title case,toggle case">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text">
+        <span class="logo-cn">兔兔工具站</span>
+        <span class="logo-en">Tutu Tools</span>
+      </span>
+    </a>
+  </div>
+</header>
+
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 大小写转换 Case Converter</div>
+    <h2>🔤 英文字母大小写转换</h2>
+    <p class="desc">一键转换英文字母大小写，支持多种转换模式</p>
+    <p class="desc-en">Convert English letter case — supports uppercase, lowercase, title case, toggle case and more</p>
+  </div>
+
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>输入文本 <span class="label-en">Input Text</span></label>
+        <textarea id="input" placeholder="在这里输入英文文本... Enter English text here..."></textarea>
+        <div class="info-bar"><span id="charCount">字符数 Chars：0</span></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="convert('upper')">全大写 UPPER</button>
+      <button class="btn btn-primary" onclick="convert('lower')">全小写 lower</button>
+      <button class="btn btn-primary" onclick="convert('title')">首字母大写 Title</button>
+      <button class="btn btn-primary" onclick="convert('word')">单词首字母大写 Word</button>
+      <button class="btn btn-outline" onclick="convert('toggle')">大小写反转 tOGGLE</button>
+      <button class="btn btn-outline" onclick="clearInput('input')">清空 Clear</button>
+    </div>
+
+    <div class="tool-panel">
+      <label>转换结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output"></div>
+      <div class="info-bar">
+        <span id="resultCount">字符数 Chars：0</span>
+        <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+
+<script src="../../js/common.js"></script>
+<script>
+var input = document.getElementById('input');
+input.addEventListener('input', function () {
+  document.getElementById('charCount').textContent = '字符数 Chars：' + input.value.length;
+});
+
+function convert(type) {
+  var text = input.value;
+  var result = '';
+  switch (type) {
+    case 'upper': result = text.toUpperCase(); break;
+    case 'lower': result = text.toLowerCase(); break;
+    case 'title': result = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase(); break;
+    case 'word': result = text.replace(/\b\w/g, function (c) { return c.toUpperCase(); }); break;
+    case 'toggle':
+      result = text.split('').map(function (c) {
+        return c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase();
+      }).join('');
+      break;
+  }
+  document.getElementById('output').textContent = result;
+  document.getElementById('resultCount').textContent = '字符数 Chars：' + result.length;
+}
+</script>
+</body>
+</html>

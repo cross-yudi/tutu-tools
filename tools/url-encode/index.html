@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL 编码解码 URL Encoder - 兔兔工具站</title>
+  <meta name="description" content="在线 URL 编码解码工具，支持 URL Encode 和 URL Decode。Online URL encoder & decoder for encoding and decoding URL strings.">
+  <meta name="keywords" content="URL编码,URL解码,URL Encode,URL Decode,URL encoder,URL decoder">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text">
+        <span class="logo-cn">兔兔工具站</span>
+        <span class="logo-en">Tutu Tools</span>
+      </span>
+    </a>
+  </div>
+</header>
+
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / URL 编码解码 URL Encoder</div>
+    <h2>🔗 URL 编码解码</h2>
+    <p class="desc">在线进行 URL Encode 和 URL Decode 转换</p>
+    <p class="desc-en">Encode and decode URL strings — standard and full encoding modes</p>
+  </div>
+
+  <div class="tool-body">
+    <div class="tool-panel">
+      <label>输入内容 <span class="label-en">Input</span></label>
+      <textarea id="input" placeholder="输入要编码或解码的 URL 文本... Enter URL text to encode or decode..."></textarea>
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="btn btn-primary" onclick="encode()">🔒 编码 Encode</button>
+        <button class="btn btn-primary" onclick="decode()">🔓 解码 Decode</button>
+        <button class="btn btn-outline" onclick="encodeAll()">完整编码 Full Encode</button>
+        <button class="btn btn-outline" onclick="clearInput('input')">清空 Clear</button>
+      </div>
+    </div>
+
+    <div class="tool-panel">
+      <label>转换结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output" style="word-break:break-all;"></div>
+      <div class="info-bar">
+        <span></span>
+        <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+
+<script src="../../js/common.js"></script>
+<script>
+function encode() {
+  document.getElementById('output').textContent = encodeURIComponent(document.getElementById('input').value);
+}
+function decode() {
+  try {
+    document.getElementById('output').textContent = decodeURIComponent(document.getElementById('input').value.trim());
+  } catch (e) {
+    document.getElementById('output').textContent = '解码出错 Decode error: invalid URL-encoded string';
+  }
+}
+function encodeAll() {
+  var text = document.getElementById('input').value;
+  document.getElementById('output').textContent = text.split('').map(function (c) {
+    return '%' + c.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0');
+  }).join('');
+}
+</script>
+</body>
+</html>

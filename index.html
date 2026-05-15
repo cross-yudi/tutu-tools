@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>兔兔工具站 Tutu Tools - 免费在线工具 Free Online Tools</title>
+  <meta name="description" content="兔兔工具站提供免费在线工具：大小写转换、字数统计、密码生成、Base64编码、JSON格式化等。Tutu Tools offers free online tools - case converter, word counter, password generator, and more.">
+  <meta name="keywords" content="在线工具,免费工具,online tools,free tools,大小写转换,case converter,密码生成,password generator,JSON格式化,JSON formatter">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text">
+        <span class="logo-cn">兔兔工具站</span>
+        <span class="logo-en">Tutu Tools</span>
+      </span>
+    </a>
+    <nav style="font-size:.82rem;color:var(--text-en);">Free · Simple · Useful</nav>
+  </div>
+</header>
+
+<main class="main">
+  <div class="hero">
+    <div class="hero-title">
+      <span class="hero-icon">🐰</span>
+      <h1>兔兔工具站</h1>
+    </div>
+    <p class="subtitle">免费在线工具集合，无需下载安装，打开即用</p>
+    <p class="subtitle-en">Free online tools — no download, no install, just use</p>
+  </div>
+
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="searchInput" placeholder="🔍  搜索工具 / Search tools...">
+  </div>
+
+  <div class="cat-tabs">
+    <button class="cat-tab active" data-cat="all">全部 <span style="font-size:.7rem;color:inherit;opacity:.7;">All</span></button>
+    <button class="cat-tab" data-cat="text">📝 文本工具 <span style="font-size:.7rem;color:inherit;opacity:.7;">Text</span></button>
+    <button class="cat-tab" data-cat="encode">🔢 编码转换 <span style="font-size:.7rem;color:inherit;opacity:.7;">Encode</span></button>
+    <button class="cat-tab" data-cat="generate">🔐 生成器 <span style="font-size:.7rem;color:inherit;opacity:.7;">Generator</span></button>
+    <button class="cat-tab" data-cat="dev">🛠️ 开发工具 <span style="font-size:.7rem;color:inherit;opacity:.7;">Dev</span></button>
+    <button class="cat-tab" data-cat="life">📅 生活查询 <span style="font-size:.7rem;color:inherit;opacity:.7;">Life</span></button>
+  </div>
+
+  <div class="tool-grid" id="toolGrid">
+
+    <a href="tools/case-converter/index.html" class="tool-card" data-cats="text">
+      <span class="icon">🔤</span>
+      <h3>大小写转换</h3>
+      <span class="desc-cn">英文字母大写、小写、首字母大写、大小写反转</span>
+      <span class="desc-en">Uppercase, lowercase, title case, toggle case</span>
+    </a>
+
+    <a href="tools/word-counter/index.html" class="tool-card" data-cats="text">
+      <span class="icon">📊</span>
+      <h3>字数统计</h3>
+      <span class="desc-cn">统计字符数、单词数、行数、中文字数</span>
+      <span class="desc-en">Character, word, line & Chinese character counter</span>
+    </a>
+
+    <a href="tools/password-gen/index.html" class="tool-card" data-cats="generate">
+      <span class="icon">🔐</span>
+      <h3>密码生成器</h3>
+      <span class="desc-cn">随机生成强密码，可调长度和字符类型</span>
+      <span class="desc-en">Strong random password with customizable options</span>
+    </a>
+
+    <a href="tools/base64/index.html" class="tool-card" data-cats="encode">
+      <span class="icon">🔄</span>
+      <h3>Base64 编码解码</h3>
+      <span class="desc-cn">Base64 编码与解码在线转换</span>
+      <span class="desc-en">Base64 encode & decode with full Unicode support</span>
+    </a>
+
+    <a href="tools/url-encode/index.html" class="tool-card" data-cats="encode">
+      <span class="icon">🔗</span>
+      <h3>URL 编码解码</h3>
+      <span class="desc-cn">URL Encode / Decode 在线转换</span>
+      <span class="desc-en">URL encoding & decoding made simple</span>
+    </a>
+
+    <a href="tools/timestamp/index.html" class="tool-card" data-cats="dev">
+      <span class="icon">⏰</span>
+      <h3>时间戳转换</h3>
+      <span class="desc-cn">Unix 时间戳与日期时间互相转换</span>
+      <span class="desc-en">Unix timestamp to date & vice versa</span>
+    </a>
+
+    <a href="tools/json-formatter/index.html" class="tool-card" data-cats="dev">
+      <span class="icon">📋</span>
+      <h3>JSON 格式化</h3>
+      <span class="desc-cn">JSON 格式化、压缩、校验、语法高亮</span>
+      <span class="desc-en">Format, compress, validate & highlight JSON</span>
+    </a>
+
+    <a href="tools/color-tool/index.html" class="tool-card" data-cats="dev">
+      <span class="icon">🎨</span>
+      <h3>颜色转换</h3>
+      <span class="desc-cn">HEX / RGB / HSL 颜色格式互转</span>
+      <span class="desc-en">HEX, RGB & HSL color format converter</span>
+    </a>
+
+  </div>
+</main>
+
+<footer class="footer">
+  © 2026 兔兔工具站 Tutu Tools — 更多工具持续更新中 · More tools coming soon
+</footer>
+
+<script src="js/common.js"></script>
+<script>
+var tabs = document.querySelectorAll('.cat-tab');
+var cards = document.querySelectorAll('.tool-card');
+var search = document.getElementById('searchInput');
+
+tabs.forEach(function (tab) {
+  tab.addEventListener('click', function () {
+    tabs.forEach(function (t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+    filterTools();
+  });
+});
+
+search.addEventListener('input', filterTools);
+
+function filterTools() {
+  var activeCat = document.querySelector('.cat-tab.active').dataset.cat;
+  var keyword = search.value.toLowerCase();
+
+  cards.forEach(function (card) {
+    var cats = card.dataset.cats || '';
+    var text = (card.textContent || '').toLowerCase();
+    var matchCat = activeCat === 'all' || cats.indexOf(activeCat) !== -1;
+    var matchSearch = !keyword || text.indexOf(keyword) !== -1;
+    card.style.display = matchCat && matchSearch ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

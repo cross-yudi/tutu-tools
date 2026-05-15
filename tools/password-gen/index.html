@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>随机密码生成器 Password Generator - 兔兔工具站</title>
+  <meta name="description" content="在线随机密码生成器，可自定义密码长度和字符类型。Online strong password generator with customizable length and character types.">
+  <meta name="keywords" content="密码生成器,随机密码,强密码,password generator,strong password,random password">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text">
+        <span class="logo-cn">兔兔工具站</span>
+        <span class="logo-en">Tutu Tools</span>
+      </span>
+    </a>
+  </div>
+</header>
+
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 密码生成器 Password Generator</div>
+    <h2>🔐 随机密码生成器</h2>
+    <p class="desc">生成安全可靠的随机密码，保护你的账号安全</p>
+    <p class="desc-en">Generate strong, secure passwords to keep your accounts safe</p>
+  </div>
+
+  <div class="tool-body">
+    <div class="tool-panel">
+      <label>密码设置 <span class="label-en">Settings</span></label>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-bottom:12px;">
+        <div>
+          <span style="font-size:.85rem;color:var(--text-secondary);">密码长度 Length：</span>
+          <input type="number" id="length" value="16" min="4" max="64" style="width:70px;">
+        </div>
+        <label style="font-weight:400;font-size:.85rem;display:flex;align-items:center;gap:4px;cursor:pointer;">
+          <input type="checkbox" id="useUpper" checked> 大写字母 A-Z
+        </label>
+        <label style="font-weight:400;font-size:.85rem;display:flex;align-items:center;gap:4px;cursor:pointer;">
+          <input type="checkbox" id="useLower" checked> 小写字母 a-z
+        </label>
+        <label style="font-weight:400;font-size:.85rem;display:flex;align-items:center;gap:4px;cursor:pointer;">
+          <input type="checkbox" id="useNum" checked> 数字 0-9
+        </label>
+        <label style="font-weight:400;font-size:.85rem;display:flex;align-items:center;gap:4px;cursor:pointer;">
+          <input type="checkbox" id="useSym" checked> 特殊符号 !@#$
+        </label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="generate()">🔀 生成密码 Generate</button>
+        <button class="btn btn-primary" onclick="generateMany()">生成 5 个 ×5</button>
+      </div>
+    </div>
+
+    <div class="tool-panel">
+      <label>生成的密码 <span class="label-en">Generated Password</span></label>
+      <div class="result-area" id="output" style="font-size:1.15rem;text-align:center;word-break:break-all;letter-spacing:1px;"></div>
+      <div class="info-bar">
+        <span id="strengthTip"></span>
+        <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+
+<script src="../../js/common.js"></script>
+<script>
+var upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var lower = 'abcdefghijklmnopqrstuvwxyz';
+var nums = '0123456789';
+var syms = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+function generate() {
+  var len = parseInt(document.getElementById('length').value) || 16;
+  var pool = '';
+  if (document.getElementById('useUpper').checked) pool += upper;
+  if (document.getElementById('useLower').checked) pool += lower;
+  if (document.getElementById('useNum').checked) pool += nums;
+  if (document.getElementById('useSym').checked) pool += syms;
+  if (!pool) { document.getElementById('output').textContent = '请至少选择一种字符类型 Select at least one character type'; return; }
+
+  var arr = new Uint32Array(len);
+  crypto.getRandomValues(arr);
+  var result = '';
+  for (var i = 0; i < len; i++)  result += pool[arr[i] % pool.length];
+
+  document.getElementById('output').textContent = result;
+  var strength = len >= 16 ? '🔒 强 Strong' : len >= 12 ? '🔒 中等 Medium' : '⚠️ 弱 Weak';
+  document.getElementById('strengthTip').textContent = strength;
+}
+
+function generateMany() {
+  var results = [];
+  for (var i = 0; i < 5; i++) {
+    var len = parseInt(document.getElementById('length').value) || 16;
+    var pool = '';
+    if (document.getElementById('useUpper').checked) pool += upper;
+    if (document.getElementById('useLower').checked) pool += lower;
+    if (document.getElementById('useNum').checked) pool += nums;
+    if (document.getElementById('useSym').checked) pool += syms;
+    if (!pool) { document.getElementById('output').textContent = '请至少选择一种字符类型 Select at least one character type'; return; }
+    var arr = new Uint32Array(len);
+    crypto.getRandomValues(arr);
+    var result = '';
+    for (var j = 0; j < len; j++) result += pool[arr[j] % pool.length];
+    results.push(result);
+  }
+  document.getElementById('output').innerHTML = results.map(function(p){return '<div style="margin-bottom:4px;">'+p+'</div>';}).join('');
+  document.getElementById('strengthTip').textContent = '已生成 5 个密码 5 passwords generated';
+}
+
+generate();
+</script>
+</body>
+</html>

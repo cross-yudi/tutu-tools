@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GUID 生成工具 GUID Generator - 兔兔工具站</title>
+<meta name="description" content="在线GUID/UUID生成工具，支持批量生成多种格式。Online GUID/UUID generator — multiple formats & batch generation.">
+<meta name="keywords" content="GUID生成,UUID生成,guid generator,uuid generator,唯一标识">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / GUID 生成</div><h2>🆔 GUID / UUID 生成工具</h2><p class="desc">生成全局唯一标识符，支持多种格式</p><p class="desc-en">Generate globally unique identifiers in multiple formats</p></div>
+<div class="tool-body">
+<div class="tool-row"><div class="tool-panel">
+<label>格式 <span class="label-en">Format</span></label>
+<select id="format" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;">
+<option value="standard">标准 Standard: 550e8400-e29b-41d4-a716-446655440000</option>
+<option value="upper">大写 Uppercase: 550E8400-E29B-41D4-A716-446655440000</option>
+<option value="nohyphen">无连字符 No hyphens: 550e8400e29b41d4a716446655440000</option>
+<option value="braces">花括号 Braces: {550e8400-e29b-41d4-a716-446655440000}</option>
+<option value="urn">URN: urn:uuid:550e8400-e29b-41d4-a716-446655440000</option>
+<option value="hex">十六进制 Hex: 0x550e8400e29b41d4a716446655440000</option>
+</select>
+<label style="margin-top:10px;font-size:.8rem;">生成数量 Count</label>
+<input type="number" id="count" value="5" min="1" max="500" style="width:80px;">
+<div class="btn-row" style="margin-top:10px;">
+  <button class="btn btn-primary" onclick="generate()">🆔 生成 Generate</button>
+  <button class="btn btn-outline" onclick="generateOne()">生成 1 个 ×1</button>
+</div></div></div>
+<div class="tool-panel"><label>生成的 GUID <span class="label-en">Generated</span></label>
+<div class="result-area" id="output" style="font-family:monospace;font-size:.9rem;max-height:400px;overflow:auto;"></div>
+<div class="info-bar"><span id="infoTip"></span><button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function makeUUID(){
+  var arr=new Uint8Array(16);
+  crypto.getRandomValues(arr);
+  arr[6]=(arr[6]&0x0f)|0x40; // version 4
+  arr[8]=(arr[8]&0x3f)|0x80; // variant
+  var hex=Array.from(arr).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+  return hex;
+}
+function formatUUID(uuid,format){
+  var s=uuid;
+  var dashed=s.slice(0,8)+'-'+s.slice(8,12)+'-'+s.slice(12,16)+'-'+s.slice(16,20)+'-'+s.slice(20);
+  switch(format){
+    case 'upper':return dashed.toUpperCase();
+    case 'nohyphen':return uuid;
+    case 'braces':return '{'+dashed+'}';
+    case 'urn':return 'urn:uuid:'+dashed;
+    case 'hex':return '0x'+uuid;
+    default:return dashed;
+  }
+}
+function generate(){
+  var fmt=document.getElementById('format').value;
+  var count=parseInt(document.getElementById('count').value)||5;
+  var results=[];
+  for(var i=0;i<count;i++)results.push(formatUUID(makeUUID(),fmt));
+  document.getElementById('output').innerHTML=results.map(function(r,i){return (i+1)+'. '+r;}).join('<br>');
+  document.getElementById('infoTip').textContent=count+' 个 GUIDs generated';
+}
+function generateOne(){
+  var fmt=document.getElementById('format').value;
+  var uuid=formatUUID(makeUUID(),fmt);
+  document.getElementById('output').innerHTML='<strong>'+uuid+'</strong>';
+  document.getElementById('infoTip').textContent='1 GUID generated';
+}
+</script>
+</body>
+</html>

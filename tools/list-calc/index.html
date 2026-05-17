@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>列表计算器 List Calculator - 兔兔工具站</title>
+  <meta name="description" content="在线列表求和、平均值、最大值、最小值计算。Quickly sum, average, find max/min of a list of numbers.">
+  <meta name="keywords" content="列表求和,求和计算,平均值,sum calculator,average,列表计算">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 列表计算器</div>
+    <h2>➕ 列表计算器</h2>
+    <p class="desc">快速计算数字列表的求和、平均值、最大值、最小值</p>
+    <p class="desc-en">Sum, average, max & min for a list of numbers</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>数字列表 <span class="label-en">Numbers</span></label>
+        <textarea id="input" placeholder="每行一个数字，或逗号/空格分隔... One number per line, or comma/space separated..."></textarea>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn btn-primary" onclick="calc()">计算 Calculate</button>
+          <button class="btn btn-outline" onclick="clearInput('input')">清空 Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>计算结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output" style="font-family:inherit;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;text-align:center;">
+          <div>数量 Count<br><strong id="rCount" style="font-size:1.3rem;">-</strong></div>
+          <div>求和 Sum<br><strong id="rSum" style="font-size:1.3rem;">-</strong></div>
+          <div>平均值 Avg<br><strong id="rAvg" style="font-size:1.3rem;">-</strong></div>
+          <div>中位数 Median<br><strong id="rMedian" style="font-size:1.3rem;">-</strong></div>
+          <div>最大值 Max<br><strong id="rMax" style="font-size:1.3rem;">-</strong></div>
+          <div>最小值 Min<br><strong id="rMin" style="font-size:1.3rem;">-</strong></div>
+          <div>总和 Total<br><strong id="rTotal" style="font-size:1.3rem;">-</strong></div>
+          <div>标准差 Std Dev<br><strong id="rStd" style="font-size:1.3rem;">-</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function calc() {
+  var text = document.getElementById('input').value;
+  var nums = text.split(/[\n,\s]+/).map(Number).filter(function(n){return !isNaN(n);});
+  if (!nums.length) { showToast('请输入数字 Enter some numbers'); return; }
+  nums.sort(function(a,b){return a-b;});
+  var sum = nums.reduce(function(a,b){return a+b;},0);
+  var avg = sum / nums.length;
+  var median = nums.length % 2 ? nums[Math.floor(nums.length/2)] : (nums[nums.length/2-1]+nums[nums.length/2])/2;
+  var variance = nums.reduce(function(a,b){return a+Math.pow(b-avg,2);},0)/nums.length;
+
+  document.getElementById('rCount').textContent = nums.length;
+  document.getElementById('rSum').textContent = sum.toLocaleString();
+  document.getElementById('rAvg').textContent = avg.toFixed(2);
+  document.getElementById('rMedian').textContent = median;
+  document.getElementById('rMax').textContent = nums[nums.length-1];
+  document.getElementById('rMin').textContent = nums[0];
+  document.getElementById('rTotal').textContent = sum.toLocaleString();
+  document.getElementById('rStd').textContent = Math.sqrt(variance).toFixed(2);
+}
+</script>
+</body>
+</html>

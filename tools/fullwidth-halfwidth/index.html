@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全角半角转换 Fullwidth Halfwidth - 兔兔工具站</title>
+  <meta name="description" content="在线全角半角字符转换工具，支持全角转半角、半角转全角。Online fullwidth/halfwidth character converter.">
+  <meta name="keywords" content="全角半角转换,全角转半角,半角转全角,fullwidth halfwidth,字符转换">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 全角半角转换</div>
+    <h2>⌨️ 全角半角转换</h2>
+    <p class="desc">在线全角/半角字符互相转换</p>
+    <p class="desc-en">Convert between fullwidth and halfwidth characters</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>输入 <span class="label-en">Input</span></label>
+        <textarea id="input" placeholder="输入文本... Enter text..."></textarea>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn btn-primary" onclick="convert('toHalf')">全角→半角 Full→Half</button>
+          <button class="btn btn-primary" onclick="convert('toFull')">半角→全角 Half→Full</button>
+          <button class="btn btn-outline" onclick="clearInput('input')">清空 Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output"></div>
+      <div class="info-bar">
+        <span id="infoTip"></span>
+        <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function convert(type) {
+  var text = document.getElementById('input').value;
+  var result = '';
+  for (var i = 0; i < text.length; i++) {
+    var code = text.charCodeAt(i);
+    if (type === 'toHalf') {
+      if (code === 0x3000) { result += ' '; }
+      else if (code >= 0xFF01 && code <= 0xFF5E) { result += String.fromCharCode(code - 0xFEE0); }
+      else { result += text[i]; }
+    } else {
+      if (code === 0x20) { result += String.fromCharCode(0x3000); }
+      else if (code >= 0x21 && code <= 0x7E) { result += String.fromCharCode(code + 0xFEE0); }
+      else { result += text[i]; }
+    }
+  }
+  document.getElementById('output').textContent = result;
+  document.getElementById('infoTip').textContent = '字符数 Chars: ' + result.length;
+}
+</script>
+</body>
+</html>

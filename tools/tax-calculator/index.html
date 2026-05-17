@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个税计算器 Tax Calculator - 兔兔工具站</title>
+  <meta name="description" content="在线个人所得税计算器，按最新税率表计算税后收入。Online Chinese income tax calculator with latest tax brackets.">
+  <meta name="keywords" content="个税计算器,个人所得税,税后收入,tax calculator,income tax,工资计算">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 个税计算器</div>
+    <h2>🧮 个人所得税计算器</h2>
+    <p class="desc">按最新个税起征点（5000元）和税率表计算税后收入</p>
+    <p class="desc-en">Calculate after-tax income using latest Chinese tax brackets (5000¥ threshold)</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>月收入（税前）<span class="label-en">Monthly Gross</span></label>
+        <input type="number" id="income" value="10000" min="0">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;">
+          <div style="flex:1;min-width:120px;">
+            <label style="font-size:.75rem;">社保公积金 <span class="label-en">Social insurance</span></label>
+            <input type="number" id="social" value="0" min="0" placeholder="自付部分">
+          </div>
+          <div style="flex:1;min-width:120px;">
+            <label style="font-size:.75rem;">专项扣除 <span class="label-en">Deductions</span></label>
+            <input type="number" id="special" value="0" min="0" placeholder="子女教育等">
+          </div>
+        </div>
+        <div class="btn-row" style="margin-top:12px;">
+          <button class="btn btn-primary" onclick="calc()">计算 Calculate</button>
+        </div>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>计算结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output" style="font-family:inherit;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>税前收入 Gross：<strong id="rGross">-</strong></div>
+          <div>应纳税所得 Taxable：<strong id="rTaxable">-</strong></div>
+          <div>个税金额 Tax：<strong id="rTax">-</strong></div>
+          <div>税后收入 After Tax：<strong id="rNet">-</strong></div>
+          <div>税率 Bracket：<strong id="rRate">-</strong></div>
+          <div>速算扣除 Quick Ded：<strong id="rQuick">-</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var brackets = [
+  {max:3000,rate:0.03,quick:0},
+  {max:12000,rate:0.10,quick:210},
+  {max:25000,rate:0.20,quick:1410},
+  {max:35000,rate:0.25,quick:2660},
+  {max:55000,rate:0.30,quick:4410},
+  {max:80000,rate:0.35,quick:7160},
+  {max:Infinity,rate:0.45,quick:15160}
+];
+
+function calc() {
+  var income = parseFloat(document.getElementById('income').value) || 0;
+  var social = parseFloat(document.getElementById('social').value) || 0;
+  var special = parseFloat(document.getElementById('special').value) || 0;
+  var taxable = income - 5000 - social - special;
+  if (taxable <= 0) {
+    document.getElementById('rGross').textContent = '¥' + income.toLocaleString();
+    document.getElementById('rTaxable').textContent = '¥0（未达起征点 Below threshold）';
+    document.getElementById('rTax').textContent = '¥0';
+    document.getElementById('rNet').textContent = '¥' + (income - social).toLocaleString();
+    document.getElementById('rRate').textContent = '0%';
+    document.getElementById('rQuick').textContent = '¥0';
+    return;
+  }
+  document.getElementById('rGross').textContent = '¥' + income.toLocaleString();
+  document.getElementById('rTaxable').textContent = '¥' + taxable.toLocaleString();
+  for (var i = 0; i < brackets.length; i++) {
+    if (taxable <= brackets[i].max) {
+      var tax = Math.round(taxable * brackets[i].rate - brackets[i].quick);
+      document.getElementById('rTax').textContent = '¥' + tax.toLocaleString();
+      document.getElementById('rNet').textContent = '¥' + (income - social - tax).toLocaleString();
+      document.getElementById('rRate').textContent = (brackets[i].rate * 100) + '%';
+      document.getElementById('rQuick').textContent = '¥' + brackets[i].quick.toLocaleString();
+      break;
+    }
+  }
+}
+</script>
+</body>
+</html>

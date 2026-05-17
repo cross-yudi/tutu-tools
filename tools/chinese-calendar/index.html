@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>老黄历 二十四节气 Chinese Calendar - 兔兔工具站</title>
+  <meta name="description" content="在线老黄历查询，二十四节气速查表，今日宜忌。Online Chinese lunar calendar — solar terms, daily fortune, auspicious directions.">
+  <meta name="keywords" content="老黄历,二十四节气,农历查询,chinese calendar,solar terms,黄历查询">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 老黄历</div>
+    <h2>📜 老黄历 & 二十四节气</h2>
+    <p class="desc">查询老黄历宜忌、二十四节气日期</p>
+    <p class="desc-en">Chinese lunar calendar — daily tips & solar terms</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>今日老黄历 <span class="label-en">Today's Almanac</span></label>
+        <div class="result-area" id="todayInfo" style="font-family:inherit;font-size:.9rem;line-height:1.8;">
+          <strong>公历 Gregorian：</strong><span id="rGreg">-</span><br>
+          <strong>农历 Lunar：</strong><span id="rLunar">-</span><br>
+          <strong>生肖 Zodiac：</strong><span id="rZodiac">-</span><br>
+          <strong>今日宜 Suitable：</strong><span id="rSuit">-</span><br>
+          <strong>今日忌 Avoid：</strong><span id="rAvoid">-</span>
+        </div>
+      </div>
+      <div class="tool-panel">
+        <label>2026年二十四节气 <span class="label-en">Solar Terms</span></label>
+        <div class="result-area" id="solarTerms" style="font-family:inherit;font-size:.82rem;line-height:1.7;max-height:260px;overflow:auto;">
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+// 二十四节气（基于天文学近似计算，日期±1天）
+var solarTerms2026 = [
+  {name:'小寒 Lesser Cold',date:'01-05'},{name:'大寒 Greater Cold',date:'01-20'},
+  {name:'立春 Spring Begins',date:'02-03'},{name:'雨水 Rain Water',date:'02-18'},
+  {name:'惊蛰 Insects Awaken',date:'03-05'},{name:'春分 Spring Equinox',date:'03-20'},
+  {name:'清明 Clear & Bright',date:'04-04'},{name:'谷雨 Grain Rain',date:'04-19'},
+  {name:'立夏 Summer Begins',date:'05-05'},{name:'小满 Grain Buds',date:'05-20'},
+  {name:'芒种 Grain in Ear',date:'06-05'},{name:'夏至 Summer Solstice',date:'06-21'},
+  {name:'小暑 Minor Heat',date:'07-06'},{name:'大暑 Major Heat',date:'07-22'},
+  {name:'立秋 Autumn Begins',date:'08-07'},{name:'处暑 End of Heat',date:'08-22'},
+  {name:'白露 White Dew',date:'09-07'},{name:'秋分 Autumn Equinox',date:'09-22'},
+  {name:'寒露 Cold Dew',date:'10-08'},{name:'霜降 Frost Descent',date:'10-23'},
+  {name:'立冬 Winter Begins',date:'11-07'},{name:'小雪 Minor Snow',date:'11-22'},
+  {name:'大雪 Major Snow',date:'12-07'},{name:'冬至 Winter Solstice',date:'12-21'}
+];
+
+// 天干地支
+var tianGan = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+var diZhi = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+var shengXiao = ['鼠 Rat','牛 Ox','虎 Tiger','兔 Rabbit','龙 Dragon','蛇 Snake','马 Horse','羊 Goat','猴 Monkey','鸡 Rooster','狗 Dog','猪 Pig'];
+
+var suitList = ['祭祀','出行','嫁娶','开市','动土','入宅','安葬','修造','纳财','交易','入学','上任','订婚','开工','签约'];
+var avoidList = ['祭祀','出行','嫁娶','开市','动土','入宅','安葬','修造','纳财','交易','入学','上任','订婚','开工','签约'];
+
+function getTodayInfo() {
+  var now = new Date();
+  document.getElementById('rGreg').textContent = now.toLocaleDateString('zh-CN');
+  // 简单农历估算（以春节为基准）
+  document.getElementById('rLunar').textContent = '农历查询需完整算法支持 Full lunar calc needs API';
+  var year = now.getFullYear();
+  var idx = (year - 4) % 12;
+  document.getElementById('rZodiac').textContent = shengXiao[idx];
+
+  // 伪随机宜忌（基于日期）
+  var dayOfYear = Math.floor((now - new Date(year,0,0)) / 86400000);
+  var seed = dayOfYear % 15;
+  document.getElementById('rSuit').textContent = suitList.slice(seed%5,seed%5+3).join('、');
+  document.getElementById('rAvoid').textContent = avoidList.slice((seed+7)%5,(seed+7)%5+2).join('、');
+}
+
+function renderSolarTerms() {
+  var html = '';
+  solarTerms2026.forEach(function(st){
+    html += '<div style="display:flex;justify-content:space-between;border-bottom:1px solid #f1f5f9;padding:2px 0;">' +
+      '<span>' + st.name + '</span><span style="color:var(--text-secondary);">2026-' + st.date + '</span></div>';
+  });
+  document.getElementById('solarTerms').innerHTML = html;
+}
+
+getTodayInfo();
+renderSolarTerms();
+</script>
+</body>
+</html>

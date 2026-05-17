@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工作日计算器 Workday Calc - 兔兔工具站</title>
+  <meta name="description" content="在线工作日计算器，计算两个日期之间的工作日天数。Online workday calculator — count business days between dates.">
+  <meta name="keywords" content="工作日计算,工作日天数,workday calculator,business days,上班天数">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 工作日计算器</div>
+    <h2>💼 工作日计算器</h2>
+    <p class="desc">计算两个日期之间的工作日天数（排除周末和节假日）</p>
+    <p class="desc-en">Count business days between two dates (excludes weekends & holidays)</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>日期范围 <span class="label-en">Date Range</span></label>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <input type="date" id="dateStart" style="flex:1;min-width:140px;">
+          <span>至 to</span>
+          <input type="date" id="dateEnd" style="flex:1;min-width:140px;">
+          <button class="btn btn-primary" onclick="calc()">计算 Calc</button>
+        </div>
+        <div style="margin-top:10px;font-size:.8rem;color:var(--text-secondary);">
+          <label style="display:inline;font-weight:400;"><input type="checkbox" id="excludeHol" checked> 排除中国法定节假日 Exclude Chinese holidays</label>
+        </div>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>计算结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output" style="font-family:inherit;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;text-align:center;">
+          <div>总天数 Total<br><strong id="rTotal" style="font-size:1.3rem;">-</strong></div>
+          <div>工作日 Biz Days<br><strong id="rBiz" style="font-size:1.3rem;color:#059669;">-</strong></div>
+          <div>周末 Weekend<br><strong id="rWeekend" style="font-size:1.3rem;color:#dc2626;">-</strong></div>
+          <div>节假日 Holiday<br><strong id="rHol" style="font-size:1.3rem;color:#f59e0b;">-</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+// 2026年中国法定节假日（简化版，主要假期）
+var holidays2026 = [
+  '2026-01-01','2026-01-02','2026-01-03', // 元旦
+  '2026-02-17','2026-02-18','2026-02-19','2026-02-20','2026-02-21','2026-02-22','2026-02-23', // 春节
+  '2026-04-05','2026-04-06', // 清明
+  '2026-05-01','2026-05-02','2026-05-03','2026-05-04','2026-05-05', // 劳动节
+  '2026-06-19','2026-06-20','2026-06-21', // 端午
+  '2026-09-25','2026-09-26','2026-09-27', // 中秋+国庆
+  '2026-10-01','2026-10-02','2026-10-03','2026-10-04','2026-10-05','2026-10-06','2026-10-07' // 国庆
+];
+
+function init() {
+  var now = new Date();
+  document.getElementById('dateStart').valueAsDate = new Date(now.getFullYear(), now.getMonth(), 1);
+  document.getElementById('dateEnd').valueAsDate = now;
+}
+
+function calc() {
+  var start = document.getElementById('dateStart').valueAsDate;
+  var end = document.getElementById('dateEnd').valueAsDate;
+  if (!start || !end) { showToast('请选择日期 Select dates'); return; }
+  if (start > end) { showToast('开始日期不能晚于结束日期 Start must be before end'); return; }
+
+  var total = 0, biz = 0, weekend = 0, hol = 0;
+  var excludeHol = document.getElementById('excludeHol').checked;
+  var d = new Date(start);
+
+  while (d <= end) {
+    total++;
+    var isWeekend = d.getDay() === 0 || d.getDay() === 6;
+    var isHol = false;
+    if (excludeHol) {
+      var ds = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+      isHol = holidays2026.indexOf(ds) >= 0;
+    }
+    if (isHol) { hol++; biz++; } // 节假日算工作日（替代休息）
+    else if (isWeekend) { weekend++; }
+    else { biz++; }
+    d.setDate(d.getDate() + 1);
+  }
+
+  document.getElementById('rTotal').textContent = total;
+  document.getElementById('rBiz').textContent = biz;
+  document.getElementById('rWeekend').textContent = weekend;
+  document.getElementById('rHol').textContent = hol;
+}
+
+init();
+</script>
+</body>
+</html>

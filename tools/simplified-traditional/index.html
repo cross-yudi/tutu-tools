@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>简繁转换 Chinese Converter - 兔兔工具站</title>
+  <meta name="description" content="在线简体中文与繁体中文互相转换。Online Simplified Chinese to Traditional Chinese converter.">
+  <meta name="keywords" content="简体转繁体,繁体转简体,简繁转换,simplified traditional chinese,中文转换">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 简繁转换</div>
+    <h2>🀄 简体繁体转换</h2>
+    <p class="desc">简体中文与繁体中文互相转换</p>
+    <p class="desc-en">Convert between Simplified and Traditional Chinese</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>输入 <span class="label-en">Input</span></label>
+        <textarea id="input" placeholder="输入简体或繁体中文... Enter Chinese text..."></textarea>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn btn-primary" onclick="convert('s2t')">简体→繁体 Simp→Trad</button>
+          <button class="btn btn-primary" onclick="convert('t2s')">繁体→简体 Trad→Simp</button>
+          <button class="btn btn-outline" onclick="clearInput('input')">清空 Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output" style="font-size:1.05rem;"></div>
+      <div class="info-bar">
+        <span id="infoTip"></span>
+        <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+// 常用简繁对照表（高频字）
+var s2tMap = {
+  '个':'個','们':'們','为':'為','国':'國','会':'會','说':'說','对':'對','开':'開','关':'關',
+  '门':'門','时':'時','书':'書','长':'長','见':'見','觉':'覺','学':'學','实':'實','来':'來',
+  '动':'動','从':'從','发':'發','过':'過','当':'當','后':'後','经':'經','车':'車','电':'電',
+  '头':'頭','买':'買','卖':'賣','万':'萬','无':'無','东':'東','乐':'樂','义':'義','气':'氣',
+  '爱':'愛','亲':'親','写':'寫','马':'馬','鸟':'鳥','鱼':'魚','龙':'龍','飞':'飛','风':'風',
+  '网':'網','体':'體','点':'點','机':'機','线':'線','计':'計','证':'證','设':'設','识':'識',
+  '话':'話','论':'論','请':'請','谢':'謝','让':'讓','议':'議','讲':'講','变':'變','现':'現',
+  '尔':'爾','华':'華','声':'聲','处':'處','备':'備','务':'務','场':'場','业':'業','号':'號',
+  '吗':'嗎','员':'員','问':'問','进':'進','运':'運','达':'達','远':'遠','连':'連','选':'選',
+  '还':'還','这':'這','题':'題','页':'頁','须':'須','项':'項','顺':'順','预':'預','领':'領',
+  '广':'廣','厂':'廠','应':'應','战':'戰','戏':'戲','报':'報','担':'擔','据':'據','数':'數'
+};
+// 构建反查表
+var t2sMap = {};
+for (var k in s2tMap) { t2sMap[s2tMap[k]] = k; }
+
+function convert(type) {
+  var text = document.getElementById('input').value;
+  var map = type === 's2t' ? s2tMap : t2sMap;
+  var converted = 0;
+  var result = text.split('').map(function(c) {
+    if (map[c]) { converted++; return map[c]; }
+    return c;
+  }).join('');
+  document.getElementById('output').textContent = result;
+  document.getElementById('infoTip').textContent = '已转换 ' + converted + ' 个字符 ' + converted + ' chars converted';
+}
+</script>
+</body>
+</html>

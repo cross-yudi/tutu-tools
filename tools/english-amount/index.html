@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英文金额大写 English Amount - 兔兔工具站</title>
+  <meta name="description" content="在线数字金额转英文大写，支持美元、欧元等。Convert numbers to English words — perfect for checks and financial documents.">
+  <meta name="keywords" content="英文金额大写,数字转英文,english amount,number to words,dollar amount">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 英文金额大写</div>
+    <h2>💵 英文金额大写转换</h2>
+    <p class="desc">数字金额转英文大写，支持美元美元/欧元等货币</p>
+    <p class="desc-en">Convert amounts to English words — for checks & invoices</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>金额 <span class="label-en">Amount</span></label>
+        <input type="text" id="amount" placeholder="输入金额，如 1234.56" style="flex:1;">
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
+          <select id="currency" style="padding:8px;border:1.5px solid var(--border);border-radius:8px;">
+            <option value="usd">美元 USD</option>
+            <option value="eur">欧元 EUR</option>
+            <option value="gbp">英镑 GBP</option>
+          </select>
+          <button class="btn btn-primary" onclick="convert()">转换 Convert</button>
+        </div>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output" style="font-family:inherit;font-size:1.1rem;"></div>
+      <button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var ones = ['','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+var tens = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+var currencyNames = {usd:{main:'dollar',sub:'cent',mainPl:'dollars',subPl:'cents'},eur:{main:'euro',sub:'cent',mainPl:'euros',subPl:'cents'},gbp:{main:'pound',sub:'pence',mainPl:'pounds',subPl:'pence'}};
+
+function numToWords(n) {
+  if (n === 0) return 'zero';
+  function chunk(num) {
+    var words = '';
+    if (num >= 100) { words += ones[Math.floor(num/100)] + ' hundred '; num %= 100; }
+    if (num >= 20) { words += tens[Math.floor(num/10)] + ' '; num %= 10; if (num > 0) words += ones[num] + ' '; }
+    else if (num > 0) { words += ones[num] + ' '; }
+    return words;
+  }
+  var result = '';
+  if (n >= 1000000000) { result += chunk(Math.floor(n/1000000000)) + 'billion '; n %= 1000000000; }
+  if (n >= 1000000) { result += chunk(Math.floor(n/1000000)) + 'million '; n %= 1000000; }
+  if (n >= 1000) { result += chunk(Math.floor(n/1000)) + 'thousand '; n %= 1000; }
+  result += chunk(n);
+  return result.trim();
+}
+
+function convert() {
+  var val = parseFloat(document.getElementById('amount').value);
+  if (isNaN(val) || val < 0) { document.getElementById('output').textContent = '请输入有效金额 Enter a valid amount'; return; }
+  var cur = currencyNames[document.getElementById('currency').value];
+  var intPart = Math.floor(val);
+  var decPart = Math.round((val - intPart) * 100);
+  var result = numToWords(intPart);
+  result = result.charAt(0).toUpperCase() + result.slice(1);
+  result += ' ' + (intPart === 1 ? cur.main : cur.mainPl);
+  if (decPart > 0) {
+    result += ' and ' + numToWords(decPart) + ' ' + (decPart === 1 ? cur.sub : cur.subPl);
+  }
+  result += ' only';
+  document.getElementById('output').textContent = result;
+}
+</script>
+</body>
+</html>

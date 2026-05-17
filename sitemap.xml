@@ -105,4 +105,40 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://gubaby.cn/tools/fullwidth-halfwidth/</loc>
+    <changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gubaby.cn/tools/css-formatter/</loc>
+    <changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gubaby.cn/tools/english-amount/</loc>
+    <changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gubaby.cn/tools/tax-calculator/</loc>
+    <changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gubaby.cn/tools/list-calc/</loc>
+    <changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gubaby.cn/tools/random-quotes/</loc>
+    <changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gubaby.cn/tools/simplified-traditional/</loc>
+    <changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gubaby.cn/tools/workday-calc/</loc>
+    <changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gubaby.cn/tools/chinese-calendar/</loc>
+    <changefreq>monthly</changefreq><priority>0.8</priority>
+  </url>
 </urlset>

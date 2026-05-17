@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片转Base64 Image to Base64 - 兔兔工具站</title>
+  <meta name="description" content="在线图片转Base64编码工具，支持拖拽上传，转换后可直接用于CSS或HTML。Online image to Base64 converter with drag & drop.">
+  <meta name="keywords" content="图片转Base64,image to base64,图片编码,base64 image,在线图片转码">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span>
+    </a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 图片转Base64</div>
+    <h2>🖼️ 图片转 Base64</h2>
+    <p class="desc">上传图片转为 Base64 编码，可直接嵌入 CSS 或 HTML</p>
+    <p class="desc-en">Convert any image to Base64, ready for embedding in CSS or HTML</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>上传图片 <span class="label-en">Upload Image</span></label>
+        <div id="dropZone" style="border:2px dashed var(--border);border-radius:var(--radius);padding:40px;text-align:center;cursor:pointer;transition:all .2s;background:#fafbfc;">
+          <p style="font-size:2rem;margin:0;">📁</p>
+          <p>拖拽图片到此处或点击选择</p>
+          <p style="font-size:.75rem;color:var(--text-en);">Drag & drop or click to select</p>
+          <input type="file" id="fileInput" accept="image/*" style="display:none;">
+        </div>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn btn-primary" onclick="doConvert()">转换 Convert</button>
+          <button class="btn btn-outline" onclick="resetAll()">重置 Reset</button>
+        </div>
+      </div>
+      <div class="tool-panel">
+        <label>预览 <span class="label-en">Preview</span></label>
+        <img id="previewImg" style="max-width:100%;max-height:250px;display:block;margin:0 auto;border-radius:var(--radius-sm);">
+        <p id="imgInfo" style="text-align:center;font-size:.78rem;color:var(--text-en);margin-top:8px;"></p>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>Base64 结果 <span class="label-en">Base64 Result</span></label>
+      <textarea id="output" style="min-height:120px;word-break:break-all;" readonly></textarea>
+      <div class="info-bar">
+        <span id="sizeTip"></span>
+        <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').value)">📋 复制 Copy</button>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var dropZone = document.getElementById('dropZone');
+var fileInput = document.getElementById('fileInput');
+var selectedFile = null;
+
+dropZone.addEventListener('click', function() { fileInput.click(); });
+dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.style.borderColor = 'var(--primary)'; });
+dropZone.addEventListener('dragleave', function() { dropZone.style.borderColor = 'var(--border)'; });
+dropZone.addEventListener('drop', function(e) {
+  e.preventDefault();
+  dropZone.style.borderColor = 'var(--border)';
+  if (e.dataTransfer.files.length) { loadFile(e.dataTransfer.files[0]); }
+});
+fileInput.addEventListener('change', function() {
+  if (fileInput.files.length) { loadFile(fileInput.files[0]); }
+});
+
+function loadFile(file) {
+  selectedFile = file;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('previewImg').src = e.target.result;
+    document.getElementById('imgInfo').textContent = file.name + ' (' + (file.size/1024).toFixed(1) + ' KB)';
+  };
+  reader.readAsDataURL(file);
+}
+
+function doConvert() {
+  if (!selectedFile) { showToast('请先选择图片 Select an image first'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('output').value = e.target.result;
+    document.getElementById('sizeTip').textContent = 'Base64 长度 Length: ' + e.target.result.length + ' 字符 chars';
+  };
+  reader.readAsDataURL(selectedFile);
+}
+
+function resetAll() {
+  selectedFile = null;
+  fileInput.value = '';
+  document.getElementById('output').value = '';
+  document.getElementById('previewImg').src = '';
+  document.getElementById('imgInfo').textContent = '';
+  document.getElementById('sizeTip').textContent = '';
+}
+</script>
+</body>
+</html>

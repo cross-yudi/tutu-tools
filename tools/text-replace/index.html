@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文本查找替换 Text Replace - 兔兔工具站</title>
+  <meta name="description" content="在线文本查找替换工具，支持普通替换和正则表达式替换。Online text find & replace tool with regex support.">
+  <meta name="keywords" content="文本替换,查找替换,正则替换,text replace,regex replace,find and replace">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span>
+    </a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 文本查找替换</div>
+    <h2>🔍 文本查找替换</h2>
+    <p class="desc">查找并替换文本，支持普通模式与正则表达式</p>
+    <p class="desc-en">Find and replace text — supports plain text and regular expressions</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-panel">
+      <label>输入文本 <span class="label-en">Input</span></label>
+      <textarea id="input" placeholder="输入要处理的文本... Enter text to process..."></textarea>
+    </div>
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>查找 <span class="label-en">Find</span></label>
+        <input type="text" id="findInput" placeholder="要查找的内容... Find text...">
+        <label style="display:flex;align-items:center;gap:6px;margin-top:8px;cursor:pointer;font-size:.85rem;">
+          <input type="checkbox" id="useRegex"> 使用正则 Regex
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;margin-top:4px;cursor:pointer;font-size:.85rem;">
+          <input type="checkbox" id="caseSensitive" checked> 区分大小写 Case sensitive
+        </label>
+      </div>
+      <div class="tool-panel">
+        <label>替换为 <span class="label-en">Replace With</span></label>
+        <input type="text" id="replaceInput" placeholder="替换内容... Replace with...">
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn btn-primary" onclick="doReplace()">替换 Replace</button>
+          <button class="btn btn-outline" onclick="doReplaceAll()">全部替换 All</button>
+          <button class="btn btn-outline" onclick="countMatches()">查找计数 Count</button>
+        </div>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output"></div>
+      <div class="info-bar">
+        <span id="infoTip"></span>
+        <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function getPattern() {
+  var find = document.getElementById('findInput').value;
+  var useRegex = document.getElementById('useRegex').checked;
+  var caseSensitive = document.getElementById('caseSensitive').checked;
+  if (useRegex) {
+    var flags = 'g';
+    if (!caseSensitive) flags += 'i';
+    try { return new RegExp(find, flags); }
+    catch(e) { showToast('正则表达式错误 Invalid regex'); return null; }
+  }
+  if (!caseSensitive) {
+    try { return new RegExp(find.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'); }
+    catch(e) { return find; }
+  }
+  return find;
+}
+
+function doReplace() {
+  var text = document.getElementById('input').value;
+  var replaceWith = document.getElementById('replaceInput').value;
+  var pattern = getPattern();
+  if (!pattern) return;
+  var result = text.replace(pattern, replaceWith);
+  document.getElementById('output').textContent = result;
+  document.getElementById('infoTip').textContent = '已替换 1 处 1 replacement';
+}
+
+function doReplaceAll() {
+  var text = document.getElementById('input').value;
+  var replaceWith = document.getElementById('replaceInput').value;
+  var pattern = getPattern();
+  if (!pattern) return;
+  var count = (text.match(pattern) || []).length;
+  var result = text.replace(pattern, replaceWith);
+  document.getElementById('output').textContent = result;
+  document.getElementById('infoTip').textContent = '已替换 ' + count + ' 处 ' + count + ' replacements';
+}
+
+function countMatches() {
+  var text = document.getElementById('input').value;
+  var pattern = getPattern();
+  if (!pattern) return;
+  if (typeof pattern === 'string') pattern = new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+  var count = (text.match(pattern) || []).length;
+  document.getElementById('output').textContent = text;
+  document.getElementById('infoTip').textContent = '找到 ' + count + ' 处匹配 ' + count + ' matches';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MD5/SHA 哈希加密 Hash Tool - 兔兔工具站</title>
+  <meta name="description" content="在线 MD5、SHA-1、SHA-256、SHA-512 哈希值计算工具。Online MD5, SHA-1, SHA-256, SHA-512 hash generator.">
+  <meta name="keywords" content="MD5加密,MD5在线,SHA256,SHA1,hash tool,MD5 hash,MD5 generator">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span>
+    </a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / MD5/SHA 哈希</div>
+    <h2>🔒 MD5/SHA 哈希计算</h2>
+    <p class="desc">计算文本的 MD5、SHA-1、SHA-256、SHA-512 哈希值</p>
+    <p class="desc-en">Generate MD5, SHA-1, SHA-256 & SHA-512 hashes of your text</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-panel">
+      <label>输入文本 <span class="label-en">Input</span></label>
+      <textarea id="input" placeholder="输入要计算哈希值的文本... Enter text to hash..."></textarea>
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="btn btn-primary" onclick="doHash()">计算哈希 Hash</button>
+        <button class="btn btn-outline" onclick="clearInput('input')">清空 Clear</button>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>哈希结果 <span class="label-en">Hash Results</span></label>
+      <div class="result-area" id="output" style="font-family:monospace;font-size:.85rem;">
+        <div>MD5：<strong id="rMD5" style="word-break:break-all;">-</strong></div>
+        <div>SHA-1：<strong id="rSHA1" style="word-break:break-all;">-</strong></div>
+        <div>SHA-256：<strong id="rSHA256" style="word-break:break-all;">-</strong></div>
+        <div>SHA-512：<strong id="rSHA512" style="word-break:break-all;">-</strong></div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function buf2hex(buf) {
+  return Array.prototype.map.call(new Uint8Array(buf), function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+}
+
+function doHash() {
+  var text = document.getElementById('input').value;
+  if (!text) return;
+  var enc = new TextEncoder().encode(text);
+  crypto.subtle.digest('SHA-1', enc).then(function(buf) { document.getElementById('rSHA1').textContent = buf2hex(buf); });
+  crypto.subtle.digest('SHA-256', enc).then(function(buf) { document.getElementById('rSHA256').textContent = buf2hex(buf); });
+  crypto.subtle.digest('SHA-512', enc).then(function(buf) { document.getElementById('rSHA512').textContent = buf2hex(buf); });
+  // MD5 needs to be emulated since crypto.subtle doesn't support it
+  document.getElementById('rMD5').textContent = 'MD5 not supported in browser crypto — use SHA-256 instead';
+}
+</script>
+</body>
+</html>

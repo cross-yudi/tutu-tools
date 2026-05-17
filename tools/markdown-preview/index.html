@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown 预览 Markdown Preview - 兔兔工具站</title>
+  <meta name="description" content="在线 Markdown 编辑器，实时预览渲染效果。Online Markdown editor with live preview.">
+  <meta name="keywords" content="Markdown预览,Markdown编辑器,markdown preview,markdown editor,MD转HTML">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .md-preview { padding:16px; background:#fff; border:1px solid var(--border); border-radius:var(--radius-sm); min-height:200px; line-height:1.8; overflow:auto; }
+    .md-preview h1,.md-preview h2,.md-preview h3 { margin:12px 0 6px; }
+    .md-preview h1 { font-size:1.6rem; border-bottom:2px solid #e5e7eb; padding-bottom:6px; }
+    .md-preview h2 { font-size:1.3rem; border-bottom:1px solid #e5e7eb; padding-bottom:4px; }
+    .md-preview pre { background:#1e293b; color:#e2e8f0; padding:14px; border-radius:6px; overflow-x:auto; font-size:.85rem; }
+    .md-preview code { background:#f1f5f9; padding:2px 6px; border-radius:4px; font-size:.85em; }
+    .md-preview pre code { background:none; padding:0; }
+    .md-preview blockquote { border-left:3px solid var(--primary); margin:8px 0; padding:4px 12px; color:var(--text-secondary); }
+    .md-preview table { border-collapse:collapse; width:100%; margin:8px 0; }
+    .md-preview th,.md-preview td { border:1px solid var(--border); padding:6px 10px; text-align:left; }
+    .md-preview th { background:#f8fafc; }
+    .md-preview img { max-width:100%; }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span>
+    </a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / Markdown 预览</div>
+    <h2>📝 Markdown 预览</h2>
+    <p class="desc">在线 Markdown 编辑器，实时预览渲染效果</p>
+    <p class="desc-en">Write Markdown and see the rendered HTML in real time</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>Markdown 输入 <span class="label-en">Editor</span></label>
+        <textarea id="input" placeholder="# 标题 Heading&#10;&#10;**粗体 Bold** 和 *斜体 Italic*&#10;&#10;- 列表项 List item&#10;&#10;`行内代码 inline code`&#10;&#10;```&#10;代码块 code block&#10;```" style="min-height:350px;"></textarea>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn btn-outline" onclick="clearInput('input')">清空 Clear</button>
+        </div>
+      </div>
+      <div class="tool-panel">
+        <label>预览 <span class="label-en">Preview</span></label>
+        <div class="md-preview" id="preview"></div>
+        <div class="info-bar">
+          <span id="infoTip"></span>
+          <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('preview').innerHTML)">📋 复制 HTML</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function renderMd(src) {
+  var lines = src.split('\n');
+  var out = '', inCode = false, codeLang = '', codeContent = '';
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    if (/^```/.test(line)) {
+      if (inCode) {
+        out += '<pre><code>' + escapeHtml(codeContent.trimEnd()) + '</code></pre>\n';
+        codeContent = '';
+      }
+      inCode = !inCode;
+      continue;
+    }
+    if (inCode) { codeContent += line + '\n'; continue; }
+    if (line.trim() === '') { out += '\n'; continue; }
+    if (/^#####\s/.test(line)) { out += '<h5>' + line.slice(6) + '</h5>\n'; continue; }
+    if (/^####\s/.test(line)) { out += '<h4>' + line.slice(5) + '</h4>\n'; continue; }
+    if (/^###\s/.test(line)) { out += '<h3>' + line.slice(4) + '</h3>\n'; continue; }
+    if (/^##\s/.test(line)) { out += '<h2>' + line.slice(3) + '</h2>\n'; continue; }
+    if (/^#\s/.test(line)) { out += '<h1>' + line.slice(2) + '</h1>\n'; continue; }
+    if (/^>\s/.test(line)) { out += '<blockquote>' + line.slice(2) + '</blockquote>\n'; continue; }
+    if (/^---/.test(line)) { out += '<hr>\n'; continue; }
+    if (/^\*\s/.test(line) || /^-\s/.test(line)) { out += '<li>' + line.slice(2) + '</li>\n'; continue; }
+    if (/^\d+\.\s/.test(line)) { out += '<li>' + line.replace(/^\d+\.\s/, '') + '</li>\n'; continue; }
+    line = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    line = line.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    line = line.replace(/`(.+?)`/g, '<code>$1</code>');
+    out += '<p>' + line + '</p>\n';
+  }
+  if (inCode && codeContent) out += '<pre><code>' + escapeHtml(codeContent.trimEnd()) + '</code></pre>\n';
+  return out;
+}
+var input = document.getElementById('input');
+input.addEventListener('input', function () {
+  document.getElementById('preview').innerHTML = renderMd(input.value);
+  document.getElementById('infoTip').textContent = '字符数 Chars: ' + input.value.length;
+});
+renderMd(input.value);
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>进制转换 Number Base Converter - 兔兔工具站</title>
+  <meta name="description" content="在线进制转换工具，支持二进制、八进制、十进制、十六进制互相转换。Online number base converter — binary, octal, decimal, hexadecimal.">
+  <meta name="keywords" content="进制转换,二进制转换,十六进制,八进制,binary,hex,decimal,octal,number base converter">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span>
+    </a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 进制转换 Number Base</div>
+    <h2>🔢 进制转换</h2>
+    <p class="desc">二进制、八进制、十进制、十六进制互相转换</p>
+    <p class="desc-en">Convert between binary, octal, decimal & hexadecimal</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>输入 <span class="label-en">Input</span></label>
+        <input type="text" id="inputVal" placeholder="输入数字，如 255 / 0xFF / 11111111 / 0o377">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+          <select id="fromBase" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;">
+            <option value="10">十进制 Decimal</option>
+            <option value="2">二进制 Binary</option>
+            <option value="8">八进制 Octal</option>
+            <option value="16">十六进制 Hex</option>
+          </select>
+          <button class="btn btn-primary" onclick="convert()">转换 Convert</button>
+        </div>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>转换结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-family:inherit;">
+          <div>二进制 Binary：<strong id="rBin">-</strong></div>
+          <div>八进制 Octal：<strong id="rOct">-</strong></div>
+          <div>十进制 Decimal：<strong id="rDec">-</strong></div>
+          <div>十六进制 Hex：<strong id="rHex">-</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function convert() {
+  var val = document.getElementById('inputVal').value.trim();
+  var from = parseInt(document.getElementById('fromBase').value);
+  if (!val) return;
+  try {
+    var num = parseInt(val, from);
+    if (isNaN(num)) { showToast('输入无效 Invalid input'); return; }
+    document.getElementById('rBin').textContent = num.toString(2);
+    document.getElementById('rOct').textContent = num.toString(8);
+    document.getElementById('rDec').textContent = num.toString(10);
+    document.getElementById('rHex').textContent = num.toString(16).toUpperCase();
+  } catch(e) {
+    showToast('转换出错 Conversion error');
+  }
+}
+</script>
+</body>
+</html>

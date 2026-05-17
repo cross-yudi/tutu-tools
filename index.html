@@ -47,6 +47,7 @@
     <button class="cat-tab" data-cat="encode">🔢 编码解码 <span style="font-size:.7rem;color:inherit;opacity:.7;">Encode</span></button>
     <button class="cat-tab" data-cat="text">📝 文本工具 <span style="font-size:.7rem;color:inherit;opacity:.7;">Text</span></button>
     <button class="cat-tab" data-cat="dev">🛠️ 开发工具 <span style="font-size:.7rem;color:inherit;opacity:.7;">Dev</span></button>
+    <button class="cat-tab" data-cat="datetime">⏰ 日期时间 <span style="font-size:.7rem;color:inherit;opacity:.7;">DateTime</span></button>
   </div>
 
   <div class="tool-grid" id="toolGrid">
@@ -126,7 +127,7 @@
       <span class="desc-cn">校验身份证、提取生日性别</span>
       <span class="desc-en">ID card validator & info extractor</span>
     </a>
-    <a href="tools/date-calc/index.html" class="tool-card" data-cats="life">
+    <a href="tools/date-calc/index.html" class="tool-card" data-cats="datetime">
       <span class="icon">📅</span>
       <h3>日期计算器</h3>
       <span class="desc-cn">日期差计算、日期加减天数</span>
@@ -294,7 +295,7 @@
       <span class="desc-cn">JSON 格式化、压缩、校验、语法高亮</span>
       <span class="desc-en">Format, compress, validate & highlight JSON</span>
     </a>
-    <a href="tools/timestamp/index.html" class="tool-card" data-cats="dev">
+    <a href="tools/timestamp/index.html" class="tool-card" data-cats="datetime">
       <span class="icon">⏰</span>
       <h3>时间戳转换</h3>
       <span class="desc-cn">Unix 时间戳与日期时间互相转换</span>
@@ -347,6 +348,47 @@
       <span class="desc-en">JSON to TypeScript interfaces</span>
     </a>
 
+    <!-- ⏰ 日期时间 DateTime -->
+    <a href="tools/workday-calc/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">💼</span><h3>工作日计算器</h3><span class="desc-cn">计算两个日期工作日天数</span><span class="desc-en">Business days calculator</span>
+    </a>
+    <a href="tools/date-calc/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">📅</span><h3>日期计算器</h3><span class="desc-cn">日期差计算、加减天数、星期</span><span class="desc-en">Date diff & add/subtract days</span>
+    </a>
+    <a href="tools/lunar-calendar/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">📅</span><h3>农历公历转换</h3><span class="desc-cn">农历与公历日期互相转换</span><span class="desc-en">Lunar ↔ Gregorian converter</span>
+    </a>
+    <a href="tools/world-time/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">🌍</span><h3>世界时间转换</h3><span class="desc-cn">全球主要城市当前时间</span><span class="desc-en">World time — major cities</span>
+    </a>
+    <a href="tools/date-format/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">📆</span><h3>英文日期格式转换</h3><span class="desc-cn">ISO/美式/英式/中文等格式</span><span class="desc-en">Date format converter</span>
+    </a>
+    <a href="tools/timestamp/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">⏰</span><h3>时间戳转换</h3><span class="desc-cn">Unix时间戳与日期互相转换</span><span class="desc-en">Timestamp ↔ date converter</span>
+    </a>
+    <a href="tools/timestamp-batch/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">⏰</span><h3>时间戳批量转换</h3><span class="desc-cn">批量时间戳日期互转</span><span class="desc-en">Batch timestamp converter</span>
+    </a>
+    <a href="tools/chinese-calendar/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">📜</span><h3>老黄历/二十四节气</h3><span class="desc-cn">老黄历宜忌、二十四节气查询</span><span class="desc-en">Chinese calendar & solar terms</span>
+    </a>
+    <a href="tools/holiday-schedule/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">🏖️</span><h3>2026年放假安排</h3><span class="desc-cn">法定节假日及调休安排</span><span class="desc-en">Public holiday schedule</span>
+    </a>
+    <a href="tools/expiry-calc/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">📦</span><h3>保质期计算器</h3><span class="desc-cn">根据生产日期计算到期日</span><span class="desc-en">Shelf life & expiry calculator</span>
+    </a>
+    <a href="tools/retirement-calc/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">👴</span><h3>退休年龄计算器</h3><span class="desc-cn">按延迟退休政策计算退休日</span><span class="desc-en">Retirement age calculator</span>
+    </a>
+    <a href="tools/stopwatch/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">⏱️</span><h3>在线秒表</h3><span class="desc-cn">秒表计时器支持计次</span><span class="desc-en">Stopwatch with lap timing</span>
+    </a>
+    <a href="tools/random-date/index.html" class="tool-card" data-cats="datetime">
+      <span class="icon">🎲</span><h3>随机日期时间生成</h3><span class="desc-cn">指定范围批量生成随机日期</span><span class="desc-en">Random date & time generator</span>
+    </a>
+
     <a href="tools/simplified-traditional/index.html" class="tool-card" data-cats="text">
       <span class="icon">🀄</span>
       <h3>简繁转换</h3>
@@ -366,13 +408,13 @@
       <span class="desc-en">CSS beautifier & minifier</span>
     </a>
 
-    <a href="tools/workday-calc/index.html" class="tool-card" data-cats="life">
+    <a href="tools/workday-calc/index.html" class="tool-card" data-cats="datetime">
       <span class="icon">💼</span>
       <h3>工作日计算器</h3>
       <span class="desc-cn">计算两个日期工作日天数</span>
       <span class="desc-en">Business days calculator</span>
     </a>
-    <a href="tools/chinese-calendar/index.html" class="tool-card" data-cats="life">
+    <a href="tools/chinese-calendar/index.html" class="tool-card" data-cats="datetime">
       <span class="icon">📜</span>
       <h3>老黄历/二十四节气</h3>
       <span class="desc-cn">老黄历宜忌、二十四节气查询</span>

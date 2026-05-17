@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>随机日期时间生成 Random Date - 兔兔工具站</title>
+<meta name="description" content="在线随机生成日期时间，可指定范围批量生成。Random date & time generator with custom range.">
+<meta name="keywords" content="随机日期,random date,随机时间,random datetime"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 随机日期时间</div><h2>🎲 随机日期时间生成</h2><p class="desc">在指定范围内随机生成日期和时间</p><p class="desc-en">Generate random dates & times within a range</p></div>
+<div class="tool-body">
+<div class="tool-row"><div class="tool-panel"><label>日期范围 <span class="label-en">Date Range</span></label>
+<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+<span>从 From</span><input type="date" id="dFrom"><span>到 To</span><input type="date" id="dTo"></div>
+<div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+<label style="font-size:.85rem;display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="checkbox" id="includeTime"> 包含时间 Include Time</label>
+<label style="font-size:.85rem;">数量 Count</label><input type="number" id="count" value="10" min="1" max="200" style="width:70px;"></div>
+<button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="generate()">🎲 生成 Generate</button></div></div>
+<div class="tool-panel"><label>结果 <span class="label-en">Result</span></label><div class="result-area" id="output" style="font-family:monospace;max-height:350px;overflow:auto;"></div>
+<button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+document.getElementById('dFrom').valueAsDate=new Date(2020,0,1);
+document.getElementById('dTo').valueAsDate=new Date();
+function generate(){
+  var from=document.getElementById('dFrom').valueAsDate;
+  var to=document.getElementById('dTo').valueAsDate;
+  if(!from||!to||from>to){showToast('请选择有效日期范围');return;}
+  var includeTime=document.getElementById('includeTime').checked;
+  var count=parseInt(document.getElementById('count').value)||10;
+  var range=to-from,results=[];
+  for(var i=0;i<count;i++){
+    var d=new Date(from.getTime()+Math.random()*range);
+    if(includeTime){
+      d.setHours(Math.floor(Math.random()*24),Math.floor(Math.random()*60),Math.floor(Math.random()*60));
+      results.push(d.toLocaleString('zh-CN'));
+    } else {
+      results.push(d.toLocaleDateString('zh-CN'));
+    }
+  }
+  results.sort(function(a,b){return new Date(a)-new Date(b);});
+  document.getElementById('output').innerHTML=results.map(function(r,i){return (i+1)+'. '+r;}).join('<br>');
+}
+</script></body></html>

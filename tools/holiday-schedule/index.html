@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026年放假安排 Holidays - 兔兔工具站</title>
+<meta name="description" content="2026年中国法定节假日放假安排。2026 Chinese public holiday schedule & arrangements.">
+<meta name="keywords" content="放假安排,2026假期,holiday schedule,法定节假日,放假通知"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 放假安排</div><h2>🏖️ 2026年放假安排</h2><p class="desc">2026年中国法定节假日及调休安排</p><p class="desc-en">2026 Chinese public holiday schedule</p></div>
+<div class="tool-body">
+<div class="tool-panel"><label>2026年法定节假日 <span class="label-en">Public Holidays</span></label>
+<div class="result-area" id="list" style="font-family:inherit;font-size:.85rem;line-height:1.8;"></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script>
+var holidays2026=[
+  {name:'元旦 New Year',date:'1月1日-3日',days:'3天',note:'1月1日放假，与周末连休'},
+  {name:'春节 Spring Festival',date:'2月17日-23日',days:'7天',note:'除夕至初六，2月14日(六)、2月28日(六)上班'},
+  {name:'清明节 Qingming',date:'4月5日-6日',days:'3天',note:'4月5日放假，与周末连休'},
+  {name:'劳动节 Labor Day',date:'5月1日-5日',days:'5天',note:'5月1日-5日放假，4月26日(日)、5月9日(六)上班'},
+  {name:'端午节 Dragon Boat',date:'6月19日-21日',days:'3天',note:'6月19日放假，与周末连休'},
+  {name:'中秋节+国庆 Mid-Autumn & National',date:'9月25日-10月1日',days:'7天',note:'中秋节9月25日，国庆10月1日，连休7天'},
+  {name:'元旦(2027) New Year 2027',date:'1月1日-3日',days:'3天',note:'2027年元旦'}
+];
+var html='<table style="width:100%;border-collapse:collapse;"><tr style="background:var(--bg);font-weight:600;"><td>节日</td><td>日期</td><td>天数</td><td>备注</td></tr>';
+holidays2026.forEach(function(h){
+  html+='<tr><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;"><strong>'+h.name+'</strong></td>'+
+    '<td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;">'+h.date+'</td>'+
+    '<td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;">'+h.days+'</td>'+
+    '<td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;color:var(--text-secondary);">'+h.note+'</td></tr>';
+});
+html+='</table>';
+document.getElementById('list').innerHTML=html;
+</script>
+</body></html>

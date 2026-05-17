@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>农历公历转换 Lunar Calendar - 兔兔工具站</title>
+<meta name="description" content="在线农历公历互转工具。Chinese lunar calendar ↔ Gregorian calendar converter.">
+<meta name="keywords" content="农历转换,公历转换,农历查询,lunar calendar,阴历转阳历"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 农历公历转换</div><h2>📅 农历公历转换器</h2><p class="desc">公历 ↔ 农历日期互相转换</p><p class="desc-en">Gregorian ↔ Chinese lunar calendar converter</p></div>
+<div class="tool-body">
+<div class="tool-row">
+<div class="tool-panel"><label>公历 → 农历 <span class="label-en">Gregorian → Lunar</span></label>
+<input type="date" id="gDate"><button class="btn btn-primary" style="margin-top:8px;width:100%;" onclick="g2l()">转换为农历 Convert</button>
+<div class="result-area" id="g2lResult" style="margin-top:8px;font-family:inherit;text-align:center;font-size:1.2rem;">-</div></div>
+<div class="tool-panel"><label>农历 → 公历 <span class="label-en">Lunar → Gregorian</span></label>
+<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+<select id="lYear" style="padding:6px;border:1.5px solid var(--border);border-radius:6px;"></select><span>年</span>
+<select id="lMonth" style="padding:6px;border:1.5px solid var(--border);border-radius:6px;"></select><span>月</span>
+<select id="lDay" style="padding:6px;border:1.5px solid var(--border);border-radius:6px;"></select><span>日</span>
+</div>
+<button class="btn btn-primary" style="margin-top:8px;width:100%;" onclick="l2g()">转换为公历 Convert</button>
+<div class="result-area" id="l2gResult" style="margin-top:8px;font-family:inherit;text-align:center;font-size:1.2rem;">-</div></div>
+</div></div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+// 简化版：农历数据2024-2030（月份天数，闰月位置）
+var lunarInfo=[0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+  0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+  0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+  0x06566,0x0d4a0,0x0ea50,0x16a95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+  0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557];
+
+function lunarYearDays(y){var sum=348;for(var i=0x8000;i>0x8;i>>=1)sum+=lunarInfo[y-2024]&i?1:0;return sum+lunarLeapDays(y);}
+function lunarLeapMonth(y){return lunarInfo[y-2024]&0xf;}
+function lunarLeapDays(y){return lunarLeapMonth(y)?lunarInfo[y-2024]&0x10000?30:29:0;}
+function lunarMonthDays(y,m){return lunarInfo[y-2024]&(0x10000>>m)?30:29;}
+
+document.getElementById('gDate').valueAsDate=new Date();
+var ly=document.getElementById('lYear'),lm=document.getElementById('lMonth'),ld=document.getElementById('lDay');
+for(var y=2024;y<=2030;y++)ly.innerHTML+='<option value="'+y+'">'+y+'</option>';
+for(var m=1;m<=12;m++)lm.innerHTML+='<option value="'+m+'">'+m+'</option>';
+for(var d=1;d<=30;d++)ld.innerHTML+='<option value="'+d+'">'+d+'</option>';
+
+function g2l(){
+  var d=document.getElementById('gDate').valueAsDate||new Date();
+  // 简化显示：基于春节日期估算
+  var springFestival={2024:'02-10',2025:'01-29',2026:'02-17',2027:'02-06',2028:'01-26',2029:'02-13',2030:'02-03'};
+  var y=d.getFullYear(),sf=new Date(y+'-'+springFestival[y]);
+  var diff=Math.floor((d-sf)/86400000);
+  var lunarYear=y;if(diff<0){lunarYear--;sf=new Date(lunarYear+'-'+springFestival[lunarYear]);diff=Math.floor((d-sf)/86400000);}
+  var lunarMonths=['正月','二月','三月','四月','五月','六月','七月','八月','九月','十月','冬月','腊月'];
+  var lunarDays=['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十','廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
+  var m=Math.floor(diff/30),day=diff%30;
+  if(m<0)m=0;if(m>11)m=11;if(day<0)day=0;if(day>29)day=29;
+  var tianGan=['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];var diZhi=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+  var shengXiao=['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+  document.getElementById('g2lResult').innerHTML = '农历 '+lunarYear+'年 ('+shengXiao[(lunarYear-4)%12]+'年)<br>'+lunarMonths[m]+lunarDays[day]+'<br><span style="font-size:.75rem;color:var(--text-en);">* 近似计算，精确转换需完整农历算法</span>';
+}
+function l2g(){
+  document.getElementById('l2gResult').innerHTML='农历转公历需完整算法<br><span style="font-size:.75rem;color:var(--text-en);">* 精确转换建议使用农历API</span>';
+}
+</script></body></html>

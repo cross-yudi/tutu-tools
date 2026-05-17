@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>保质期计算器 Expiry Calculator - 兔兔工具站</title>
+<meta name="description" content="在线保质期/有效期计算器。Shelf life & expiry date calculator.">
+<meta name="keywords" content="保质期计算,有效期,expiry date,shelf life,过期日期"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 保质期计算</div><h2>📦 保质期计算器</h2><p class="desc">根据生产日期和保质期计算到期日</p><p class="desc-en">Calculate expiry date from production date & shelf life</p></div>
+<div class="tool-body">
+<div class="tool-row"><div class="tool-panel"><label>生产日期 <span class="label-en">Production Date</span></label><input type="date" id="prodDate">
+<label style="margin-top:10px;">保质期 <span class="label-en">Shelf Life</span></label>
+<div style="display:flex;gap:8px;align-items:center;">
+<input type="number" id="lifeNum" value="12" min="1" style="width:80px;">
+<select id="lifeUnit" style="padding:8px;border:1.5px solid var(--border);border-radius:8px;">
+<option value="day">天 Days</option><option value="month" selected>月 Months</option><option value="year">年 Years</option></select></div>
+<button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="calc()">计算 Calculate</button></div></div>
+<div class="tool-panel"><label>计算结果 <span class="label-en">Result</span></label>
+<div class="result-area" id="output" style="font-family:inherit;text-align:center;">
+<div style="font-size:1.1rem;">过期日期 Expiry：<strong id="rExpiry" style="font-size:1.4rem;">-</strong></div>
+<div id="rInfo" style="margin-top:8px;font-size:.85rem;color:var(--text-secondary);"></div>
+</div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+document.getElementById('prodDate').valueAsDate=new Date();
+function calc(){
+  var d=document.getElementById('prodDate').valueAsDate;
+  if(!d){showToast('请选择日期 Select a date');return;}
+  var num=parseInt(document.getElementById('lifeNum').value)||12;
+  var unit=document.getElementById('lifeUnit').value;
+  var expiry=new Date(d);
+  if(unit==='day')expiry.setDate(expiry.getDate()+num);
+  else if(unit==='month')expiry.setMonth(expiry.getMonth()+num);
+  else expiry.setFullYear(expiry.getFullYear()+num);
+
+  var now=new Date();
+  var remain=Math.ceil((expiry-now)/86400000);
+  var status='',color='';
+  if(remain<0){status='已过期 Expired';color='#ef4444';}
+  else if(remain<30){status='即将过期 Expiring soon ('+remain+' 天)';color='#f59e0b';}
+  else{status='剩余 '+remain+' 天 days remaining';color='#059669';}
+  document.getElementById('rExpiry').textContent=expiry.toLocaleDateString('zh-CN');
+  document.getElementById('rInfo').innerHTML='<span style="color:'+color+';">'+status+'</span>';
+}
+</script></body></html>

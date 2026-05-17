@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>单位换算 Unit Converter - 兔兔工具站</title>
+  <meta name="description" content="在线单位换算工具，支持长度、重量、面积、温度、速度等。Online unit converter — length, weight, area, temperature, speed & more.">
+  <meta name="keywords" content="单位换算,长度换算,重量换算,unit converter,温度换算,面积换算">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span>
+    </a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 单位换算</div>
+    <h2>📏 单位换算</h2>
+    <p class="desc">长度、重量、面积、温度、速度、数据存储单位换算</p>
+    <p class="desc-en">Convert length, weight, area, temperature, speed & data units</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-panel">
+      <label>换算类别 <span class="label-en">Category</span></label>
+      <div class="cat-tabs" id="catTabs">
+        <button class="cat-tab active" data-cat="length">长度 Length</button>
+        <button class="cat-tab" data-cat="weight">重量 Weight</button>
+        <button class="cat-tab" data-cat="area">面积 Area</button>
+        <button class="cat-tab" data-cat="temp">温度 Temp</button>
+        <button class="cat-tab" data-cat="speed">速度 Speed</button>
+        <button class="cat-tab" data-cat="data">数据 Data</button>
+      </div>
+    </div>
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>输入 <span class="label-en">Input</span></label>
+        <input type="number" id="inputVal" value="1" step="any">
+        <select id="fromUnit" style="width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;margin-top:6px;"></select>
+      </div>
+      <div class="tool-panel">
+        <label>结果 <span class="label-en">Result</span></label>
+        <div class="result-area" id="output" style="font-family:inherit;min-height:100px;">
+          <div id="resultList"></div>
+        </div>
+        <button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;" onclick="copyResult()">📋 复制全部 Copy All</button>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var units = {
+  length: { name: '长度 Length', base: '米', units: { '毫米 mm':0.001, '厘米 cm':0.01, '分米 dm':0.1, '米 m':1, '千米 km':1000, '英寸 in':0.0254, '英尺 ft':0.3048, '码 yd':0.9144, '英里 mi':1609.344 } },
+  weight: { name: '重量 Weight', base: '千克', units: { '毫克 mg':0.000001, '克 g':0.001, '千克 kg':1, '吨 t':1000, '盎司 oz':0.0283495, '磅 lb':0.453592, '斤 Jin':0.5 } },
+  area: { name: '面积 Area', base: '平方米', units: { '平方厘米 cm²':0.0001, '平方米 m²':1, '平方千米 km²':1000000, '公顷 ha':10000, '亩 Mu':666.667, '英亩 acre':4046.86, '平方英尺 ft²':0.092903 } },
+  temp: { name: '温度 Temp', base: '°C', units: { '摄氏度 °C':'c', '华氏度 °F':'f', '开尔文 K':'k' } },
+  speed: { name: '速度 Speed', base: 'km/h', units: { '米/秒 m/s':3.6, '千米/时 km/h':1, '英里/时 mph':1.60934, '节 knot':1.852, '马赫 Mach':1225.044 } },
+  data: { name: '数据 Data', base: 'MB', units: { '比特 bit':0.000000125, '字节 B':0.000001, 'KB':0.001, 'MB':1, 'GB':1000, 'TB':1000000, 'PB':1000000000 } }
+};
+
+var currentCat = 'length';
+var catTabs = document.getElementById('catTabs');
+var fromUnit = document.getElementById('fromUnit');
+var inputVal = document.getElementById('inputVal');
+
+catTabs.addEventListener('click', function(e) {
+  if (e.target.classList.contains('cat-tab')) {
+    catTabs.querySelectorAll('.cat-tab').forEach(function(t){t.classList.remove('active');});
+    e.target.classList.add('active');
+    currentCat = e.target.dataset.cat;
+    loadUnits();
+    convert();
+  }
+});
+
+inputVal.addEventListener('input', convert);
+fromUnit.addEventListener('change', convert);
+
+function loadUnits() {
+  var cat = units[currentCat];
+  fromUnit.innerHTML = '';
+  for (var key in cat.units) {
+    var opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = key;
+    fromUnit.appendChild(opt);
+  }
+  // 默认选中间那个
+  fromUnit.selectedIndex = Math.floor(Object.keys(cat.units).length / 2);
+}
+
+function convert() {
+  var val = parseFloat(inputVal.value);
+  if (isNaN(val)) return;
+  var cat = units[currentCat];
+  var from = fromUnit.value;
+  var list = document.getElementById('resultList');
+  list.innerHTML = '';
+
+  if (currentCat === 'temp') {
+    var c = cat.units[from] === 'c' ? val : cat.units[from] === 'f' ? (val-32)/1.8 : val-273.15;
+    for (var key in cat.units) {
+      var v = cat.units[key] === 'c' ? c : cat.units[key] === 'f' ? c*1.8+32 : c+273.15;
+      list.innerHTML += '<div style="padding:4px 0;border-bottom:1px solid #f1f5f9;">' + key + ' = <strong>' + v.toFixed(4) + '</strong></div>';
+    }
+  } else {
+    var baseVal = val * cat.units[from];
+    for (var key in cat.units) {
+      list.innerHTML += '<div style="padding:4px 0;border-bottom:1px solid #f1f5f9;">' + key + ' = <strong>' + (baseVal / cat.units[key]).toFixed(6) + '</strong></div>';
+    }
+  }
+}
+
+function copyResult() {
+  var list = document.getElementById('resultList');
+  var text = '';
+  list.querySelectorAll('div').forEach(function(d){ text += d.textContent + '\n'; });
+  copyText(text);
+}
+
+loadUnits();
+convert();
+</script>
+</body>
+</html>

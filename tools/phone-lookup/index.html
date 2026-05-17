@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手机号归属地查询 Phone Lookup - 兔兔工具站</title>
+  <meta name="description" content="在线查询手机号码归属地、运营商。Online Chinese mobile phone number lookup — find carrier and location.">
+  <meta name="keywords" content="手机号归属地,手机号查询,phone lookup,归属地查询,运营商查询">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span>
+    </a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 手机号归属地</div>
+    <h2>📱 手机号归属地查询</h2>
+    <p class="desc">查询中国大陆手机号码的运营商和归属地</p>
+    <p class="desc-en">Look up Chinese mobile number carrier and location</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-panel">
+      <label>手机号码 <span class="label-en">Phone Number</span></label>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <input type="text" id="phoneInput" placeholder="输入11位手机号 Enter 11-digit number" style="flex:1;min-width:200px;" maxlength="11">
+        <button class="btn btn-primary" onclick="lookup()">查询 Lookup</button>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>查询结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output" style="font-family:inherit;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>运营商 Carrier：<strong id="rCarrier">-</strong></div>
+          <div>省份 Province：<strong id="rProvince">-</strong></div>
+          <div>城市 City：<strong id="rCity">-</strong></div>
+          <div>号段 Prefix：<strong id="rPrefix">-</strong></div>
+          <div>号码格式 Valid：<strong id="rValid">-</strong></div>
+          <div>号码类型 Type：<strong id="rType">-</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+// 运营商号段
+var carriers = {
+  'cmcc': '中国移动 China Mobile',
+  'cucc': '中国联通 China Unicom',
+  'ctcc': '中国电信 China Telecom',
+  'cbn': '中国广电 China Broadnet'
+};
+
+function getCarrier(prefix3) {
+  var p = parseInt(prefix3);
+  if ([134,135,136,137,138,139,147,148,150,151,152,157,158,159,165,172,178,182,183,184,187,188,195,197,198].indexOf(p)>=0) return 'cmcc';
+  if ([130,131,132,145,146,155,156,166,167,171,175,176,185,186,196].indexOf(p)>=0) return 'cucc';
+  if ([133,149,153,162,173,177,180,181,189,190,191,193,199].indexOf(p)>=0) return 'ctcc';
+  if ([192].indexOf(p)>=0) return 'cbn';
+  if (p>=170&&p<=174) return 'virtual';
+  return 'unknown';
+}
+
+// 省 code → 省份名称
+var provinces = {
+  'bj':'北京 Beijing','sh':'上海 Shanghai','tj':'天津 Tianjin','cq':'重庆 Chongqing',
+  'gd':'广东 Guangdong','zj':'浙江 Zhejiang','js':'江苏 Jiangsu','sc':'四川 Sichuan',
+  'hb':'湖北 Hubei','hn':'湖南 Hunan','fj':'福建 Fujian','sd':'山东 Shandong',
+  'he':'河北 Hebei','ha':'河南 Henan','sx':'山西 Shanxi','sn':'陕西 Shaanxi',
+  'ln':'辽宁 Liaoning','jl':'吉林 Jilin','hl':'黑龙江 Heilongjiang',
+  'ah':'安徽 Anhui','jx':'江西 Jiangxi','gs':'甘肃 Gansu','qh':'青海 Qinghai',
+  'gz':'贵州 Guizhou','yn':'云南 Yunnan','hi':'海南 Hainan','nm':'内蒙古 Inner Mongolia',
+  'gx':'广西 Guangxi','xz':'西藏 Tibet','nx':'宁夏 Ningxia','xj':'新疆 Xinjiang'
+};
+
+function lookup() {
+  var phone = document.getElementById('phoneInput').value.trim();
+  if (!/^1[3-9]\d{9}$/.test(phone)) {
+    document.getElementById('rValid').textContent = '无效 Invalid';
+    document.getElementById('rCarrier').textContent = '-';
+    document.getElementById('rProvince').textContent = '-';
+    document.getElementById('rCity').textContent = '-';
+    document.getElementById('rPrefix').textContent = '-';
+    document.getElementById('rType').textContent = '请输入有效的11位手机号 Enter a valid 11-digit number';
+    return;
+  }
+  document.getElementById('rValid').textContent = '有效 Valid';
+  var prefix3 = phone.slice(0,3);
+  var prefix7 = phone.slice(0,7);
+  document.getElementById('rPrefix').textContent = prefix3;
+
+  var carrier = getCarrier(prefix3);
+  if (carrier === 'unknown') {
+    document.getElementById('rCarrier').textContent = '未知 Unknown';
+    document.getElementById('rProvince').textContent = '请开通API后精确查询';
+    document.getElementById('rCity').textContent = '-';
+    document.getElementById('rType').textContent = '手机号 Mobile';
+    return;
+  }
+  document.getElementById('rCarrier').textContent = carriers[carrier] || carrier;
+  document.getElementById('rType').textContent = '手机号 Mobile';
+
+  // 基于号段粗略判断
+  document.getElementById('rProvince').textContent = '中国大陆 China (完整归属地需API)';
+  document.getElementById('rCity').textContent = '请使用第三方API获取精确城市 Need API for exact city';
+}
+</script>
+</body>
+</html>

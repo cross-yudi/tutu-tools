@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>身份证校验 ID Card Validator - 兔兔工具站</title>
+  <meta name="description" content="在线身份证号码校验工具，提取生日、性别、地区。Online Chinese ID card number validator — extract birthday, gender, location.">
+  <meta name="keywords" content="身份证校验,身份证查询,身份证号码,id card validator,身份证提取">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span>
+    </a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 身份证校验</div>
+    <h2>🆔 身份证号码校验</h2>
+    <p class="desc">校验身份证号码，提取出生日期、性别、地区信息</p>
+    <p class="desc-en">Validate Chinese ID number and extract birth date, gender & location</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-panel">
+      <label>身份证号码 <span class="label-en">ID Card Number</span></label>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <input type="text" id="idInput" placeholder="输入18位身份证号码 Enter 18-digit ID number" style="flex:1;min-width:240px;" maxlength="18">
+        <button class="btn btn-primary" onclick="validate()">校验 Validate</button>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>校验结果 <span class="label-en">Result</span></label>
+      <div class="result-area" id="output" style="font-family:inherit;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>格式 Format：<strong id="rFormat">-</strong></div>
+          <div>校验位 Checksum：<strong id="rCheck">-</strong></div>
+          <div>出生日期 Birth：<strong id="rBirth">-</strong></div>
+          <div>年龄 Age：<strong id="rAge">-</strong></div>
+          <div>性别 Gender：<strong id="rGender">-</strong></div>
+          <div>地区代码 Reg Code：<strong id="rRegion">-</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+// 校验位权重
+var weights = [7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2];
+var checkCodes = ['1','0','X','9','8','7','6','5','4','3','2'];
+
+function validate() {
+  var id = document.getElementById('idInput').value.trim().toUpperCase();
+  if (!/^\d{17}[\dX]$/.test(id)) {
+    document.getElementById('rFormat').textContent = '无效 Invalid（需18位）';
+    clearResult();
+    return;
+  }
+  document.getElementById('rFormat').textContent = '有效 Valid';
+
+  // 校验位
+  var sum = 0;
+  for (var i = 0; i < 17; i++) sum += parseInt(id[i]) * weights[i];
+  var expectedCheck = checkCodes[sum % 11];
+  document.getElementById('rCheck').textContent = id[17] === expectedCheck ? '✅ 通过 Pass (' + expectedCheck + ')' : '❌ 错误 Fail (应为 expected: ' + expectedCheck + ')';
+
+  // 出生日期
+  var year = id.slice(6,10);
+  var month = id.slice(10,12);
+  var day = id.slice(12,14);
+  var birth = year + '-' + month + '-' + day;
+  document.getElementById('rBirth').textContent = birth;
+  var age = new Date().getFullYear() - parseInt(year);
+  if (new Date().getMonth()+1 < parseInt(month) || (new Date().getMonth()+1===parseInt(month) && new Date().getDate()<parseInt(day))) age--;
+  document.getElementById('rAge').textContent = age + ' 岁 years';
+
+  // 性别
+  document.getElementById('rGender').textContent = parseInt(id[16]) % 2 === 1 ? '男 Male' : '女 Female';
+
+  // 地区代码
+  var regionCode = id.slice(0,6);
+  document.getElementById('rRegion').textContent = regionCode;
+}
+
+function clearResult() {
+  document.getElementById('rCheck').textContent = '-';
+  document.getElementById('rBirth').textContent = '-';
+  document.getElementById('rAge').textContent = '-';
+  document.getElementById('rGender').textContent = '-';
+  document.getElementById('rRegion').textContent = '-';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>二维码生成 QR Code Generator - 兔兔工具站</title>
+  <meta name="description" content="在线二维码生成器，输入文本或网址生成QR码，可下载保存。Online QR code generator — create QR codes from text or URLs, download as image.">
+  <meta name="keywords" content="二维码生成,QR码,在线二维码,qr code generator,二维码制作">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span>
+    </a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 二维码生成</div>
+    <h2>📄 二维码生成器</h2>
+    <p class="desc">输入文本或网址，一键生成二维码，可下载保存</p>
+    <p class="desc-en">Generate QR codes from text or URLs — download as image</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>输入内容 <span class="label-en">Content</span></label>
+        <textarea id="inputVal" placeholder="输入文本或网址... Enter text or URL..." style="min-height:100px;">https://gubaby.cn</textarea>
+        <div class="btn-row" style="margin-top:8px;">
+          <button class="btn btn-primary" onclick="genQR()">生成 Generate</button>
+          <button class="btn btn-outline" onclick="downloadQR()">💾 下载 Download</button>
+        </div>
+      </div>
+      <div class="tool-panel" style="text-align:center;">
+        <label>二维码 <span class="label-en">QR Code</span></label>
+        <div id="qrcode" style="display:inline-block;padding:12px;background:#fff;border-radius:8px;"></div>
+        <p style="font-size:.75rem;color:var(--text-en);margin-top:8px;" id="qrInfo"></p>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+// 内嵌轻量 QR 生成器 (基于 Canvas)
+function genQR() {
+  var text = document.getElementById('inputVal').value.trim();
+  if (!text) { showToast('请输入内容 Enter content first'); return; }
+  var canvas = document.createElement('canvas');
+  canvas.width = 280;
+  canvas.height = 280;
+  var ctx = canvas.getContext('2d');
+
+  // 用 Google Charts API 生成
+  var img = new Image();
+  img.onload = function() {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, 280, 280);
+    ctx.drawImage(img, 10, 10, 260, 260);
+    var container = document.getElementById('qrcode');
+    container.innerHTML = '';
+    container.appendChild(canvas);
+    document.getElementById('qrInfo').textContent = '文本长度 length: ' + text.length + ' 字符 chars';
+  };
+  img.onerror = function() {
+    // 如果Google API不可用，画一个占位符
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, 280, 280);
+    ctx.fillStyle = '#1a1a2e';
+    ctx.font = '13px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('QR Code API unavailable', 140, 130);
+    ctx.fillText('请稍后重试 / Try again later', 140, 155);
+    var container = document.getElementById('qrcode');
+    container.innerHTML = '';
+    container.appendChild(canvas);
+  };
+  img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' + encodeURIComponent(text);
+}
+
+function downloadQR() {
+  var canvas = document.querySelector('#qrcode canvas');
+  if (!canvas) { showToast('请先生成二维码 Generate QR first'); return; }
+  var link = document.createElement('a');
+  link.download = 'qrcode.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('下载中 Downloading...');
+}
+
+// 初始生成
+genQR();
+</script>
+</body>
+</html>

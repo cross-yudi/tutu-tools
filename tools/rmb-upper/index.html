@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人民币大写转换 RMB Upper - 兔兔工具站</title>
+  <meta name="description" content="在线人民币金额大写转换工具，财务报销必备。Convert numbers to Chinese RMB uppercase format — perfect for financial documents.">
+  <meta name="keywords" content="人民币大写,金额大写,财务大写,rmb uppercase,chinese currency,数字转大写">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span>
+    </a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 人民币大写</div>
+    <h2>💰 人民币大写转换</h2>
+    <p class="desc">数字金额转中文大写，支持元角分，财务报销必备</p>
+    <p class="desc-en">Convert numbers to Chinese RMB uppercase — perfect for financial documents</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-panel">
+      <label>输入金额 <span class="label-en">Amount</span></label>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <input type="text" id="inputVal" placeholder="输入金额，如 12345.67" style="flex:1;min-width:200px;">
+        <button class="btn btn-primary" onclick="convert()">转换 Convert</button>
+      </div>
+    </div>
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>中文大写 <span class="label-en">Uppercase</span></label>
+        <div class="result-area" id="rUpper" style="font-family:inherit;font-size:1.15rem;text-align:center;min-height:60px;padding:20px;">-</div>
+        <button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;" onclick="copyText(document.getElementById('rUpper').textContent)">📋 复制 Copy</button>
+      </div>
+      <div class="tool-panel">
+        <label>财务格式 <span class="label-en">Finance Format</span></label>
+        <div class="result-area" id="rFinance" style="font-family:inherit;font-size:1.15rem;text-align:center;min-height:60px;padding:20px;">-</div>
+        <button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;" onclick="copyText(document.getElementById('rFinance').textContent)">📋 复制 Copy</button>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var digits = ['零','壹','贰','叁','肆','伍','陆','柒','捌','玖'];
+var radices = ['','拾','佰','仟'];
+var bigRadices = ['','万','亿'];
+var decimals = ['角','分'];
+
+function convert() {
+  var val = document.getElementById('inputVal').value.trim();
+  if (!/^\d+(\.\d{1,2})?$/.test(val)) {
+    document.getElementById('rUpper').textContent = '请输入有效金额（如 12345.67）';
+    document.getElementById('rFinance').textContent = 'Please enter a valid amount';
+    return;
+  }
+  var parts = val.split('.');
+  var intPart = parts[0];
+  var decPart = parts[1] || '';
+
+  // 处理小数
+  var decResult = '';
+  if (decPart === '' || decPart === '00') {
+    decResult = '整';
+  } else {
+    if (decPart.length >= 1 && decPart[0] !== '0') decResult += digits[parseInt(decPart[0])] + '角';
+    if (decPart.length >= 2 && decPart[1] !== '0') decResult += digits[parseInt(decPart[1])] + '分';
+  }
+
+  // 处理整数
+  var intResult = '';
+  if (intPart === '0') {
+    intResult = '零';
+  } else {
+    var zeroCount = 0;
+    for (var i = 0; i < intPart.length; i++) {
+      var p = intPart.length - i - 1;
+      var d = parseInt(intPart[i]);
+      var quotient = Math.floor(p / 4);
+      var modulus = p % 4;
+      if (d === 0) { zeroCount++; } else {
+        if (zeroCount > 0) intResult += '零';
+        zeroCount = 0;
+        intResult += digits[d] + radices[modulus];
+      }
+      if (modulus === 0 && zeroCount < 4) intResult += bigRadices[quotient];
+    }
+  }
+
+  var full = intResult + '元' + decResult;
+  document.getElementById('rUpper').textContent = full;
+  // 财务格式：前面加"人民币"
+  document.getElementById('rFinance').textContent = '人民币' + full;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日期计算器 Date Calculator - 兔兔工具站</title>
+  <meta name="description" content="在线日期计算器，计算日期差、日期加减天数、星期查询。Online date calculator — date difference, add/subtract days, weekday lookup.">
+  <meta name="keywords" content="日期计算,日期差,天数计算,date calculator,日期加减,星期查询">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo">
+      <span class="logo-emoji">🐰</span>
+      <span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span>
+    </a>
+  </div>
+</header>
+<main class="main">
+  <div class="tool-header">
+    <div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 日期计算器</div>
+    <h2>📅 日期计算器</h2>
+    <p class="desc">计算两个日期之间的天数差，或日期加减天数</p>
+    <p class="desc-en">Calculate date differences, add or subtract days from a date</p>
+  </div>
+  <div class="tool-body">
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>日期差计算 <span class="label-en">Date Difference</span></label>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <input type="date" id="dateA" style="flex:1;min-width:140px;">
+          <span>至 to</span>
+          <input type="date" id="dateB" style="flex:1;min-width:140px;">
+          <button class="btn btn-primary" onclick="calcDiff()">计算 Calc</button>
+        </div>
+        <div class="result-area" id="diffResult" style="font-family:inherit;margin-top:10px;text-align:center;font-size:1.1rem;">
+          相差：<strong id="rDiff">-</strong> 天
+        </div>
+      </div>
+    </div>
+    <div class="tool-row">
+      <div class="tool-panel">
+        <label>日期加减 <span class="label-en">Add / Subtract Days</span></label>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <input type="date" id="dateBase" style="flex:1;min-width:140px;">
+          <select id="op" style="padding:8px;border:1.5px solid var(--border);border-radius:8px;">
+            <option value="add">加 +</option>
+            <option value="sub">减 -</option>
+          </select>
+          <input type="number" id="days" value="30" min="0" max="99999" style="width:80px;">
+          <span>天 days</span>
+          <button class="btn btn-primary" onclick="calcAdd()">计算 Calc</button>
+        </div>
+        <div class="result-area" id="addResult" style="font-family:inherit;margin-top:10px;text-align:center;font-size:1.1rem;">
+          <strong id="rAddDate">-</strong>
+          <br><span style="font-size:.85rem;color:var(--text-secondary);" id="rAddWeekday"></span>
+        </div>
+      </div>
+    </div>
+    <div class="tool-panel">
+      <label>快捷信息 <span class="label-en">Quick Info</span></label>
+      <div class="result-area" id="quickInfo" style="font-family:inherit;">
+        <div>今天是 Today：<strong id="rToday">-</strong></div>
+        <div>今年剩余 Remaining：<strong id="rRemain">-</strong> 天 days</div>
+        <div>是星期几 Weekday：<strong id="rWeekday">-</strong></div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var weekdays = ['星期日 Sun','星期一 Mon','星期二 Tue','星期三 Wed','星期四 Thu','星期五 Fri','星期六 Sat'];
+
+function init() {
+  var now = new Date();
+  document.getElementById('rToday').textContent = now.toLocaleDateString('zh-CN');
+  document.getElementById('rWeekday').textContent = weekdays[now.getDay()];
+  var endOfYear = new Date(now.getFullYear(), 11, 31);
+  document.getElementById('rRemain').textContent = Math.ceil((endOfYear - now) / 86400000);
+
+  document.getElementById('dateA').valueAsDate = now;
+  document.getElementById('dateB').valueAsDate = now;
+  document.getElementById('dateBase').valueAsDate = now;
+}
+
+function calcDiff() {
+  var a = document.getElementById('dateA').valueAsDate;
+  var b = document.getElementById('dateB').valueAsDate;
+  if (!a || !b) { document.getElementById('rDiff').textContent = '请选择两个日期 Select both dates'; return; }
+  var diff = Math.abs(Math.round((b - a) / 86400000));
+  document.getElementById('rDiff').textContent = diff + ' 天 days';
+}
+
+function calcAdd() {
+  var base = document.getElementById('dateBase').valueAsDate;
+  var days = parseInt(document.getElementById('days').value) || 0;
+  var op = document.getElementById('op').value;
+  if (!base) { document.getElementById('rAddDate').textContent = '请选择日期 Select a date'; return; }
+  var d = new Date(base);
+  d.setDate(d.getDate() + (op === 'add' ? days : -days));
+  document.getElementById('rAddDate').textContent = d.toLocaleDateString('zh-CN');
+  document.getElementById('rAddWeekday').textContent = weekdays[d.getDay()];
+}
+
+init();
+</script>
+</body>
+</html>

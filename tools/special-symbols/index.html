@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>特殊符号大全 Special Symbols - 兔兔工具站</title>
+<meta name="description" content="特殊符号大全：数学符号、货币符号、箭头、标点、希腊字母等。Special symbols — math, currency, arrows, Greek letters & more. Click to copy.">
+<meta name="keywords" content="特殊符号,符号大全,数学符号,special symbols,emoji,希腊字母">
+<link rel="stylesheet" href="../../css/style.css"><style>.sym{display:inline-block;padding:8px 12px;margin:3px;background:#f8fafc;border-radius:6px;cursor:pointer;font-size:1.1rem;transition:all .15s;border:1px solid transparent;}.sym:hover{background:#fef3c7;border-color:var(--primary);transform:scale(1.1);}</style></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 特殊符号</div><h2>✨ 特殊符号大全</h2><p class="desc">点击符号即可复制，支持数学、货币、箭头等</p><p class="desc-en">Click any symbol to copy — math, currency, arrows & more</p></div>
+<div class="tool-body">
+<div class="tool-panel"><label>已复制 <span class="label-en">Copied</span></label><div class="result-area" id="copied" style="min-height:40px;text-align:center;font-size:1.5rem;">点击符号复制 Click to copy</div></div>
+<div class="tool-panel"><label>分类 <span class="label-en">Categories</span></label>
+<div id="symbols"></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var categories=[
+  {name:'数学符号 Math',symbols:'+ − × ÷ = ≠ ≈ < > ≤ ≥ ± √ ∞ ∑ ∏ ∫ ∂ ∆ π ° % ‰'},
+  {name:'货币符号 Currency',symbols:'¥ $ € £ ₹ ₽ ₩ ₫ ₪ ₱ ₿ ฿ ₺ ₾'},
+  {name:'箭头 Arrows',symbols:'→ ← ↑ ↓ ↔ ↕ ⇒ ⇐ ⇑ ⇓ ⇔ ↗ ↘ ↙ ↖ ➡ ⬅ ⬆ ⬇ ▶ ◀ ▲ ▼'},
+  {name:'标点符号 Punctuation',symbols:'「 」 『 』 【 】 《 》 〝 〞 ！ ？ 。 ， 、 ； ： … — ～ ～ · 〃'},
+  {name:'希腊字母 Greek',symbols:'α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω'},
+  {name:'单位符号 Units',symbols:'℃ ℉ ㎎ ㎏ ㎜ ㎝ ㎞ ㎡ ㏄ ㏎ ㏑ ㏒ ㏕ ° ′ ″ ％ ‰'},
+  {name:'版权商标 Legal',symbols:'© ® ™ ℠ ℗ ♀ ♂ ℅ ℆'},
+  {name:'项目符号 Bullets',symbols:'• ● ○ ◉ ◎ ◉ ◆ ◇ ■ □ ★ ☆ ✦ ✧ ♥ ♠ ♦ ♣'},
+  {name:'方框符号 Box Drawing',symbols:'┌ ┬ ┐ ├ ┼ ┤ └ ┴ ┘ │ ─ ╔ ╦ ╗ ╠ ╬ ╣ ╚ ╩ ╝ ║ ═'},
+  {name:'音乐符号 Music',symbols:'♩ ♪ ♫ ♬ ♭ ♮ ♯ 𝄞 𝄢'}
+];
+var html='';
+categories.forEach(function(cat){
+  html+='<h4 style="margin:12px 0 4px;color:var(--primary-dark);">'+cat.name+'</h4><div>';
+  cat.symbols.split(' ').forEach(function(s){
+    html+='<span class="sym" onclick="copySym(\''+s.replace(/'/g,"\\'")+'\')" title="'+s+'">'+s+'</span>';
+  });
+  html+='</div>';
+});
+document.getElementById('symbols').innerHTML=html;
+function copySym(s){
+  copyText(s);
+  document.getElementById('copied').textContent=s;
+}
+</script>
+</body>
+</html>

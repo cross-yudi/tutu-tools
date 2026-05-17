@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文本转HTML Text to HTML - 兔兔工具站</title>
+<meta name="description" content="在线将纯文本转换为HTML格式，自动处理换行和转义。Convert plain text to HTML with auto line breaks and escaping.">
+<meta name="keywords" content="文本转HTML,text to html,转义,escape html,HTML转换">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 文本转HTML</div><h2>🌐 文本转 HTML</h2><p class="desc">将纯文本转换为HTML格式，支持转义和格式化</p><p class="desc-en">Convert plain text to HTML with auto-paragraphs & escaping</p></div>
+<div class="tool-body">
+<div class="tool-row"><div class="tool-panel"><label>输入文本 <span class="label-en">Input</span></label><textarea id="input" placeholder="输入纯文本... Type plain text..." style="min-height:200px;"></textarea>
+<div class="btn-row" style="margin-top:8px;"><button class="btn btn-primary" onclick="convert('paragraphs')">转段落 To &lt;p&gt;</button>
+<button class="btn btn-primary" onclick="convert('br')">保留换行 With &lt;br&gt;</button>
+<button class="btn btn-outline" onclick="convert('escape')">仅转义 Escape only</button>
+<button class="btn btn-outline" onclick="convert('pre')">代码块 &lt;pre&gt;</button></div></div></div>
+<div class="tool-panel"><label>HTML 结果 <span class="label-en">Result</span></label><textarea id="output" readonly style="min-height:150px;font-family:monospace;"></textarea>
+<div class="info-bar"><span id="infoTip"></span><button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').value)">📋 复制 Copy</button></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function convert(mode){
+  var text=document.getElementById('input').value;
+  var result;
+  switch(mode){
+    case 'paragraphs':
+      result=text.split(/\n\s*\n/).map(function(p){return '<p>'+escapeHtml(p.trim()).replace(/\n/g,'<br>\n')+'</p>';}).join('\n\n');
+      break;
+    case 'br':
+      result=text.split('\n').map(function(l){return escapeHtml(l);}).join('<br>\n');
+      break;
+    case 'escape':
+      result=escapeHtml(text);
+      break;
+    case 'pre':
+      result='<pre><code>\n'+escapeHtml(text)+'\n</code></pre>';
+      break;
+  }
+  document.getElementById('output').value=result;
+  document.getElementById('infoTip').textContent='已转换 Converted | '+result.length+' 字符 chars';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文本处理工作流 Text Workflow - 兔兔工具站</title>
+<meta name="description" content="在线文本处理流水线，串联多个处理步骤。Chain multiple text operations in one workflow.">
+<meta name="keywords" content="文本处理,text workflow,文本流水线,批量处理,text pipeline">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 文本工作流</div><h2>⚙️ 文本处理工作流</h2><p class="desc">串联多个文本处理步骤，一键批量处理</p><p class="desc-en">Chain multiple text operations in sequence</p></div>
+<div class="tool-body">
+<div class="tool-row"><div class="tool-panel"><label>输入文本 <span class="label-en">Input</span></label><textarea id="input" placeholder="输入文本..." style="min-height:150px;"></textarea></div>
+<div class="tool-panel" style="max-width:300px;"><label>处理步骤 <span class="label-en">Pipeline</span> <span style="font-size:.7rem;color:var(--text-en);">(按顺序执行)</span></label>
+<div id="steps" style="max-height:200px;overflow:auto;"></div>
+<button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="addStep()">+ 添加步骤 Add Step</button>
+<button class="btn btn-primary" style="margin-top:8px;width:100%;" onclick="run()">▶ 执行 Run</button></div></div>
+<div class="tool-panel"><label>结果 <span class="label-en">Result</span></label><div class="result-area" id="output"></div>
+<button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var stepCount=0;
+var operations=[
+  {name:'去重 Dedup',fn:function(t){return t.split('\n').filter(function(v,i,a){return a.indexOf(v)===i&&v.trim();}).join('\n');}},
+  {name:'排序 Sort A-Z',fn:function(t){return t.split('\n').sort().join('\n');}},
+  {name:'反转 Reverse',fn:function(t){return t.split('\n').reverse().join('\n');}},
+  {name:'去空行 Remove Blank',fn:function(t){return t.split('\n').filter(function(l){return l.trim();}).join('\n');}},
+  {name:'全大写 UPPER',fn:function(t){return t.toUpperCase();}},
+  {name:'全小写 lower',fn:function(t){return t.toLowerCase();}},
+  {name:'增加序号 Add Numbers',fn:function(t){return t.split('\n').map(function(l,i){return (i+1)+'. '+l;}).join('\n');}},
+  {name:'去除首尾空格 Trim',fn:function(t){return t.split('\n').map(function(l){return l.trim();}).join('\n');}},
+  {name:'移除标点 No Punct',fn:function(t){return t.replace(/[，。！？、；：""''（）【】《》,.!?;:'"()\[\]{}<>\/\\@#$%^&*]/g,'');}},
+  {name:'移除数字 No Digits',fn:function(t){return t.replace(/[0-9]/g,'');}}
+];
+
+function renderSteps(){
+  var html='';
+  for(var i=0;i<stepCount;i++){
+    var sel=document.getElementById('stepSel'+i);
+    var op=sel?sel.value:operations[0].name;
+    html+='<div style="display:flex;align-items:center;gap:4px;margin:4px 0;font-size:.8rem;">'+
+      '<span style="color:var(--text-en);">#'+(i+1)+'</span>'+
+      '<select id="stepSel'+i+'" style="flex:1;padding:4px;border:1px solid var(--border);border-radius:4px;">'+
+      operations.map(function(o){return '<option>'+(o.name)+'</option>';}).join('')+'</select>'+
+      '<button class="btn-xs" onclick="removeStep('+i+')" style="padding:2px 6px;font-size:.7rem;border:1px solid var(--border);background:#fff;cursor:pointer;border-radius:4px;">×</button></div>';
+  }
+  document.getElementById('steps').innerHTML=html;
+  // 恢复之前的选择
+  for(var i=0;i<Math.min(stepCount,opsList.length);i++){
+    var sel=document.getElementById('stepSel'+i);
+    if(sel&&opsList[i])sel.value=opsList[i];
+  }
+}
+var opsList=[];
+function addStep(){stepCount++;opsList.push(operations[0].name);renderSteps();}
+function removeStep(i){
+  stepCount--;opsList.splice(i,1);
+  for(var j=i;j<stepCount;j++){var sel=document.getElementById('stepSel'+(j+1));if(sel)opsList[j]=sel.value;}
+  renderSteps();
+}
+function run(){
+  var text=document.getElementById('input').value;
+  for(var i=0;i<stepCount;i++){
+    var sel=document.getElementById('stepSel'+i);
+    if(!sel)continue;
+    var opName=sel.value;
+    var op=operations.find(function(o){return o.name===opName;});
+    if(op)text=op.fn(text);
+  }
+  document.getElementById('output').textContent=text;
+}
+</script>
+</body>
+</html>

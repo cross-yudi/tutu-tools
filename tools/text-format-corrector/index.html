@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中英文排版纠正 Text Format Corrector - 兔兔工具站</title>
+<meta name="description" content="在线中英文混排纠正，自动在中英文之间添加空格。Auto add spaces between Chinese and English/numbers.">
+<meta name="keywords" content="中英文排版,排版纠正,text format,中英文空格,排版优化">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 排版纠正</div><h2>📐 中英文排版纠正器</h2><p class="desc">自动在中英文、数字之间添加空格，修正标点格式</p><p class="desc-en">Auto-correct spacing between Chinese, English & numbers</p></div>
+<div class="tool-body">
+<div class="tool-row"><div class="tool-panel"><label>输入文本 <span class="label-en">Input</span></label><textarea id="input" placeholder="粘贴需要纠正排版的文本..." style="min-height:200px;"></textarea>
+<div class="btn-row" style="margin-top:8px;"><button class="btn btn-primary" onclick="correct()">纠正 Correct</button>
+<button class="btn btn-outline" onclick="clearInput('input')">清空 Clear</button></div></div></div>
+<div class="tool-panel"><label>纠正结果 <span class="label-en">Result</span></label><div class="result-area" id="output"></div>
+<div class="info-bar"><span id="infoTip"></span><button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function correct(){
+  var text=document.getElementById('input').value;
+  var corrections=0;
+
+  // 中文和英文之间加空格
+  text=text.replace(/([一-鿿])([a-zA-Z])/g,function(_,a,b){corrections++;return a+' '+b;});
+  text=text.replace(/([a-zA-Z])([一-鿿])/g,function(_,a,b){corrections++;return a+' '+b;});
+  // 中文和数字之间加空格
+  text=text.replace(/([一-鿿])(\d)/g,function(_,a,b){corrections++;return a+' '+b;});
+  text=text.replace(/(\d)([一-鿿])/g,function(_,a,b){corrections++;return a+' '+b;});
+  // 中文标点转英文标点（可选）
+  // 去除多余空格
+  text=text.replace(/[ ]+/g,' ');
+  // 中文标点后不要有多余空格
+  text=text.replace(/([，。！？、；：])\s+/g,'$1');
+
+  document.getElementById('output').textContent=text;
+  document.getElementById('infoTip').textContent='已纠正 '+corrections+' 处 Corrected '+corrections+' places';
+}
+</script>
+</body>
+</html>

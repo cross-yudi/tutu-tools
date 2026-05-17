@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>内容重复率检测 Duplicate Checker - 兔兔工具站</title>
+<meta name="description" content="在线检测两段文本的相似度/重复率。Compare two texts and calculate similarity percentage.">
+<meta name="keywords" content="重复率检测,相似度,duplicate checker,text similarity,文本对比">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 重复率检测</div><h2>📊 内容重复率检测</h2><p class="desc">对比两段文本的相似度/重复率</p><p class="desc-en">Compare two texts & calculate similarity</p></div>
+<div class="tool-body">
+<div class="tool-row"><div class="tool-panel"><label>文本 A <span class="label-en">Text A</span></label><textarea id="textA" placeholder="输入第一段文本..." style="min-height:150px;"></textarea></div>
+<div class="tool-panel"><label>文本 B <span class="label-en">Text B</span></label><textarea id="textB" placeholder="输入第二段文本..." style="min-height:150px;"></textarea></div></div>
+<div style="text-align:center;"><button class="btn btn-primary" onclick="compare()">对比 Compare</button></div>
+<div class="tool-panel"><label>对比结果 <span class="label-en">Result</span></label>
+<div class="result-area" id="output" style="font-family:inherit;text-align:center;">
+<div style="font-size:3rem;font-weight:800;" id="rRate">-</div><div>相似度 Similarity</div>
+<div style="margin-top:10px;font-size:.85rem;color:var(--text-secondary);" id="rInfo"></div>
+</div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function compare(){
+  var a=document.getElementById('textA').value.trim();
+  var b=document.getElementById('textB').value.trim();
+  if(!a||!b){showToast('请输入两段文本 Enter both texts');return;}
+
+  // 基于词的Jaccard相似度
+  function tokenize(s){return s.split(/[\s,，。！？、；：""''（）【】《》\n]+/).filter(Boolean);}
+  var tokensA=tokenize(a),tokensB=tokenize(b);
+  var setA={},setB={};
+  tokensA.forEach(function(t){setA[t]=(setA[t]||0)+1;});
+  tokensB.forEach(function(t){setB[t]=(setB[t]||0)+1;});
+  var allKeys=Object.keys(setA).concat(Object.keys(setB)).filter(function(v,i,a){return a.indexOf(v)===i;});
+  var intersection=0,union=0;
+  allKeys.forEach(function(k){var cA=setA[k]||0,cB=setB[k]||0;intersection+=Math.min(cA,cB);union+=Math.max(cA,cB);});
+  var jaccard=union>0?intersection/union:0;
+
+  // 行级别对比
+  var linesA=a.split('\n'),linesB=b.split('\n');
+  var sameLines=linesA.filter(function(l){return b.indexOf(l.trim())>=0&&l.trim();}).length;
+
+  var rate=Math.round(jaccard*100);
+  document.getElementById('rRate').textContent=rate+'%';
+  document.getElementById('rInfo').innerHTML='词级别 Word level Jaccard: <strong>'+rate+'%</strong><br>'+
+    '文本A: '+tokensA.length+' 词 words | 文本B: '+tokensB.length+' 词 words<br>'+
+    '重复行数 Duplicate lines: <strong>'+sameLines+'</strong>';
+}
+</script>
+</body>
+</html>

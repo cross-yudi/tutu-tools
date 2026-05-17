@@ -166,4 +166,13 @@
   <url><loc>https://gubaby.cn/tools/regex-tester/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://gubaby.cn/tools/crontab-calc/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://gubaby.cn/tools/json-to-typescript/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/text-workflow/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/text-add-numbering/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/text-to-html/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/special-symbols/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/emoji-list/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/fancy-text/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/duplicate-checker/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/text-format-corrector/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/word-frequency/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

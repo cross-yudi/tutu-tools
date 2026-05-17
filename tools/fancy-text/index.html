@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>花体英文转换器 Fancy Text - 兔兔工具站</title>
+<meta name="description" content="在线花体英文转换器，生成各种风格的英文艺术字。Fancy text generator — convert plain text to stylish Unicode fonts.">
+<meta name="keywords" content="花体英文,fancy text,艺术字,stylish text,font generator,IG字体">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 花体英文</div><h2>💫 花体英文转换器</h2><p class="desc">输入英文转换为各种花体/艺术字风格</p><p class="desc-en">Convert plain English to fancy Unicode text styles</p></div>
+<div class="tool-body">
+<div class="tool-panel"><label>输入英文 <span class="label-en">Input</span></label><input type="text" id="input" placeholder="Enter your text here..." oninput="generate()"></div>
+<div class="tool-panel"><label>花体样式 <span class="label-en">Fancy Styles</span></label><div class="result-area" id="output" style="font-size:1.2rem;line-height:2.2;"></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+// Unicode fancy font mappings
+var fonts={
+  '𝓢𝓬𝓻𝓲𝓹𝓽 (Bold Script)':'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(function(c){
+    var map={a:'𝓪',b:'𝓫',c:'𝓬',d:'𝓭',e:'𝓮',f:'𝓯',g:'𝓰',h:'𝓱',i:'𝓲',j:'𝓳',k:'𝓴',l:'𝓵',m:'𝓶',n:'𝓷',o:'𝓸',p:'𝓹',q:'𝓺',r:'𝓻',s:'𝓼',t:'𝓽',u:'𝓾',v:'𝓿',w:'𝔀',x:'𝔁',y:'𝔂',z:'𝔃',A:'𝓐',B:'𝓑',C:'𝓒',D:'𝓓',E:'𝓔',F:'𝓕',G:'𝓖',H:'𝓗',I:'𝓘',J:'𝓙',K:'𝓚',L:'𝓛',M:'𝓜',N:'𝓝',O:'𝓞',P:'𝓟',Q:'𝓠',R:'𝓡',S:'𝓢',T:'𝓣',U:'𝓤',V:'𝓥',W:'𝓦',X:'𝓧',Y:'𝓨',Z:'𝓩'};
+    return map[c]||c;
+  }).join(''),
+  '𝔻𝕠𝕦𝕓𝕝𝕖 (Double)':'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(function(c){
+    var map={a:'𝕒',b:'𝕓',c:'𝕔',d:'𝕕',e:'𝕖',f:'𝕗',g:'𝕘',h:'𝕙',i:'𝕚',j:'𝕛',k:'𝕜',l:'𝕝',m:'𝕞',n:'𝕟',o:'𝕠',p:'𝕡',q:'𝕢',r:'𝕣',s:'𝕤',t:'𝕥',u:'𝕦',v:'𝕧',w:'𝕨',x:'𝕩',y:'𝕪',z:'𝕫',A:'𝔸',B:'𝔹',C:'ℂ',D:'𝔻',E:'𝔼',F:'𝔽',G:'𝔾',H:'ℍ',I:'𝕀',J:'𝕁',K:'𝕂',L:'𝕃',M:'𝕄',N:'ℕ',O:'𝕆',P:'ℙ',Q:'ℚ',R:'ℝ',S:'𝕊',T:'𝕋',U:'𝕌',V:'𝕍',W:'𝕎',X:'𝕏',Y:'𝕐',Z:'ℤ'};
+    return map[c]||c;
+  }).join(''),
+  '𝔊𝔬𝔱𝔥𝔦𝔠 (Gothic/Fraktur)':'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(function(c){
+    var map={a:'𝔞',b:'𝔟',c:'𝔠',d:'𝔡',e:'𝔢',f:'𝔣',g:'𝔤',h:'𝔥',i:'𝔦',j:'𝔧',k:'𝔨',l:'𝔩',m:'𝔪',n:'𝔫',o:'𝔬',p:'𝔭',q:'𝔮',r:'𝔯',s:'𝔰',t:'𝔱',u:'𝔲',v:'𝔳',w:'𝔴',x:'𝔵',y:'𝔶',z:'𝔷',A:'𝔄',B:'𝔅',C:'ℭ',D:'𝔇',E:'𝔈',F:'𝔉',G:'𝔊',H:'ℌ',I:'ℑ',J:'𝔍',K:'𝔎',L:'𝔏',M:'𝔐',N:'𝔑',O:'𝔒',P:'𝔓',Q:'𝔔',R:'ℜ',S:'𝔖',T:'𝔗',U:'𝔘',V:'𝔙',W:'𝔚',X:'𝔛',Y:'𝔜',Z:'ℨ'};
+    return map[c]||c;
+  }).join(''),
+  '🅂🅀🅄🄰🅁🄴🄳 (Squared)':'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(function(c){
+    var i=c.charCodeAt(0)-65;return String.fromCodePoint(0x1F130+i);
+  }).join(''),
+  '🅂🅃🅁🄾🄺🄴🄳 (Stroked)':'0123456789'.split('').map(function(c){return String.fromCodePoint(0x1F7E0+parseInt(c));}).join(''),
+  'sᴍᴀʟʟ ᴄᴀᴘs (Small Caps)':'abcdefghijklmnopqrstuvwxyz'.split('').map(function(c){
+    var map={a:'ᴀ',b:'ʙ',c:'ᴄ',d:'ᴅ',e:'ᴇ',f:'ꜰ',g:'ɢ',h:'ʜ',i:'ɪ',j:'ᴊ',k:'ᴋ',l:'ʟ',m:'ᴍ',n:'ɴ',o:'ᴏ',p:'ᴘ',q:'ǫ',r:'ʀ',s:'s',t:'ᴛ',u:'ᴜ',v:'ᴠ',w:'ᴡ',x:'x',y:'ʏ',z:'ᴢ'};
+    return map[c]||c;
+  }).join(''),
+  '🄲🄸🅁🄲🄻🄴🄳 (Circled)':'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(function(c){
+    var i=c.charCodeAt(0)-65;return String.fromCodePoint(0x1F150+i);
+  }).join('')
+};
+function generate(){
+  var text=document.getElementById('input').value;
+  if(!text){document.getElementById('output').innerHTML='';return;}
+  var alpha='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var html='';
+  for(var name in fonts){
+    var converted=text.split('').map(function(c){
+      var idx=alpha.indexOf(c);
+      return idx>=0?fonts[name].charAt(idx)||c:c;
+    }).join('');
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f1f5f9;">'+
+      '<div style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:1.1rem;">'+converted+'</div>'+
+      '<div style="font-size:.7rem;color:var(--text-en);margin:0 8px;">'+name.split(' (')[0]+'</div>'+
+      '<button class="btn btn-outline btn-sm" onclick="copyText(this.parentElement.querySelector(\'div\').textContent)">复制</button></div>';
+  }
+  document.getElementById('output').innerHTML=html;
+}
+</script>
+</body>
+</html>

@@ -140,8 +140,12 @@ body {
   margin-bottom: 28px;
   justify-content: center;
 }
-@media (max-width: 768px) {
-  .cat-tabs { justify-content: flex-start; }
+.cat-spacer {
+  visibility: hidden;
+  width: 80px;
+  height: 0;
+  padding: 6px 16px;
+  pointer-events: none;
 }
 .cat-tab {
   padding: 7px 18px;

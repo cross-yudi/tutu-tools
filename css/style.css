@@ -138,15 +138,7 @@ body {
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 28px;
-  justify-content: center;
-}
-.cat-spacer {
-  visibility: hidden;
-  padding: 6px 16px;
-  pointer-events: none;
-  border: 1px solid transparent;
-  font-size: .85rem;
-  user-select: none;
+  justify-content: flex-start;
 }
 .cat-tab {
   padding: 7px 18px;

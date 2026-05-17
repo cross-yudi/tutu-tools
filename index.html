@@ -41,141 +41,40 @@
 
   <div class="cat-tabs">
     <button class="cat-tab active" data-cat="all">全部 <span style="font-size:.7rem;color:inherit;opacity:.7;">All</span></button>
-    <button class="cat-tab" data-cat="text">📝 文本工具 <span style="font-size:.7rem;color:inherit;opacity:.7;">Text</span></button>
-    <button class="cat-tab" data-cat="encode">🔢 编码转换 <span style="font-size:.7rem;color:inherit;opacity:.7;">Encode</span></button>
-    <button class="cat-tab" data-cat="generate">🔐 生成器 <span style="font-size:.7rem;color:inherit;opacity:.7;">Generator</span></button>
-    <button class="cat-tab" data-cat="dev">🛠️ 开发工具 <span style="font-size:.7rem;color:inherit;opacity:.7;">Dev</span></button>
     <button class="cat-tab" data-cat="life">📅 生活查询 <span style="font-size:.7rem;color:inherit;opacity:.7;">Life</span></button>
+    <button class="cat-tab" data-cat="generate">🔐 生成器 <span style="font-size:.7rem;color:inherit;opacity:.7;">Generator</span></button>
+    <button class="cat-tab" data-cat="encode">🔢 编码转换 <span style="font-size:.7rem;color:inherit;opacity:.7;">Encode</span></button>
+    <button class="cat-tab" data-cat="text">📝 文本工具 <span style="font-size:.7rem;color:inherit;opacity:.7;">Text</span></button>
+    <button class="cat-tab" data-cat="dev">🛠️ 开发工具 <span style="font-size:.7rem;color:inherit;opacity:.7;">Dev</span></button>
   </div>
 
   <div class="tool-grid" id="toolGrid">
 
-    <a href="tools/case-converter/index.html" class="tool-card" data-cats="text">
-      <span class="icon">🔤</span>
-      <h3>大小写转换</h3>
-      <span class="desc-cn">英文字母大写、小写、首字母大写、大小写反转</span>
-      <span class="desc-en">Uppercase, lowercase, title case, toggle case</span>
-    </a>
-
-    <a href="tools/word-counter/index.html" class="tool-card" data-cats="text">
-      <span class="icon">📊</span>
-      <h3>字数统计</h3>
-      <span class="desc-cn">统计字符数、单词数、行数、中文字数</span>
-      <span class="desc-en">Character, word, line & Chinese character counter</span>
-    </a>
-
-    <a href="tools/password-gen/index.html" class="tool-card" data-cats="generate">
-      <span class="icon">🔐</span>
-      <h3>密码生成器</h3>
-      <span class="desc-cn">随机生成强密码，可调长度和字符类型</span>
-      <span class="desc-en">Strong random password with customizable options</span>
-    </a>
-
-    <a href="tools/base64/index.html" class="tool-card" data-cats="encode">
-      <span class="icon">🔄</span>
-      <h3>Base64 编码解码</h3>
-      <span class="desc-cn">Base64 编码与解码在线转换</span>
-      <span class="desc-en">Base64 encode & decode with full Unicode support</span>
-    </a>
-
-    <a href="tools/url-encode/index.html" class="tool-card" data-cats="encode">
-      <span class="icon">🔗</span>
-      <h3>URL 编码解码</h3>
-      <span class="desc-cn">URL Encode / Decode 在线转换</span>
-      <span class="desc-en">URL encoding & decoding made simple</span>
-    </a>
-
-    <a href="tools/timestamp/index.html" class="tool-card" data-cats="dev">
-      <span class="icon">⏰</span>
-      <h3>时间戳转换</h3>
-      <span class="desc-cn">Unix 时间戳与日期时间互相转换</span>
-      <span class="desc-en">Unix timestamp to date & vice versa</span>
-    </a>
-
-    <a href="tools/json-formatter/index.html" class="tool-card" data-cats="dev">
-      <span class="icon">📋</span>
-      <h3>JSON 格式化</h3>
-      <span class="desc-cn">JSON 格式化、压缩、校验、语法高亮</span>
-      <span class="desc-en">Format, compress, validate & highlight JSON</span>
-    </a>
-
-    <a href="tools/color-tool/index.html" class="tool-card" data-cats="dev">
-      <span class="icon">🎨</span>
-      <h3>颜色转换</h3>
-      <span class="desc-cn">HEX / RGB / HSL 颜色格式互转</span>
-      <span class="desc-en">HEX, RGB & HSL color format converter</span>
-    </a>
-
-    <a href="tools/number-base/index.html" class="tool-card" data-cats="encode">
-      <span class="icon">🔢</span>
-      <h3>进制转换</h3>
-      <span class="desc-cn">二进制、八进制、十进制、十六进制互转</span>
-      <span class="desc-en">Binary, octal, decimal, hex converter</span>
-    </a>
-
-    <a href="tools/text-dedup/index.html" class="tool-card" data-cats="text">
-      <span class="icon">✂️</span>
-      <h3>文本去重排序</h3>
-      <span class="desc-cn">按行去重、排序、反转、打乱文本</span>
-      <span class="desc-en">Dedup, sort, reverse & shuffle lines</span>
-    </a>
-
-    <a href="tools/text-replace/index.html" class="tool-card" data-cats="text">
-      <span class="icon">🔍</span>
-      <h3>文本查找替换</h3>
-      <span class="desc-cn">查找替换文本，支持正则表达式</span>
-      <span class="desc-en">Find & replace with regex support</span>
-    </a>
-
-    <a href="tools/markdown-preview/index.html" class="tool-card" data-cats="text">
-      <span class="icon">📝</span>
-      <h3>Markdown 预览</h3>
-      <span class="desc-cn">实时预览 Markdown 渲染效果</span>
-      <span class="desc-en">Live Markdown preview & editor</span>
-    </a>
-
-    <a href="tools/image-base64/index.html" class="tool-card" data-cats="encode">
-      <span class="icon">🖼️</span>
-      <h3>图片转 Base64</h3>
-      <span class="desc-cn">上传图片转 Base64 编码，支持拖拽</span>
-      <span class="desc-en">Image to Base64 with drag & drop</span>
-    </a>
-
-    <a href="tools/hash-tool/index.html" class="tool-card" data-cats="encode">
-      <span class="icon">🔒</span>
-      <h3>MD5/SHA 哈希</h3>
-      <span class="desc-cn">计算 MD5、SHA-1、SHA-256、SHA-512</span>
-      <span class="desc-en">MD5, SHA-1, SHA-256 & SHA-512 hasher</span>
-    </a>
-
+    <!-- 📅 生活查询 Life -->
     <a href="tools/phone-lookup/index.html" class="tool-card" data-cats="life">
       <span class="icon">📱</span>
       <h3>手机号归属地</h3>
       <span class="desc-cn">查询手机号运营商和归属地</span>
       <span class="desc-en">Phone carrier & location lookup</span>
     </a>
-
     <a href="tools/id-card/index.html" class="tool-card" data-cats="life">
       <span class="icon">🆔</span>
       <h3>身份证校验</h3>
       <span class="desc-cn">校验身份证、提取生日性别</span>
       <span class="desc-en">ID card validator & info extractor</span>
     </a>
-
     <a href="tools/date-calc/index.html" class="tool-card" data-cats="life">
       <span class="icon">📅</span>
       <h3>日期计算器</h3>
       <span class="desc-cn">日期差计算、日期加减天数</span>
       <span class="desc-en">Date difference & add/subtract days</span>
     </a>
-
     <a href="tools/rmb-upper/index.html" class="tool-card" data-cats="life">
       <span class="icon">💰</span>
       <h3>人民币大写</h3>
       <span class="desc-cn">数字金额转中文大写（财务用）</span>
       <span class="desc-en">Number to Chinese RMB uppercase</span>
     </a>
-
     <a href="tools/unit-converter/index.html" class="tool-card" data-cats="life">
       <span class="icon">📏</span>
       <h3>单位换算</h3>
@@ -183,11 +82,102 @@
       <span class="desc-en">Length, weight, area, temp & speed</span>
     </a>
 
+    <!-- 🔐 生成器 Generator -->
+    <a href="tools/password-gen/index.html" class="tool-card" data-cats="generate">
+      <span class="icon">🔐</span>
+      <h3>密码生成器</h3>
+      <span class="desc-cn">随机生成强密码，可调长度和字符类型</span>
+      <span class="desc-en">Strong random password with customizable options</span>
+    </a>
     <a href="tools/qrcode-gen/index.html" class="tool-card" data-cats="generate">
       <span class="icon">📄</span>
       <h3>二维码生成</h3>
       <span class="desc-cn">输入文本/网址生成二维码</span>
       <span class="desc-en">QR code generator with download</span>
+    </a>
+
+    <!-- 🔢 编码转换 Encode -->
+    <a href="tools/base64/index.html" class="tool-card" data-cats="encode">
+      <span class="icon">🔄</span>
+      <h3>Base64 编码解码</h3>
+      <span class="desc-cn">Base64 编码与解码在线转换</span>
+      <span class="desc-en">Base64 encode & decode with full Unicode support</span>
+    </a>
+    <a href="tools/url-encode/index.html" class="tool-card" data-cats="encode">
+      <span class="icon">🔗</span>
+      <h3>URL 编码解码</h3>
+      <span class="desc-cn">URL Encode / Decode 在线转换</span>
+      <span class="desc-en">URL encoding & decoding made simple</span>
+    </a>
+    <a href="tools/number-base/index.html" class="tool-card" data-cats="encode">
+      <span class="icon">🔢</span>
+      <h3>进制转换</h3>
+      <span class="desc-cn">二进制、八进制、十进制、十六进制互转</span>
+      <span class="desc-en">Binary, octal, decimal, hex converter</span>
+    </a>
+    <a href="tools/image-base64/index.html" class="tool-card" data-cats="encode">
+      <span class="icon">🖼️</span>
+      <h3>图片转 Base64</h3>
+      <span class="desc-cn">上传图片转 Base64 编码，支持拖拽</span>
+      <span class="desc-en">Image to Base64 with drag & drop</span>
+    </a>
+    <a href="tools/hash-tool/index.html" class="tool-card" data-cats="encode">
+      <span class="icon">🔒</span>
+      <h3>MD5/SHA 哈希</h3>
+      <span class="desc-cn">计算 MD5、SHA-1、SHA-256、SHA-512</span>
+      <span class="desc-en">MD5, SHA-1, SHA-256 & SHA-512 hasher</span>
+    </a>
+
+    <!-- 📝 文本工具 Text -->
+    <a href="tools/case-converter/index.html" class="tool-card" data-cats="text">
+      <span class="icon">🔤</span>
+      <h3>大小写转换</h3>
+      <span class="desc-cn">英文字母大写、小写、首字母大写、大小写反转</span>
+      <span class="desc-en">Uppercase, lowercase, title case, toggle case</span>
+    </a>
+    <a href="tools/word-counter/index.html" class="tool-card" data-cats="text">
+      <span class="icon">📊</span>
+      <h3>字数统计</h3>
+      <span class="desc-cn">统计字符数、单词数、行数、中文字数</span>
+      <span class="desc-en">Character, word, line & Chinese character counter</span>
+    </a>
+    <a href="tools/text-dedup/index.html" class="tool-card" data-cats="text">
+      <span class="icon">✂️</span>
+      <h3>文本去重排序</h3>
+      <span class="desc-cn">按行去重、排序、反转、打乱文本</span>
+      <span class="desc-en">Dedup, sort, reverse & shuffle lines</span>
+    </a>
+    <a href="tools/text-replace/index.html" class="tool-card" data-cats="text">
+      <span class="icon">🔍</span>
+      <h3>文本查找替换</h3>
+      <span class="desc-cn">查找替换文本，支持正则表达式</span>
+      <span class="desc-en">Find & replace with regex support</span>
+    </a>
+    <a href="tools/markdown-preview/index.html" class="tool-card" data-cats="text">
+      <span class="icon">📝</span>
+      <h3>Markdown 预览</h3>
+      <span class="desc-cn">实时预览 Markdown 渲染效果</span>
+      <span class="desc-en">Live Markdown preview & editor</span>
+    </a>
+
+    <!-- 🛠️ 开发工具 Dev -->
+    <a href="tools/json-formatter/index.html" class="tool-card" data-cats="dev">
+      <span class="icon">📋</span>
+      <h3>JSON 格式化</h3>
+      <span class="desc-cn">JSON 格式化、压缩、校验、语法高亮</span>
+      <span class="desc-en">Format, compress, validate & highlight JSON</span>
+    </a>
+    <a href="tools/timestamp/index.html" class="tool-card" data-cats="dev">
+      <span class="icon">⏰</span>
+      <h3>时间戳转换</h3>
+      <span class="desc-cn">Unix 时间戳与日期时间互相转换</span>
+      <span class="desc-en">Unix timestamp to date & vice versa</span>
+    </a>
+    <a href="tools/color-tool/index.html" class="tool-card" data-cats="dev">
+      <span class="icon">🎨</span>
+      <h3>颜色转换</h3>
+      <span class="desc-cn">HEX / RGB / HSL 颜色格式互转</span>
+      <span class="desc-en">HEX, RGB & HSL color format converter</span>
     </a>
 
   </div>

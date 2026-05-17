@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>合同款项计算器 Contract Calc - 兔兔工具站</title>
+  <meta name="description" content="在线合同款项计算器，计算分期付款、预付款、质保金等。Contract payment calculator — installment, advance payment & retention.">
+  <meta name="keywords" content="合同计算,款项计算,contract calculator,分期付款,质保金">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 合同款项计算器</div><h2>📑 合同款项计算器</h2><p class="desc">合同金额分配计算 — 预付款、进度款、质保金</p><p class="desc-en">Contract payment breakdown — advance, progress & retention</p></div>
+<div class="tool-body">
+<div class="tool-row">
+<div class="tool-panel">
+<label>合同总金额 <span class="label-en">Contract Amount</span></label>
+<input type="number" id="total" value="100000" min="0">
+<label style="margin-top:10px;">预付款比例 Advance (%)</label>
+<input type="number" id="advance" value="30" min="0" max="100">
+<label style="margin-top:10px;">质保金比例 Retention (%)</label>
+<input type="number" id="retention" value="5" min="0" max="100">
+<label style="margin-top:10px;">分期数 Installments</label>
+<input type="number" id="installments" value="3" min="1" max="24">
+<button class="btn btn-primary" style="margin-top:12px;" onclick="calc()">计算 Calculate</button>
+</div>
+</div>
+<div class="tool-panel">
+<label>款项明细 <span class="label-en">Breakdown</span></label>
+<div class="result-area" id="output" style="font-family:inherit;font-size:.85rem;line-height:1.8;">
+</div>
+</div>
+</div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function calc() {
+  var total = parseFloat(document.getElementById('total').value) || 0;
+  var adv = parseFloat(document.getElementById('advance').value) / 100;
+  var ret = parseFloat(document.getElementById('retention').value) / 100;
+  var n = parseInt(document.getElementById('installments').value);
+
+  var advAmt = Math.round(total * adv);
+  var retAmt = Math.round(total * ret);
+  var remain = total - advAmt - retAmt;
+  var perInstall = Math.round(remain / n);
+
+  var html = '<div style="margin-bottom:8px;"><strong>合同总额 Contract Total：¥' + total.toLocaleString() + '</strong></div>';
+  html += '<div style="margin-bottom:4px;">1. 预付款 Advance (' + (adv*100) + '%)：<strong>¥' + advAmt.toLocaleString() + '</strong></div>';
+  for (var i = 1; i <= n; i++) {
+    html += '<div style="margin-bottom:4px;">' + (i+1) + '. 进度款 Installment ' + i + '：<strong>¥' + perInstall.toLocaleString() + '</strong></div>';
+  }
+  html += '<div style="margin-top:8px;">' + (n+2) + '. 质保金 Retention (' + (ret*100) + '%)：<strong>¥' + retAmt.toLocaleString() + '</strong></div>';
+  html += '<div style="margin-top:8px;color:var(--text-secondary);">合计 Total：<strong>¥' + (advAmt + perInstall*n + retAmt).toLocaleString() + '</strong></div>';
+  document.getElementById('output').innerHTML = html;
+}
+</script>
+</body>
+</html>

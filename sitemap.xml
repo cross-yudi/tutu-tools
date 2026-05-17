@@ -141,4 +141,12 @@
     <loc>https://gubaby.cn/tools/chinese-calendar/</loc>
     <changefreq>monthly</changefreq><priority>0.8</priority>
   </url>
+  <url><loc>https://gubaby.cn/tools/check-date-upper/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/tax-rate-calc/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/service-tax-calc/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/currency-exchange/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/world-currency/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/contract-calc/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/loan-calc/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/bank-code-lookup/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

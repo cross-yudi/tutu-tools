@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>银行联行号查询 Bank Code - 兔兔工具站</title>
+  <meta name="description" content="查询各大银行联行号/行号，用于跨行转账。Look up Chinese bank codes for interbank transfers.">
+  <meta name="keywords" content="联行号查询,银行行号,bank code,跨行转账,银行代码">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 银行联行号查询</div><h2>🏦 银行联行号查询</h2><p class="desc">查询各大银行联行号，用于跨行转账</p><p class="desc-en">Chinese bank codes lookup for interbank transfers</p></div>
+<div class="tool-body">
+<div class="tool-panel">
+<label>搜索银行 <span class="label-en">Search Bank</span></label>
+<input type="text" id="search" placeholder="输入银行名称... Enter bank name..." oninput="filter()">
+</div>
+<div class="tool-panel">
+<label>银行列表 <span class="label-en">Bank List</span></label>
+<div class="result-area" id="list" style="font-family:inherit;font-size:.82rem;max-height:400px;overflow:auto;"></div>
+</div>
+</div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var banks = [
+  {name:'中国工商银行 ICBC',code:'ICBKCNBJ'},
+  {name:'中国建设银行 CCB',code:'PCBCCNBJ'},
+  {name:'中国农业银行 ABC',code:'ABOCCNBJ'},
+  {name:'中国银行 BOC',code:'BKCHCNBJ'},
+  {name:'交通银行 BCM',code:'COMMCNSH'},
+  {name:'招商银行 CMB',code:'CMBCCNBS'},
+  {name:'中信银行 CITIC',code:'CIBKCNBJ'},
+  {name:'浦发银行 SPDB',code:'SPDBCNSH'},
+  {name:'民生银行 CMBC',code:'MSBCCNBJ'},
+  {name:'兴业银行 CIB',code:'FJIBCNBA'},
+  {name:'光大银行 CEB',code:'EVERCNBJ'},
+  {name:'平安银行 PAB',code:'SZDBCNBS'},
+  {name:'华夏银行 HXB',code:'HXBKCNBJ'},
+  {name:'广发银行 CGB',code:'GDBKCN22'},
+  {name:'邮储银行 PSBC',code:'PSBCCNBJ'},
+  {name:'北京银行 BOB',code:'BJCNCNBJ'},
+  {name:'上海银行 BOS',code:'BOSHCNSH'},
+  {name:'南京银行 BON',code:'NJCBCNBJ'},
+  {name:'杭州银行 HZB',code:'HZCBCN2H'},
+  {name:'宁波银行 NBCB',code:'BKNBCN2N'},
+  {name:'微信支付 WeChat Pay',code:'WECHATPAY'},
+  {name:'支付宝 Alipay',code:'ALIPAYCN'}
+];
+
+function render(data) {
+  var html = '<table style="width:100%;border-collapse:collapse;"><tr style="background:var(--bg);font-weight:600;"><td style="padding:6px 8px;">银行 Bank</td><td style="padding:6px 8px;">SWIFT / 联行号 Code</td></tr>';
+  data.forEach(function(b){
+    html += '<tr><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;">'+b.name+'</td><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;font-family:monospace;"><strong>'+b.code+'</strong></td></tr>';
+  });
+  html += '</table><p style="font-size:.7rem;color:var(--text-en);margin-top:8px;">* 以上为总行SWIFT代码，具体支行联行号请咨询开户行。Branch codes may vary.</p>';
+  document.getElementById('list').innerHTML = html;
+}
+
+function filter() {
+  var kw = document.getElementById('search').value.toLowerCase();
+  var filtered = banks.filter(function(b){return (b.name+b.code).toLowerCase().indexOf(kw)>=0;});
+  render(filtered);
+}
+
+render(banks);
+</script>
+</body>
+</html>

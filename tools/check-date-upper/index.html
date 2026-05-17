@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>支票日期大写 Check Date - 兔兔工具站</title>
+  <meta name="description" content="在线支票日期大写转换器，将日期转为银行支票用中文大写。Convert dates to Chinese formal format for bank checks.">
+  <meta name="keywords" content="支票日期大写,日期大写,支票日期,check date,银行日期大写">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 支票日期大写</div><h2>📝 支票日期大写转换</h2><p class="desc">将日期转换为银行支票用的中文大写格式</p><p class="desc-en">Convert dates to Chinese formal format for bank checks</p></div>
+<div class="tool-body">
+<div class="tool-row">
+<div class="tool-panel">
+<label>选择日期 <span class="label-en">Select Date</span></label>
+<input type="date" id="dateInput">
+<button class="btn btn-primary" style="margin-top:10px;" onclick="convert()">转换 Convert</button>
+</div>
+</div>
+<div class="tool-panel">
+<label>转换结果 <span class="label-en">Result</span></label>
+<div class="result-area" id="output" style="font-family:inherit;font-size:1.1rem;text-align:center;min-height:60px;padding:20px;">-</div>
+<button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button>
+</div>
+</div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var numMap = ['零','壹','贰','叁','肆','伍','陆','柒','捌','玖','拾'];
+
+function yearToUpper(y) {
+  var s = String(y), result = '';
+  for (var i = 0; i < s.length; i++) result += numMap[parseInt(s[i])];
+  return result;
+}
+
+function convert() {
+  var d = document.getElementById('dateInput').valueAsDate || new Date();
+  var y = d.getFullYear();
+  var m = d.getMonth() + 1;
+  var day = d.getDate();
+
+  var monthStr = m === 10 ? '壹拾' : m > 10 ? '壹拾' + numMap[m-10] : numMap[m];
+  var dayStr;
+  if (day === 10) dayStr = '壹拾';
+  else if (day === 20) dayStr = '贰拾';
+  else if (day === 30) dayStr = '叁拾';
+  else if (day > 20) dayStr = '贰拾' + numMap[day-20];
+  else if (day > 10) dayStr = '壹拾' + numMap[day-10];
+  else dayStr = numMap[day];
+
+  var result = '贰零' + yearToUpper(y).slice(2) + '年' + monthStr + '月' + dayStr + '日';
+  document.getElementById('output').textContent = result;
+}
+document.getElementById('dateInput').valueAsDate = new Date();
+convert();
+</script>
+</body>
+</html>

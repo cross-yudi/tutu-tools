@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>劳务报酬个税 Service Tax - 兔兔工具站</title>
+  <meta name="description" content="在线个人劳务报酬所得税计算器，按最新个税法计算。Calculate service income tax for freelancers and contractors (China).">
+  <meta name="keywords" content="劳务报酬,劳务个税,service tax,劳务费,个人所得税,自由职业">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 劳务报酬个税</div><h2>📋 个人劳务报酬所得税</h2><p class="desc">按最新税法计算劳务报酬应缴个人所得税</p><p class="desc-en">Calculate service income tax for freelancers</p></div>
+<div class="tool-body">
+<div class="tool-row">
+<div class="tool-panel">
+<label>劳务收入 <span class="label-en">Service Income</span></label>
+<input type="number" id="income" value="10000" min="0">
+<p style="font-size:.75rem;color:var(--text-secondary);margin-top:4px;">单次劳务报酬收入（税前）Pre-tax service income</p>
+<button class="btn btn-primary" style="margin-top:10px;" onclick="calc()">计算 Calculate</button>
+</div>
+</div>
+<div class="tool-panel">
+<label>计算结果 <span class="label-en">Result</span></label>
+<div class="result-area" id="output" style="font-family:inherit;">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+<div>劳务收入 Income：<strong id="rIncome">-</strong></div>
+<div>减除费用 Deduction：<strong id="rDeduct">-</strong></div>
+<div>应纳税所得 Taxable：<strong id="rTaxable">-</strong></div>
+<div>应纳税额 Tax：<strong id="rTax" style="color:#f59e0b;">-</strong></div>
+<div>适用税率 Rate：<strong id="rRate">-</strong></div>
+<div>税后收入 After Tax：<strong id="rNet" style="color:#059669;">-</strong></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function calc() {
+  var income = parseFloat(document.getElementById('income').value) || 0;
+  document.getElementById('rIncome').textContent = '¥' + income.toLocaleString();
+
+  // 减除费用：800或20%
+  var deduct = 0;
+  if (income <= 4000) deduct = 800;
+  else deduct = Math.round(income * 0.20);
+
+  var taxable = income - deduct;
+  if (taxable < 0) taxable = 0;
+  document.getElementById('rDeduct').textContent = '¥' + deduct.toLocaleString();
+  document.getElementById('rTaxable').textContent = '¥' + taxable.toLocaleString();
+
+  // 劳务报酬三级超额累进税率
+  var tax = 0, rate = 0;
+  if (taxable <= 20000) { rate = 20; tax = Math.round(taxable * 0.20); }
+  else if (taxable <= 50000) { rate = 30; tax = Math.round(taxable * 0.30 - 2000); }
+  else { rate = 40; tax = Math.round(taxable * 0.40 - 7000); }
+
+  document.getElementById('rTax').textContent = '¥' + tax.toLocaleString();
+  document.getElementById('rRate').textContent = rate + '%';
+  document.getElementById('rNet').textContent = '¥' + (income - tax).toLocaleString();
+}
+</script>
+</body>
+</html>

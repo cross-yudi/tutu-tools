@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>贷款计算器 Loan Calculator - 兔兔工具站</title>
+  <meta name="description" content="在线贷款计算器，支持等额本息和等额本金两种方式。Loan calculator with equal installments & equal principal methods.">
+  <meta name="keywords" content="贷款计算器,房贷计算,等额本息,loan calculator,mortgage,等额本金">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 贷款计算器</div><h2>🏠 贷款计算器</h2><p class="desc">等额本息 / 等额本金还款计算</p><p class="desc-en">Mortgage & loan calculator — equal installments & principal</p></div>
+<div class="tool-body">
+<div class="tool-row">
+<div class="tool-panel">
+<label>贷款金额 <span class="label-en">Loan Amount</span></label>
+<input type="number" id="principal" value="1000000" min="0" step="10000">
+<label style="margin-top:10px;">年利率 Annual Rate (%)</label>
+<input type="number" id="rate" value="3.5" min="0" step="0.01">
+<label style="margin-top:10px;">贷款年限 Years</label>
+<input type="number" id="years" value="30" min="1" max="50">
+<label style="margin-top:10px;">还款方式 Method</label>
+<select id="method" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;">
+  <option value="equal">等额本息 Equal Installments</option>
+  <option value="principal">等额本金 Equal Principal</option>
+</select>
+<button class="btn btn-primary" style="margin-top:12px;" onclick="calc()">计算 Calculate</button>
+</div>
+</div>
+<div class="tool-panel">
+<label>计算结果 <span class="label-en">Result</span></label>
+<div class="result-area" id="output" style="font-family:inherit;font-size:.85rem;line-height:1.8;">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+<div>月供 Monthly：<br><strong id="rMonthly" style="font-size:1.2rem;">-</strong></div>
+<div>总还款 Total：<br><strong id="rTotal" style="font-size:1.2rem;">-</strong></div>
+<div>总利息 Interest：<br><strong id="rInterest" style="font-size:1.2rem;color:#f59e0b;">-</strong></div>
+<div>还款月数 Months：<br><strong id="rMonths" style="font-size:1.2rem;">-</strong></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function calc() {
+  var P = parseFloat(document.getElementById('principal').value) || 0;
+  var r = parseFloat(document.getElementById('rate').value) / 100 / 12; // 月利率
+  var n = parseInt(document.getElementById('years').value) * 12;
+  var method = document.getElementById('method').value;
+
+  var monthly, total, interest;
+  if (method === 'equal') {
+    // 等额本息
+    if (r === 0) { monthly = P / n; }
+    else { monthly = P * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1); }
+    total = monthly * n;
+    interest = total - P;
+  } else {
+    // 等额本金：首月月供
+    monthly = P / n + P * r;
+    total = 0;
+    for (var i = 0; i < n; i++) { total += (P/n) + (P - P/n*i) * r; }
+    interest = total - P;
+    document.getElementById('rMonthly').textContent = '首月 ¥' + Math.round(monthly).toLocaleString();
+    document.getElementById('rMonths').textContent = n + ' 个月';
+    document.getElementById('rTotal').textContent = '¥' + Math.round(total).toLocaleString();
+    document.getElementById('rInterest').textContent = '¥' + Math.round(interest).toLocaleString();
+    return;
+  }
+
+  document.getElementById('rMonthly').textContent = '¥' + Math.round(monthly).toLocaleString();
+  document.getElementById('rTotal').textContent = '¥' + Math.round(total).toLocaleString();
+  document.getElementById('rInterest').textContent = '¥' + Math.round(interest).toLocaleString();
+  document.getElementById('rMonths').textContent = n + ' 个月';
+}
+</script>
+</body>
+</html>

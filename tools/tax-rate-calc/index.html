@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>税金税率计算器 Tax Rate Calc - 兔兔工具站</title>
+  <meta name="description" content="在线增值税/营业税计算器，快速计算含税价和不含税价。VAT & sales tax calculator — compute tax-inclusive and exclusive prices.">
+  <meta name="keywords" content="税金计算,增值税计算,税率计算,VAT calculator,tax rate,含税价">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 税金税率计算器</div><h2>🧾 税金税率计算器</h2><p class="desc">增值税计算，含税价与不含税价互转</p><p class="desc-en">VAT calculator — tax-inclusive & exclusive conversion</p></div>
+<div class="tool-body">
+<div class="tool-row">
+<div class="tool-panel">
+<label>计算方式 <span class="label-en">Mode</span></label>
+<select id="mode" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;" onchange="updateLabels()">
+  <option value="exclusive">不含税价 → 含税价 (Excl → Incl)</option>
+  <option value="inclusive">含税价 → 不含税价 (Incl → Excl)</option>
+</select>
+<div style="margin-top:10px;">
+  <label style="font-size:.8rem;">金额 Amount</label>
+  <input type="number" id="amount" value="10000" min="0">
+</div>
+<div style="margin-top:8px;">
+  <label style="font-size:.8rem;">税率 Tax Rate (%)</label>
+  <select id="rate" style="width:100%;padding:8px;border:1.5px solid var(--border);border-radius:8px;">
+    <option value="13">13% — 一般纳税人增值税</option>
+    <option value="9">9% — 建筑/运输/不动产</option>
+    <option value="6">6% — 服务业</option>
+    <option value="3" selected>3% — 小规模纳税人</option>
+    <option value="5">5% — 简易计税</option>
+    <option value="custom">自定义 Custom</option>
+  </select>
+  <input type="number" id="customRate" value="1" min="0" max="100" style="margin-top:4px;display:none;">
+</div>
+<button class="btn btn-primary" style="margin-top:12px;" onclick="calc()">计算 Calculate</button>
+</div>
+</div>
+<div class="tool-panel">
+<label>计算结果 <span class="label-en">Result</span></label>
+<div class="result-area" id="output" style="font-family:inherit;">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+<div>不含税价 Excl Tax：<br><strong id="rExcl" style="font-size:1.2rem;">-</strong></div>
+<div>含税价 Incl Tax：<br><strong id="rIncl" style="font-size:1.2rem;">-</strong></div>
+<div>税额 Tax Amount：<br><strong id="rTax" style="font-size:1.2rem;color:#f59e0b;">-</strong></div>
+<div>税率 Rate：<br><strong id="rRate" style="font-size:1.2rem;">-</strong></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+document.getElementById('rate').addEventListener('change', function(){
+  document.getElementById('customRate').style.display = this.value === 'custom' ? '' : 'none';
+});
+
+function getRate() {
+  var sel = document.getElementById('rate').value;
+  return sel === 'custom' ? parseFloat(document.getElementById('customRate').value) : parseFloat(sel);
+}
+
+function calc() {
+  var amount = parseFloat(document.getElementById('amount').value) || 0;
+  var rate = getRate() / 100;
+  var mode = document.getElementById('mode').value;
+
+  var excl, incl, tax;
+  if (mode === 'exclusive') {
+    excl = amount;
+    tax = Math.round(amount * rate * 100) / 100;
+    incl = Math.round((amount + tax) * 100) / 100;
+  } else {
+    incl = amount;
+    excl = Math.round(amount / (1 + rate) * 100) / 100;
+    tax = Math.round((amount - excl) * 100) / 100;
+  }
+  document.getElementById('rExcl').textContent = '¥' + excl.toLocaleString();
+  document.getElementById('rIncl').textContent = '¥' + incl.toLocaleString();
+  document.getElementById('rTax').textContent = '¥' + tax.toLocaleString();
+  document.getElementById('rRate').textContent = (rate*100).toFixed(1) + '%';
+}
+</script>
+</body>
+</html>

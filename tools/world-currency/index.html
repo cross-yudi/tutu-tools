@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>世界各国货币 World Currency - 兔兔工具站</title>
+  <meta name="description" content="世界各国货币信息查询，货币名称、符号、代码。World currency reference — names, symbols & codes.">
+  <meta name="keywords" content="世界货币,货币符号,货币代码,currency codes,world currency,货币查询">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 世界各国货币</div><h2>🌍 世界各国地区货币</h2><p class="desc">查询世界各国货币名称、符号、代码</p><p class="desc-en">World currency reference — names, symbols & ISO codes</p></div>
+<div class="tool-body">
+<div class="tool-panel">
+<label>搜索 <span class="label-en">Search</span></label>
+<input type="text" id="search" placeholder="输入国家或货币名称... Enter country or currency..." oninput="filter()">
+</div>
+<div class="tool-panel">
+<label>货币列表 <span class="label-en">Currency List</span></label>
+<div class="result-area" id="list" style="font-family:inherit;font-size:.82rem;max-height:400px;overflow:auto;"></div>
+</div>
+</div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var currencies = [
+  {country:'中国 China',name:'人民币 Renminbi',code:'CNY',symbol:'¥'},
+  {country:'美国 United States',name:'美元 US Dollar',code:'USD',symbol:'$'},
+  {country:'欧盟 European Union',name:'欧元 Euro',code:'EUR',symbol:'€'},
+  {country:'英国 United Kingdom',name:'英镑 Pound Sterling',code:'GBP',symbol:'£'},
+  {country:'日本 Japan',name:'日元 Yen',code:'JPY',symbol:'¥'},
+  {country:'韩国 South Korea',name:'韩元 Won',code:'KRW',symbol:'₩'},
+  {country:'香港 Hong Kong',name:'港币 Hong Kong Dollar',code:'HKD',symbol:'HK$'},
+  {country:'台湾 Taiwan',name:'新台币 New Taiwan Dollar',code:'TWD',symbol:'NT$'},
+  {country:'澳大利亚 Australia',name:'澳元 Australian Dollar',code:'AUD',symbol:'A$'},
+  {country:'加拿大 Canada',name:'加元 Canadian Dollar',code:'CAD',symbol:'C$'},
+  {country:'瑞士 Switzerland',name:'瑞士法郎 Swiss Franc',code:'CHF',symbol:'Fr'},
+  {country:'新加坡 Singapore',name:'新加坡元 Singapore Dollar',code:'SGD',symbol:'S$'},
+  {country:'印度 India',name:'卢比 Indian Rupee',code:'INR',symbol:'₹'},
+  {country:'俄罗斯 Russia',name:'卢布 Russian Ruble',code:'RUB',symbol:'₽'},
+  {country:'巴西 Brazil',name:'雷亚尔 Brazilian Real',code:'BRL',symbol:'R$'},
+  {country:'南非 South Africa',name:'兰特 Rand',code:'ZAR',symbol:'R'},
+  {country:'泰国 Thailand',name:'泰铢 Baht',code:'THB',symbol:'฿'},
+  {country:'马来西亚 Malaysia',name:'林吉特 Ringgit',code:'MYR',symbol:'RM'},
+  {country:'越南 Vietnam',name:'越南盾 Dong',code:'VND',symbol:'₫'},
+  {country:'印尼 Indonesia',name:'印尼盾 Rupiah',code:'IDR',symbol:'Rp'},
+  {country:'菲律宾 Philippines',name:'比索 Peso',code:'PHP',symbol:'₱'},
+  {country:'阿联酋 UAE',name:'迪拉姆 Dirham',code:'AED',symbol:'د.إ'},
+  {country:'沙特 Saudi Arabia',name:'里亚尔 Riyal',code:'SAR',symbol:'﷼'},
+  {country:'土耳其 Turkey',name:'里拉 Lira',code:'TRY',symbol:'₺'},
+  {country:'墨西哥 Mexico',name:'比索 Mexican Peso',code:'MXN',symbol:'Mex$'},
+  {country:'瑞典 Sweden',name:'克朗 Krona',code:'SEK',symbol:'kr'},
+  {country:'挪威 Norway',name:'克朗 Krone',code:'NOK',symbol:'kr'},
+  {country:'丹麦 Denmark',name:'克朗 Krone',code:'DKK',symbol:'kr'},
+  {country:'新西兰 New Zealand',name:'新西兰元 NZ Dollar',code:'NZD',symbol:'NZ$'},
+  {country:'波兰 Poland',name:'兹罗提 Zloty',code:'PLN',symbol:'zł'}
+];
+
+function render(data) {
+  var html = '<table style="width:100%;border-collapse:collapse;"><tr style="background:var(--bg);font-weight:600;"><td style="padding:6px 8px;">国家 Country</td><td style="padding:6px 8px;">货币 Currency</td><td style="padding:6px 8px;">代码 Code</td><td style="padding:6px 8px;">符号 Symbol</td></tr>';
+  data.forEach(function(c){
+    html += '<tr><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;">'+c.country+'</td><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;">'+c.name+'</td><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;"><strong>'+c.code+'</strong></td><td style="padding:6px 8px;border-bottom:1px solid #f1f5f9;font-size:1.2rem;">'+c.symbol+'</td></tr>';
+  });
+  html += '</table>';
+  document.getElementById('list').innerHTML = html;
+}
+
+function filter() {
+  var kw = document.getElementById('search').value.toLowerCase();
+  var filtered = currencies.filter(function(c){return (c.country+c.name+c.code).toLowerCase().indexOf(kw)>=0;});
+  render(filtered);
+}
+
+render(currencies);
+</script>
+</body>
+</html>

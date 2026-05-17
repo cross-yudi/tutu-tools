@@ -41,6 +41,7 @@
 
   <div class="cat-tabs">
     <button class="cat-tab active" data-cat="all">全部 <span style="font-size:.7rem;color:inherit;opacity:.7;">All</span></button>
+    <button class="cat-tab" data-cat="finance">💰 财务工具 <span style="font-size:.7rem;color:inherit;opacity:.7;">Finance</span></button>
     <button class="cat-tab" data-cat="life">📅 生活查询 <span style="font-size:.7rem;color:inherit;opacity:.7;">Life</span></button>
     <button class="cat-tab" data-cat="generate">🔐 生成器 <span style="font-size:.7rem;color:inherit;opacity:.7;">Generator</span></button>
     <button class="cat-tab" data-cat="encode">🔢 编码转换 <span style="font-size:.7rem;color:inherit;opacity:.7;">Encode</span></button>
@@ -49,6 +50,68 @@
   </div>
 
   <div class="tool-grid" id="toolGrid">
+
+    <!-- 💰 财务工具 Finance -->
+    <a href="tools/rmb-upper/index.html" class="tool-card" data-cats="finance">
+      <span class="icon">💰</span><h3>人民币大写</h3>
+      <span class="desc-cn">数字金额转中文大写（财务用）</span>
+      <span class="desc-en">Number to Chinese RMB uppercase</span>
+    </a>
+    <a href="tools/check-date-upper/index.html" class="tool-card" data-cats="finance">
+      <span class="icon">📝</span><h3>支票日期大写</h3>
+      <span class="desc-cn">日期转为银行支票中文大写</span>
+      <span class="desc-en">Date to Chinese formal format</span>
+    </a>
+    <a href="tools/english-amount/index.html" class="tool-card" data-cats="finance">
+      <span class="icon">💵</span><h3>英文金额大写</h3>
+      <span class="desc-cn">数字金额转英文大写</span>
+      <span class="desc-en">Number to English words</span>
+    </a>
+    <a href="tools/tax-rate-calc/index.html" class="tool-card" data-cats="finance">
+      <span class="icon">🧾</span><h3>税金税率计算器</h3>
+      <span class="desc-cn">增值税/营业税含税价计算</span>
+      <span class="desc-en">VAT & tax rate calculator</span>
+    </a>
+    <a href="tools/tax-calculator/index.html" class="tool-card" data-cats="finance">
+      <span class="icon">🧮</span><h3>个税计算器</h3>
+      <span class="desc-cn">按最新税率计算个人所得税</span>
+      <span class="desc-en">Income tax calculator (CN)</span>
+    </a>
+    <a href="tools/service-tax-calc/index.html" class="tool-card" data-cats="finance">
+      <span class="icon">📋</span><h3>劳务报酬个税</h3>
+      <span class="desc-cn">个人劳务报酬所得税计算</span>
+      <span class="desc-en">Service income tax calculator</span>
+    </a>
+    <a href="tools/currency-exchange/index.html" class="tool-card" data-cats="finance">
+      <span class="icon">💱</span><h3>货币汇率换算</h3>
+      <span class="desc-cn">实时汇率换算，全球主要货币</span>
+      <span class="desc-en">Live currency exchange converter</span>
+    </a>
+    <a href="tools/world-currency/index.html" class="tool-card" data-cats="finance">
+      <span class="icon">🌍</span><h3>世界各国货币</h3>
+      <span class="desc-cn">货币名称、符号、代码查询</span>
+      <span class="desc-en">World currency reference guide</span>
+    </a>
+    <a href="tools/list-calc/index.html" class="tool-card" data-cats="finance">
+      <span class="icon">➕</span><h3>列表求和计算器</h3>
+      <span class="desc-cn">数字列表求和、平均值、最值</span>
+      <span class="desc-en">Sum, average, max & min for lists</span>
+    </a>
+    <a href="tools/contract-calc/index.html" class="tool-card" data-cats="finance">
+      <span class="icon">📑</span><h3>合同款项计算器</h3>
+      <span class="desc-cn">预付款、进度款、质保金分配</span>
+      <span class="desc-en">Contract payment breakdown</span>
+    </a>
+    <a href="tools/loan-calc/index.html" class="tool-card" data-cats="finance">
+      <span class="icon">🏠</span><h3>贷款计算器</h3>
+      <span class="desc-cn">等额本息/等额本金还款计算</span>
+      <span class="desc-en">Loan & mortgage calculator</span>
+    </a>
+    <a href="tools/bank-code-lookup/index.html" class="tool-card" data-cats="finance">
+      <span class="icon">🏦</span><h3>银行联行号查询</h3>
+      <span class="desc-cn">各大银行SWIFT/联行号查询</span>
+      <span class="desc-en">Bank codes lookup</span>
+    </a>
 
     <!-- 📅 生活查询 Life -->
     <a href="tools/phone-lookup/index.html" class="tool-card" data-cats="life">
@@ -68,12 +131,6 @@
       <h3>日期计算器</h3>
       <span class="desc-cn">日期差计算、日期加减天数</span>
       <span class="desc-en">Date difference & add/subtract days</span>
-    </a>
-    <a href="tools/rmb-upper/index.html" class="tool-card" data-cats="life">
-      <span class="icon">💰</span>
-      <h3>人民币大写</h3>
-      <span class="desc-cn">数字金额转中文大写（财务用）</span>
-      <span class="desc-en">Number to Chinese RMB uppercase</span>
     </a>
     <a href="tools/unit-converter/index.html" class="tool-card" data-cats="life">
       <span class="icon">📏</span>
@@ -192,13 +249,6 @@
       <span class="desc-cn">全角半角字符互相转换</span>
       <span class="desc-en">Fullwidth ↔ Halfwidth converter</span>
     </a>
-    <a href="tools/list-calc/index.html" class="tool-card" data-cats="text">
-      <span class="icon">➕</span>
-      <h3>列表计算器</h3>
-      <span class="desc-cn">数字列表求和、平均值、最值</span>
-      <span class="desc-en">Sum, average, max & min for lists</span>
-    </a>
-
     <a href="tools/css-formatter/index.html" class="tool-card" data-cats="dev">
       <span class="icon">🎨</span>
       <h3>CSS 格式化</h3>
@@ -206,18 +256,6 @@
       <span class="desc-en">CSS beautifier & minifier</span>
     </a>
 
-    <a href="tools/tax-calculator/index.html" class="tool-card" data-cats="life">
-      <span class="icon">🧮</span>
-      <h3>个税计算器</h3>
-      <span class="desc-cn">按最新税率计算个人所得税</span>
-      <span class="desc-en">Income tax calculator (CN)</span>
-    </a>
-    <a href="tools/english-amount/index.html" class="tool-card" data-cats="life">
-      <span class="icon">💵</span>
-      <h3>英文金额大写</h3>
-      <span class="desc-cn">数字金额转英文大写</span>
-      <span class="desc-en">Number to English words</span>
-    </a>
     <a href="tools/workday-calc/index.html" class="tool-card" data-cats="life">
       <span class="icon">💼</span>
       <h3>工作日计算器</h3>

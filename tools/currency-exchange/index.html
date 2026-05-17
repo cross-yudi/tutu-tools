@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>货币汇率换算 Currency Exchange - 兔兔工具站</title>
+  <meta name="description" content="在线货币汇率换算工具，支持人民币、美元、欧元、日元、英镑等。Online currency converter — CNY, USD, EUR, JPY, GBP & more.">
+  <meta name="keywords" content="货币汇率,汇率换算,currency converter,exchange rate,外汇换算">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 货币汇率换算</div><h2>💱 货币汇率换算</h2><p class="desc">实时货币汇率换算，支持全球主要货币</p><p class="desc-en">Live currency exchange — major world currencies</p></div>
+<div class="tool-body">
+<div class="tool-row">
+<div class="tool-panel">
+<label>金额 <span class="label-en">Amount</span></label>
+<input type="number" id="amount" value="100" min="0">
+<label style="margin-top:10px;">从 <span class="label-en">From</span></label>
+<select id="fromCur" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;"></select>
+<label style="margin-top:10px;">到 <span class="label-en">To</span></label>
+<select id="toCur" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;"></select>
+<button class="btn btn-primary" style="margin-top:12px;" onclick="convert()">换算 Convert</button>
+</div>
+<div class="tool-panel">
+<label>换算结果 <span class="label-en">Result</span></label>
+<div class="result-area" id="output" style="font-family:inherit;text-align:center;font-size:1.2rem;min-height:100px;padding:24px;">-</div>
+<div class="info-bar"><span id="rateInfo"></span><button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button></div>
+</div>
+</div>
+</div>
+</main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var currencies = {
+  CNY:'人民币 Chinese Yuan',USD:'美元 US Dollar',EUR:'欧元 Euro',JPY:'日元 Japanese Yen',
+  GBP:'英镑 British Pound',HKD:'港币 Hong Kong Dollar',KRW:'韩元 Korean Won',
+  AUD:'澳元 Australian Dollar',CAD:'加元 Canadian Dollar',CHF:'瑞士法郎 Swiss Franc',
+  SGD:'新加坡元 Singapore Dollar',TWD:'新台币 Taiwan Dollar',THB:'泰铢 Thai Baht',
+  MYR:'马来西亚林吉特 Malaysian Ringgit',INR:'印度卢比 Indian Rupee',RUB:'俄罗斯卢布 Russian Ruble',
+  BRL:'巴西雷亚尔 Brazilian Real',ZAR:'南非兰特 South African Rand',MXN:'墨西哥比索 Mexican Peso'
+};
+
+var selFrom = document.getElementById('fromCur');
+var selTo = document.getElementById('toCur');
+for (var k in currencies) {
+  selFrom.innerHTML += '<option value="'+k+'">'+k+' — '+currencies[k]+'</option>';
+  selTo.innerHTML += '<option value="'+k+'">'+k+' — '+currencies[k]+'</option>';
+}
+selFrom.value = 'CNY';
+selTo.value = 'USD';
+
+function convert() {
+  var amount = parseFloat(document.getElementById('amount').value) || 0;
+  var from = selFrom.value, to = selTo.value;
+  if (from === to) {
+    document.getElementById('output').innerHTML = '<strong>'+amount.toLocaleString()+' '+from+'</strong> =<br><strong>'+amount.toLocaleString()+' '+to+'</strong>';
+    document.getElementById('rateInfo').textContent = '汇率 Rate: 1.0';
+    return;
+  }
+  // 使用免费汇率API (open.er-api.com)
+  var url = 'https://open.er-api.com/v6/latest/' + from;
+  fetch(url).then(function(r){return r.json();}).then(function(data){
+    var rate = data.rates[to];
+    var result = amount * rate;
+    document.getElementById('output').innerHTML = '<strong>'+amount.toLocaleString()+' '+from+'</strong> =<br><strong style="font-size:1.4rem;">'+result.toFixed(4)+' '+to+'</strong>';
+    document.getElementById('rateInfo').textContent = '1 '+from+' = '+rate.toFixed(4)+' '+to+' | 数据来源 API';
+  }).catch(function(){
+    document.getElementById('output').textContent = '汇率API暂时不可用，请稍后重试。Exchange rate API unavailable, try later.';
+  });
+}
+</script>
+</body>
+</html>

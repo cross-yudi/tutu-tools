@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMI体质指数计算 BMI Calculator - 兔兔工具站</title>
+<meta name="description" content="在线BMI体质指数计算器，评估体重是否健康。BMI calculator — check if your weight is in the healthy range.">
+<meta name="keywords" content="BMI计算,BMI体质指数,bmi calculator,体重指数,健康体重">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / BMI计算</div><h2>⚖️ BMI 体质指数计算</h2><p class="desc">输入身高体重，评估体重是否健康</p><p class="desc-en">Check if your weight is in the healthy range</p></div>
+<div class="tool-body">
+<div class="tool-row">
+<div class="tool-panel">
+<label>身高 Height</label>
+<div style="display:flex;gap:8px;align-items:center;">
+<input type="number" id="height" value="170" min="50" max="250" style="flex:1;"><span>cm</span></div>
+<label style="margin-top:10px;">体重 Weight</label>
+<div style="display:flex;gap:8px;align-items:center;">
+<input type="number" id="weight" value="65" min="10" max="300" style="flex:1;"><span>kg</span></div>
+<button class="btn btn-primary" style="margin-top:12px;width:100%;" onclick="calc()">计算 Calculate</button>
+</div>
+<div class="tool-panel">
+<label>计算结果 <span class="label-en">Result</span></label>
+<div style="text-align:center;">
+<div style="font-size:3rem;font-weight:800;" id="rBmi">-</div>
+<div style="font-size:.9rem;color:var(--text-en);">BMI 指数</div>
+<div style="margin-top:8px;padding:10px 20px;border-radius:20px;display:inline-block;font-weight:700;font-size:1.1rem;" id="rLabel">-</div>
+<div style="margin-top:8px;font-size:.85rem;color:var(--text-secondary);" id="rRange"></div>
+<div style="margin-top:4px;font-size:.8rem;color:var(--text-en);" id="rAdvice"></div>
+</div>
+</div>
+</div>
+<div class="tool-panel">
+<label>BMI 参考标准 <span class="label-en">Reference</span></label>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.82rem;">
+<div style="padding:6px 10px;background:#fef2f2;border-radius:6px;"><strong>&lt;18.5</strong> 偏瘦 Underweight</div>
+<div style="padding:6px 10px;background:#f0fdf4;border-radius:6px;"><strong>18.5-23.9</strong> 正常 Normal</div>
+<div style="padding:6px 10px;background:#fefce8;border-radius:6px;"><strong>24-27.9</strong> 偏重 Overweight</div>
+<div style="padding:6px 10px;background:#fef2f2;border-radius:6px;"><strong>≥28</strong> 肥胖 Obese</div>
+</div>
+</div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script>
+function calc(){
+  var h=parseFloat(document.getElementById('height').value)/100;
+  var w=parseFloat(document.getElementById('weight').value);
+  if(!h||!w||h<=0){return;}
+  var bmi=w/(h*h);
+  document.getElementById('rBmi').textContent=bmi.toFixed(1);
+  var label,color,range,advice;
+  if(bmi<18.5){label='偏瘦 Underweight';color='#fbbf24';range='正常范围 Normal：18.5-23.9';advice='建议增加营养，适当增重 Consider gaining some weight';}
+  else if(bmi<24){label='正常 Normal';color='#10b981';range='正常范围 Normal：18.5-23.9';advice='体重健康，继续保持！Healthy weight, keep it up!';}
+  else if(bmi<28){label='偏重 Overweight';color='#f59e0b';range='正常范围 Normal：18.5-23.9';advice='建议合理饮食，加强运动 Consider exercising more';}
+  else{label='肥胖 Obese';color='#ef4444';range='正常范围 Normal：18.5-23.9';advice='建议咨询医生，制定减重计划 Consult a doctor for advice';}
+  var lbl=document.getElementById('rLabel');lbl.textContent=label;lbl.style.background=color;lbl.style.color='#fff';
+  document.getElementById('rRange').textContent=range;
+  document.getElementById('rAdvice').textContent=advice;
+}
+</script>
+</body>
+</html>

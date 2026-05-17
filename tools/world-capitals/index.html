@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>各国首都列表 World Capitals - 兔兔工具站</title>
+<meta name="description" content="世界各国首都及主要城市列表查询。World capitals & major cities lookup.">
+<meta name="keywords" content="各国首都,世界首都,world capitals,capital cities,首都列表">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 各国首都</div><h2>🏙️ 各国首都列表</h2><p class="desc">世界各国首都及人口、面积速查</p><p class="desc-en">World capitals & country facts at a glance</p></div>
+<div class="tool-body">
+<div class="tool-panel"><label>搜索 <span class="label-en">Search</span></label><input type="text" id="search" placeholder="输入国家或首都... Search..." oninput="filter()"></div>
+<div class="tool-panel"><label>首都列表 <span class="label-en">Capitals</span></label><div class="result-area" id="list" style="font-family:inherit;font-size:.8rem;max-height:450px;overflow:auto;"></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script>
+var capitals=[
+  {country:'中国 China',capital:'北京 Beijing',pop:'14.2亿',area:'960万km²',lang:'中文 Chinese'},
+  {country:'美国 United States',capital:'华盛顿 Washington DC',pop:'3.3亿',area:'937万km²',lang:'英语 English'},
+  {country:'英国 United Kingdom',capital:'伦敦 London',pop:'6700万',area:'24万km²',lang:'英语 English'},
+  {country:'日本 Japan',capital:'东京 Tokyo',pop:'1.25亿',area:'37.8万km²',lang:'日语 Japanese'},
+  {country:'韩国 South Korea',capital:'首尔 Seoul',pop:'5200万',area:'10万km²',lang:'韩语 Korean'},
+  {country:'德国 Germany',capital:'柏林 Berlin',pop:'8300万',area:'35.7万km²',lang:'德语 German'},
+  {country:'法国 France',capital:'巴黎 Paris',pop:'6700万',area:'55万km²',lang:'法语 French'},
+  {country:'意大利 Italy',capital:'罗马 Rome',pop:'6000万',area:'30万km²',lang:'意大利语 Italian'},
+  {country:'加拿大 Canada',capital:'渥太华 Ottawa',pop:'3800万',area:'998万km²',lang:'英语/法语 EN/FR'},
+  {country:'澳大利亚 Australia',capital:'堪培拉 Canberra',pop:'2600万',area:'769万km²',lang:'英语 English'},
+  {country:'俄罗斯 Russia',capital:'莫斯科 Moscow',pop:'1.44亿',area:'1709万km²',lang:'俄语 Russian'},
+  {country:'印度 India',capital:'新德里 New Delhi',pop:'14.1亿',area:'298万km²',lang:'印地语 Hindi'},
+  {country:'巴西 Brazil',capital:'巴西利亚 Brasilia',pop:'2.13亿',area:'851万km²',lang:'葡萄牙语 Portuguese'},
+  {country:'新加坡 Singapore',capital:'新加坡 Singapore',pop:'570万',area:'733km²',lang:'英语/中文/马来语'},
+  {country:'泰国 Thailand',capital:'曼谷 Bangkok',pop:'7000万',area:'51万km²',lang:'泰语 Thai'},
+  {country:'越南 Vietnam',capital:'河内 Hanoi',pop:'9800万',area:'33万km²',lang:'越南语 Vietnamese'},
+  {country:'埃及 Egypt',capital:'开罗 Cairo',pop:'1.04亿',area:'100万km²',lang:'阿拉伯语 Arabic'},
+  {country:'南非 South Africa',capital:'比勒陀利亚 Pretoria',pop:'6000万',area:'122万km²',lang:'英语/祖鲁语'},
+  {country:'新西兰 New Zealand',capital:'惠灵顿 Wellington',pop:'510万',area:'27万km²',lang:'英语 English'},
+  {country:'墨西哥 Mexico',capital:'墨西哥城 Mexico City',pop:'1.28亿',area:'196万km²',lang:'西班牙语 Spanish'}
+];
+function render(data){
+  var html='<table style="width:100%;border-collapse:collapse;"><tr style="background:var(--bg);font-weight:600;"><td>国家</td><td>首都</td><td>人口</td><td>面积</td><td>语言</td></tr>';
+  data.forEach(function(c){html+='<tr><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;">'+c.country+'</td><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;"><strong>'+c.capital+'</strong></td><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;">'+c.pop+'</td><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;">'+c.area+'</td><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;color:var(--text-secondary);">'+c.lang+'</td></tr>';});
+  html+='</table>';
+  document.getElementById('list').innerHTML=html;
+}
+function filter(){
+  var kw=document.getElementById('search').value.toLowerCase();
+  render(capitals.filter(function(c){return(c.country+c.capital+c.lang).toLowerCase().indexOf(kw)>=0;}));
+}
+render(capitals);
+</script>
+</body>
+</html>

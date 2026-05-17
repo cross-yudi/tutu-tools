@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>子女血型遗传查询 Blood Type - 兔兔工具站</title>
+<meta name="description" content="根据父母血型推测子女可能血型。Blood type inheritance calculator — predict child blood type from parents.">
+<meta name="keywords" content="血型遗传,血型查询,blood type,血型配对,子女血型">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 血型遗传查询</div><h2>🩸 子女血型遗传查询</h2><p class="desc">根据父母血型推测子女可能血型及概率</p><p class="desc-en">Predict child blood type from parents</p></div>
+<div class="tool-body">
+<div class="tool-row">
+<div class="tool-panel">
+<label>父亲血型 <span class="label-en">Father</span></label>
+<select id="father" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:1rem;">
+<option value="A">A 型</option><option value="B">B 型</option><option value="AB">AB 型</option><option value="O">O 型</option></select>
+<label style="margin-top:10px;">母亲血型 <span class="label-en">Mother</span></label>
+<select id="mother" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:1rem;">
+<option value="A">A 型</option><option value="B">B 型</option><option value="AB">AB 型</option><option value="O">O 型</option></select>
+<button class="btn btn-primary" style="margin-top:12px;width:100%;" onclick="calc()">查询 Check</button>
+</div>
+</div>
+<div class="tool-panel">
+<label>可能的子女血型 <span class="label-en">Possible Child Blood Types</span></label>
+<div class="result-area" id="output" style="font-family:inherit;text-align:center;min-height:100px;padding:20px;"></div>
+</div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script>
+// ABO血型遗传规律表
+var table = {
+  'A,A':{'A':'100%','O':'0%','B':'0%','AB':'0%'},
+  'A,B':{'A':'25%','B':'25%','AB':'25%','O':'25%'},
+  'A,AB':{'A':'50%','B':'12.5%','AB':'37.5%','O':'0%'},
+  'A,O':{'A':'50%','O':'50%','B':'0%','AB':'0%'},
+  'B,B':{'B':'75%','O':'25%','A':'0%','AB':'0%'},
+  'B,AB':{'A':'12.5%','B':'50%','AB':'37.5%','O':'0%'},
+  'B,O':{'B':'50%','O':'50%','A':'0%','AB':'0%'},
+  'AB,AB':{'A':'25%','B':'25%','AB':'50%','O':'0%'},
+  'AB,O':{'A':'50%','B':'50%','AB':'0%','O':'0%'},
+  'O,O':{'O':'100%','A':'0%','B':'0%','AB':'0%'},
+  'A,A2':{'A':'100%','O':'0%','B':'0%','AB':'0%'},
+  'A,B2':{'A':'25%','B':'25%','AB':'25%','O':'25%'},
+  'A,AB2':{'A':'50%','B':'12.5%','AB':'37.5%','O':'0%'},
+  'A,O2':{'A':'50%','O':'50%','B':'0%','AB':'0%'},
+  'B,B2':{'B':'75%','O':'25%','A':'0%','AB':'0%'},
+  'B,AB2':{'A':'12.5%','B':'50%','AB':'37.5%','O':'0%'},
+  'B,O2':{'B':'50%','O':'50%','A':'0%','AB':'0%'},
+  'AB,AB2':{'A':'25%','B':'25%','AB':'50%','O':'0%'},
+  'AB,O2':{'A':'50%','B':'50%','AB':'0%','O':'0%'},
+  'O,O2':{'O':'100%','A':'0%','B':'0%','AB':'0%'}
+};
+
+function calc(){
+  var f=document.getElementById('father').value;
+  var m=document.getElementById('mother').value;
+  var key=[f,m].sort().join(',');
+  if(key in table) key = key; else {var tmp=f;f=m;m=tmp;key=[f,m].sort().join(',');}
+  // 对称处理
+  var rkey = f + ',' + m;
+  var data = table[rkey];
+  if(!data){
+    var rkey2 = m + ',' + f;
+    data = table[rkey2];
+  }
+  if(!data){
+    document.getElementById('output').textContent = '数据不完整 Incomplete data';
+    return;
+  }
+  var types = ['A','B','AB','O'];
+  var colors = {'A':'#dbeafe','B':'#fef3c7','AB':'#fed7aa','O':'#e5e7eb'};
+  var html = '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">';
+  types.forEach(function(t){
+    var pct = data[t] || '0%';
+    var isPossible = pct !== '0%';
+    html += '<div style="background:'+colors[t]+';padding:16px 20px;border-radius:12px;opacity:'+(isPossible?'1':'0.4')+';min-width:80px;">'+
+      '<div style="font-size:2rem;">'+(t==='O'?'🅾️':t==='A'?'🅰️':t==='B'?'🅱️':'🆎')+'</div>'+
+      '<div style="font-weight:700;">'+t+' 型</div><div style="font-size:.85rem;">'+pct+'</div></div>';
+  });
+  html += '</div>';
+  document.getElementById('output').innerHTML = html;
+}
+</script>
+</body>
+</html>

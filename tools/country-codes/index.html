@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国家地区代码 Country Codes - 兔兔工具站</title>
+<meta name="description" content="世界各国地区代码查询：ISO代码、域名后缀。Country & region codes — ISO alpha-2, alpha-3, domain suffixes.">
+<meta name="keywords" content="国家代码,地区代码,country code,ISO代码,域名后缀">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 国家地区代码</div><h2>🌐 国家地区代码</h2><p class="desc">世界各国地区ISO代码及域名后缀</p><p class="desc-en">Country codes — ISO alpha-2, alpha-3 & domains</p></div>
+<div class="tool-body">
+<div class="tool-panel"><label>搜索 <span class="label-en">Search</span></label><input type="text" id="search" placeholder="输入国家名或代码... Search..." oninput="filter()"></div>
+<div class="tool-panel"><label>代码列表 <span class="label-en">Code List</span></label><div class="result-area" id="list" style="font-family:inherit;font-size:.8rem;max-height:450px;overflow:auto;"></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script>
+var countries=[
+  {name:'中国 China',a2:'CN',a3:'CHN',dom:'.cn',continent:'亚洲'},
+  {name:'美国 United States',a2:'US',a3:'USA',dom:'.us',continent:'北美洲'},
+  {name:'英国 United Kingdom',a2:'GB',a3:'GBR',dom:'.uk',continent:'欧洲'},
+  {name:'日本 Japan',a2:'JP',a3:'JPN',dom:'.jp',continent:'亚洲'},
+  {name:'韩国 South Korea',a2:'KR',a3:'KOR',dom:'.kr',continent:'亚洲'},
+  {name:'德国 Germany',a2:'DE',a3:'DEU',dom:'.de',continent:'欧洲'},
+  {name:'法国 France',a2:'FR',a3:'FRA',dom:'.fr',continent:'欧洲'},
+  {name:'意大利 Italy',a2:'IT',a3:'ITA',dom:'.it',continent:'欧洲'},
+  {name:'加拿大 Canada',a2:'CA',a3:'CAN',dom:'.ca',continent:'北美洲'},
+  {name:'澳大利亚 Australia',a2:'AU',a3:'AUS',dom:'.au',continent:'大洋洲'},
+  {name:'俄罗斯 Russia',a2:'RU',a3:'RUS',dom:'.ru',continent:'欧洲'},
+  {name:'印度 India',a2:'IN',a3:'IND',dom:'.in',continent:'亚洲'},
+  {name:'巴西 Brazil',a2:'BR',a3:'BRA',dom:'.br',continent:'南美洲'},
+  {name:'新加坡 Singapore',a2:'SG',a3:'SGP',dom:'.sg',continent:'亚洲'},
+  {name:'瑞士 Switzerland',a2:'CH',a3:'CHE',dom:'.ch',continent:'欧洲'},
+  {name:'荷兰 Netherlands',a2:'NL',a3:'NLD',dom:'.nl',continent:'欧洲'},
+  {name:'瑞典 Sweden',a2:'SE',a3:'SWE',dom:'.se',continent:'欧洲'},
+  {name:'西班牙 Spain',a2:'ES',a3:'ESP',dom:'.es',continent:'欧洲'},
+  {name:'泰国 Thailand',a2:'TH',a3:'THA',dom:'.th',continent:'亚洲'},
+  {name:'越南 Vietnam',a2:'VN',a3:'VNM',dom:'.vn',continent:'亚洲'},
+  {name:'马来西亚 Malaysia',a2:'MY',a3:'MYS',dom:'.my',continent:'亚洲'},
+  {name:'印尼 Indonesia',a2:'ID',a3:'IDN',dom:'.id',continent:'亚洲'},
+  {name:'菲律宾 Philippines',a2:'PH',a3:'PHL',dom:'.ph',continent:'亚洲'},
+  {name:'阿联酋 UAE',a2:'AE',a3:'ARE',dom:'.ae',continent:'亚洲'},
+  {name:'沙特 Saudi Arabia',a2:'SA',a3:'SAU',dom:'.sa',continent:'亚洲'},
+  {name:'墨西哥 Mexico',a2:'MX',a3:'MEX',dom:'.mx',continent:'北美洲'},
+  {name:'南非 South Africa',a2:'ZA',a3:'ZAF',dom:'.za',continent:'非洲'},
+  {name:'埃及 Egypt',a2:'EG',a3:'EGY',dom:'.eg',continent:'非洲'},
+  {name:'新西兰 New Zealand',a2:'NZ',a3:'NZL',dom:'.nz',continent:'大洋洲'},
+  {name:'土耳其 Turkey',a2:'TR',a3:'TUR',dom:'.tr',continent:'欧洲'}
+];
+function render(data){
+  var html='<table style="width:100%;border-collapse:collapse;"><tr style="background:var(--bg);font-weight:600;"><td>国家</td><td>Alpha-2</td><td>Alpha-3</td><td>域名</td><td>洲</td></tr>';
+  data.forEach(function(c){html+='<tr><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;">'+c.name+'</td><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;"><strong>'+c.a2+'</strong></td><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;">'+c.a3+'</td><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;">'+c.dom+'</td><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;color:var(--text-secondary);">'+c.continent+'</td></tr>';});
+  html+='</table>';
+  document.getElementById('list').innerHTML=html;
+}
+function filter(){
+  var kw=document.getElementById('search').value.toLowerCase();
+  render(countries.filter(function(c){return(c.name+c.a2+c.a3+c.continent+c.dom).toLowerCase().indexOf(kw)>=0;}));
+}
+render(countries);
+</script>
+</body>
+</html>

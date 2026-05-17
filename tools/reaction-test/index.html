@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>反应速度测试 Reaction Test - 兔兔工具站</title>
+<meta name="description" content="在线反应速度测试，点击变色区域测试你的反应时长。Online reaction time test — see how fast you can react!">
+<meta name="keywords" content="反应速度测试,reaction test,反应时间,reaction time,在线测试">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 反应速度测试</div><h2>⚡ 反应速度测试</h2><p class="desc">点击变色区域，测试你的反应时长</p><p class="desc-en">Click when the color changes — test your reaction time!</p></div>
+<div class="tool-body">
+<style>.react-box{width:100%;height:280px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .1s;font-size:1.2rem;font-weight:700;user-select:none;border:2px solid var(--border);}
+.react-idle{background:#e5e7eb;color:#6b7280;}.react-waiting{background:#fef3c7;color:#d97706;}.react-ready{background:#10b981;color:#fff;}
+.react-wrong{background:#ef4444;color:#fff;}.react-results{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;text-align:center;}
+@media(max-width:640px){.react-results{grid-template-columns:repeat(2,1fr);}}</style>
+<div class="react-box react-idle" id="reactBox" onclick="handleClick()">点击此处开始测试<br><span style="font-size:.85rem;font-weight:400;">Click here to start</span></div>
+<div class="react-results">
+<div style="background:#f8fafc;padding:10px;border-radius:8px;">本轮 Round<br><strong id="rRound" style="font-size:1.3rem;">-</strong></div>
+<div style="background:#f8fafc;padding:10px;border-radius:8px;">反应时间 Time<br><strong id="rTime" style="font-size:1.3rem;">-</strong></div>
+<div style="background:#f8fafc;padding:10px;border-radius:8px;">最佳 Best<br><strong id="rBest" style="font-size:1.3rem;color:#059669;">-</strong></div>
+<div style="background:#f8fafc;padding:10px;border-radius:8px;">平均 Avg<br><strong id="rAvg" style="font-size:1.3rem;">-</strong></div>
+</div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script>
+var state='idle', timer=0, startTime=0, round=0, best=Infinity, total=0, count=0;
+var box=document.getElementById('reactBox');
+
+function setClass(c){box.className='react-box '+c;}
+
+function handleClick(){
+  if(state==='idle'){startRound();}
+  else if(state==='waiting'){// 太早了
+    clearTimeout(timer);setClass('react-wrong');
+    box.innerHTML='太早了！<br><span style="font-size:.85rem;font-weight:400;">Too early! Click to retry</span>';
+    state='idle';
+  }else if(state==='ready'){
+    var elapsed=(Date.now()-startTime);
+    round++;total+=elapsed;count++;
+    if(elapsed<best)best=elapsed;
+    setClass('react-idle');
+    box.innerHTML=elapsed+' ms<br><span style="font-size:.85rem;font-weight:400;">点击继续 Click to continue</span>';
+    document.getElementById('rRound').textContent=round;
+    document.getElementById('rTime').textContent=elapsed+' ms';
+    document.getElementById('rBest').textContent=best+' ms';
+    document.getElementById('rAvg').textContent=Math.round(total/count)+' ms';
+    state='idle';
+  }
+}
+
+function startRound(){
+  state='waiting';
+  setClass('react-waiting');
+  box.innerHTML='等待绿色出现...<br><span style="font-size:.85rem;font-weight:400;">Wait for green...</span>';
+  var delay=1000+Math.random()*3000;
+  timer=setTimeout(function(){
+    state='ready';
+    setClass('react-ready');
+    startTime=Date.now();
+    box.innerHTML='立即点击！<br><span style="font-size:.85rem;font-weight:400;">CLICK NOW!</span>';
+  },delay);
+}
+</script>
+</body>
+</html>

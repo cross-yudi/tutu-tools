@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>区号邮编查询 Area & Zip Code - 兔兔工具站</title>
+<meta name="description" content="中国各城市电话区号和邮政编码查询。Chinese city area codes & zip codes lookup.">
+<meta name="keywords" content="区号查询,邮编查询,电话区号,area code,zip code,邮政编码">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 区号邮编查询</div><h2>📍 区号邮编查询</h2><p class="desc">中国各城市电话区号和邮政编码速查</p><p class="desc-en">Chinese city area codes & zip codes</p></div>
+<div class="tool-body">
+<div class="tool-panel"><label>搜索城市 <span class="label-en">Search City</span></label><input type="text" id="search" placeholder="输入城市名... Enter city..." oninput="filter()"></div>
+<div class="tool-panel"><label>查询结果 <span class="label-en">Result</span></label><div class="result-area" id="list" style="font-family:inherit;font-size:.82rem;max-height:400px;overflow:auto;"></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script>
+var cities = [
+  {city:'北京 Beijing',area:'010',zip:'100000',prov:'北京'},{city:'上海 Shanghai',area:'021',zip:'200000',prov:'上海'},
+  {city:'天津 Tianjin',area:'022',zip:'300000',prov:'天津'},{city:'重庆 Chongqing',area:'023',zip:'400000',prov:'重庆'},
+  {city:'广州 Guangzhou',area:'020',zip:'510000',prov:'广东'},{city:'深圳 Shenzhen',area:'0755',zip:'518000',prov:'广东'},
+  {city:'东莞 Dongguan',area:'0769',zip:'523000',prov:'广东'},{city:'佛山 Foshan',area:'0757',zip:'528000',prov:'广东'},
+  {city:'杭州 Hangzhou',area:'0571',zip:'310000',prov:'浙江'},{city:'宁波 Ningbo',area:'0574',zip:'315000',prov:'浙江'},
+  {city:'温州 Wenzhou',area:'0577',zip:'325000',prov:'浙江'},{city:'南京 Nanjing',area:'025',zip:'210000',prov:'江苏'},
+  {city:'苏州 Suzhou',area:'0512',zip:'215000',prov:'江苏'},{city:'无锡 Wuxi',area:'0510',zip:'214000',prov:'江苏'},
+  {city:'成都 Chengdu',area:'028',zip:'610000',prov:'四川'},{city:'武汉 Wuhan',area:'027',zip:'430000',prov:'湖北'},
+  {city:'长沙 Changsha',area:'0731',zip:'410000',prov:'湖南'},{city:'福州 Fuzhou',area:'0591',zip:'350000',prov:'福建'},
+  {city:'厦门 Xiamen',area:'0592',zip:'361000',prov:'福建'},{city:'济南 Jinan',area:'0531',zip:'250000',prov:'山东'},
+  {city:'青岛 Qingdao',area:'0532',zip:'266000',prov:'山东'},{city:'西安 Xian',area:'029',zip:'710000',prov:'陕西'},
+  {city:'郑州 Zhengzhou',area:'0371',zip:'450000',prov:'河南'},{city:'沈阳 Shenyang',area:'024',zip:'110000',prov:'辽宁'},
+  {city:'大连 Dalian',area:'0411',zip:'116000',prov:'辽宁'},{city:'哈尔滨 Harbin',area:'0451',zip:'150000',prov:'黑龙江'},
+  {city:'长春 Changchun',area:'0431',zip:'130000',prov:'吉林'},{city:'合肥 Hefei',area:'0551',zip:'230000',prov:'安徽'},
+  {city:'南昌 Nanchang',area:'0791',zip:'330000',prov:'江西'},{city:'昆明 Kunming',area:'0871',zip:'650000',prov:'云南'},
+  {city:'贵阳 Guiyang',area:'0851',zip:'550000',prov:'贵州'},{city:'南宁 Nanning',area:'0771',zip:'530000',prov:'广西'},
+  {city:'海口 Haikou',area:'0898',zip:'570000',prov:'海南'},{city:'兰州 Lanzhou',area:'0931',zip:'730000',prov:'甘肃'},
+  {city:'太原 Taiyuan',area:'0351',zip:'030000',prov:'山西'},{city:'石家庄 Shijiazhuang',area:'0311',zip:'050000',prov:'河北'},
+  {city:'呼和浩特 Hohhot',area:'0471',zip:'010000',prov:'内蒙古'},{city:'拉萨 Lhasa',area:'0891',zip:'850000',prov:'西藏'},
+  {city:'乌鲁木齐 Urumqi',area:'0991',zip:'830000',prov:'新疆'},{city:'银川 Yinchuan',area:'0951',zip:'750000',prov:'宁夏'},
+  {city:'西宁 Xining',area:'0971',zip:'810000',prov:'青海'}
+];
+function render(data) {
+  var html = '<table style="width:100%;border-collapse:collapse;"><tr style="background:var(--bg);font-weight:600;"><td>城市</td><td>区号</td><td>邮编</td><td>省份</td></tr>';
+  data.forEach(function(c){html+='<tr><td style="padding:4px 8px;border-bottom:1px solid #f1f5f9;">'+c.city+'</td><td style="padding:4px 8px;border-bottom:1px solid #f1f5f9;"><strong>'+c.area+'</strong></td><td style="padding:4px 8px;border-bottom:1px solid #f1f5f9;">'+c.zip+'</td><td style="padding:4px 8px;border-bottom:1px solid #f1f5f9;color:var(--text-secondary);">'+c.prov+'</td></tr>';});
+  html+='</table>';
+  document.getElementById('list').innerHTML=html;
+}
+function filter(){
+  var kw=document.getElementById('search').value.toLowerCase();
+  render(cities.filter(function(c){return(c.city+c.prov+c.area).toLowerCase().indexOf(kw)>=0;}));
+}
+render(cities);
+</script>
+</body>
+</html>

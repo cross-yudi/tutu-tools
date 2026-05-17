@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>各国电话代码及时差 Country Phone & Time - 兔兔工具站</title>
+<meta name="description" content="世界各国电话区号代码及时差查询。International dialing codes & time zone lookup.">
+<meta name="keywords" content="电话代码,国际区号,时差,dialing code,country code,time zone">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 电话代码及时差</div><h2>📱 各国电话代码及时差</h2><p class="desc">国际电话区号和与北京时差速查</p><p class="desc-en">International dialing codes & time differences from Beijing</p></div>
+<div class="tool-body">
+<div class="tool-panel"><label>搜索 <span class="label-en">Search</span></label><input type="text" id="search" placeholder="输入国家... Search..." oninput="filter()"></div>
+<div class="tool-panel"><label>代码列表 <span class="label-en">Code List</span></label><div class="result-area" id="list" style="font-family:inherit;font-size:.8rem;max-height:450px;overflow:auto;"></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script>
+var countries=[
+  {name:'中国 China',code:'+86',tz:'UTC+8',diff:'0',continent:'亚洲'},
+  {name:'美国 United States',code:'+1',tz:'UTC-5~-8',diff:'-13~-16',continent:'北美洲'},
+  {name:'英国 United Kingdom',code:'+44',tz:'UTC+0',diff:'-8',continent:'欧洲'},
+  {name:'日本 Japan',code:'+81',tz:'UTC+9',diff:'+1',continent:'亚洲'},
+  {name:'韩国 South Korea',code:'+82',tz:'UTC+9',diff:'+1',continent:'亚洲'},
+  {name:'德国 Germany',code:'+49',tz:'UTC+1',diff:'-7',continent:'欧洲'},
+  {name:'法国 France',code:'+33',tz:'UTC+1',diff:'-7',continent:'欧洲'},
+  {name:'意大利 Italy',code:'+39',tz:'UTC+1',diff:'-7',continent:'欧洲'},
+  {name:'加拿大 Canada',code:'+1',tz:'UTC-5~-8',diff:'-13~-16',continent:'北美洲'},
+  {name:'澳大利亚 Australia',code:'+61',tz:'UTC+8~+10',diff:'0~+2',continent:'大洋洲'},
+  {name:'俄罗斯 Russia',code:'+7',tz:'UTC+3',diff:'-5',continent:'欧洲'},
+  {name:'印度 India',code:'+91',tz:'UTC+5.5',diff:'-2.5',continent:'亚洲'},
+  {name:'巴西 Brazil',code:'+55',tz:'UTC-3',diff:'-11',continent:'南美洲'},
+  {name:'新加坡 Singapore',code:'+65',tz:'UTC+8',diff:'0',continent:'亚洲'},
+  {name:'瑞士 Switzerland',code:'+41',tz:'UTC+1',diff:'-7',continent:'欧洲'},
+  {name:'荷兰 Netherlands',code:'+31',tz:'UTC+1',diff:'-7',continent:'欧洲'},
+  {name:'泰国 Thailand',code:'+66',tz:'UTC+7',diff:'-1',continent:'亚洲'},
+  {name:'越南 Vietnam',code:'+84',tz:'UTC+7',diff:'-1',continent:'亚洲'},
+  {name:'马来西亚 Malaysia',code:'+60',tz:'UTC+8',diff:'0',continent:'亚洲'},
+  {name:'印尼 Indonesia',code:'+62',tz:'UTC+7~+9',diff:'-1~+1',continent:'亚洲'},
+  {name:'菲律宾 Philippines',code:'+63',tz:'UTC+8',diff:'0',continent:'亚洲'},
+  {name:'阿联酋 UAE',code:'+971',tz:'UTC+4',diff:'-4',continent:'亚洲'},
+  {name:'沙特 Saudi Arabia',code:'+966',tz:'UTC+3',diff:'-5',continent:'亚洲'},
+  {name:'墨西哥 Mexico',code:'+52',tz:'UTC-6',diff:'-14',continent:'北美洲'},
+  {name:'南非 South Africa',code:'+27',tz:'UTC+2',diff:'-6',continent:'非洲'},
+  {name:'埃及 Egypt',code:'+20',tz:'UTC+2',diff:'-6',continent:'非洲'},
+  {name:'新西兰 New Zealand',code:'+64',tz:'UTC+12',diff:'+4',continent:'大洋洲'},
+  {name:'土耳其 Turkey',code:'+90',tz:'UTC+3',diff:'-5',continent:'欧洲'},
+  {name:'瑞典 Sweden',code:'+46',tz:'UTC+1',diff:'-7',continent:'欧洲'},
+  {name:'西班牙 Spain',code:'+34',tz:'UTC+1',diff:'-7',continent:'欧洲'}
+];
+function render(data){
+  var html='<table style="width:100%;border-collapse:collapse;"><tr style="background:var(--bg);font-weight:600;"><td>国家</td><td>代码</td><td>时区</td><td>时差(vs北京)</td><td>洲</td></tr>';
+  data.forEach(function(c){html+='<tr><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;">'+c.name+'</td><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;"><strong>'+c.code+'</strong></td><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;">'+c.tz+'</td><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;color:'+(c.diff==='0'?'#059669':'var(--text)')+';">'+c.diff+'h</td><td style="padding:4px 6px;border-bottom:1px solid #f1f5f9;color:var(--text-secondary);">'+c.continent+'</td></tr>';});
+  html+='</table>';
+  document.getElementById('list').innerHTML=html;
+}
+function filter(){
+  var kw=document.getElementById('search').value.toLowerCase();
+  render(countries.filter(function(c){return(c.name+c.code+c.tz+c.continent).toLowerCase().indexOf(kw)>=0;}));
+}
+render(countries);
+</script>
+</body>
+</html>

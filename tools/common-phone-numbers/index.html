@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>常用电话列表 Phone Directory - 兔兔工具站</title>
+<meta name="description" content="常用电话查询：报警、急救、火警、快递、银行、投诉热线。Common phone numbers — emergency, express, bank, complaints.">
+<meta name="keywords" content="常用电话,紧急电话,投诉电话,快递电话,phone directory,emergency numbers">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 常用电话</div><h2>📞 常用电话列表</h2><p class="desc">紧急救助、快递物流、银行保险、投诉举报电话</p><p class="desc-en">Emergency, express, banking & complaint hotlines</p></div>
+<div class="tool-body">
+<div class="tool-panel"><label>搜索 <span class="label-en">Search</span></label><input type="text" id="search" placeholder="输入关键词... Search..." oninput="filter()"></div>
+<div class="tool-panel"><label>电话列表 <span class="label-en">Directory</span></label><div class="result-area" id="list" style="font-family:inherit;font-size:.82rem;max-height:450px;overflow:auto;"></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script>
+var phones = [
+  {cat:'紧急 Emergency',items:[
+    {name:'报警 Police',num:'110'},{name:'火警 Fire',num:'119'},{name:'急救 Ambulance',num:'120'},
+    {name:'交通报警 Traffic',num:'122'},{name:'短信报警 SMS Police',num:'12110'},{name:'水上救援 Water Rescue',num:'12395'},
+    {name:'森林火警 Forest Fire',num:'12119'},{name:'天气预报 Weather',num:'12121'}]},
+  {cat:'生活服务 Life',items:[
+    {name:'号码查询 Directory',num:'114'},{name:'报时 Time',num:'12117'},{name:'电力服务 Power',num:'95598'},
+    {name:'供水服务 Water',num:'96123'},{name:'燃气服务 Gas',num:'96777'},{name:'消费者投诉 Consumer',num:'12315'}]},
+  {cat:'快递 Express',items:[
+    {name:'顺丰 SF Express',num:'95338'},{name:'邮政 EMS',num:'11183'},{name:'中通 ZTO',num:'95311'},
+    {name:'圆通 YTO',num:'95554'},{name:'申通 STO',num:'95543'},{name:'韵达 Yunda',num:'95546'},
+    {name:'京东物流 JD',num:'950616'},{name:'德邦 Deppon',num:'95353'},{name:'极兔 J&T',num:'956025'}]},
+  {cat:'银行 Banks',items:[
+    {name:'工商银行 ICBC',num:'95588'},{name:'建设银行 CCB',num:'95533'},{name:'农业银行 ABC',num:'95599'},
+    {name:'中国银行 BOC',num:'95566'},{name:'交通银行 BCM',num:'95559'},{name:'招商银行 CMB',num:'95555'},
+    {name:'邮储银行 PSBC',num:'95580'},{name:'银联 UnionPay',num:'95516'}]},
+  {cat:'投诉举报 Complaints',items:[
+    {name:'市长热线 Mayor',num:'12345'},{name:'物价投诉 Price',num:'12358'},{name:'环保举报 Environment',num:'12369'},
+    {name:'质量监督 Quality',num:'12365'},{name:'税务服务 Tax',num:'12366'},{name:'劳动保障 Labor',num:'12333'}]}
+];
+function render(data) {
+  var html = '';
+  data.forEach(function(g){
+    html += '<h4 style="margin:10px 0 4px;color:var(--primary-dark);">'+g.cat+'</h4>';
+    g.items.forEach(function(i){
+      html += '<div style="display:flex;justify-content:space-between;padding:4px 8px;border-bottom:1px solid #f1f5f9;">'+
+        '<span>'+i.name+'</span><strong style="font-family:monospace;font-size:1rem;">'+i.num+'</strong></div>';
+    });
+  });
+  document.getElementById('list').innerHTML = html;
+}
+function filter() {
+  var kw = document.getElementById('search').value.toLowerCase();
+  var filtered = phones.map(function(g){
+    var items = g.items.filter(function(i){return (i.name+i.num).toLowerCase().indexOf(kw)>=0;});
+    return {cat:g.cat,items:items};
+  }).filter(function(g){return g.items.length>0;});
+  render(filtered);
+}
+render(phones);
+</script>
+</body>
+</html>

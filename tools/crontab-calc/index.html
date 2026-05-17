@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crontab 执行时间计算 Cron Calc - 兔兔工具站</title>
+<meta name="description" content="在线Crontab表达式解析，显示下次执行时间。Parse crontab expressions and show next execution times.">
+<meta name="keywords" content="crontab,定时任务,cron calculator,cron表达式,定时表达式">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / Crontab 计算</div><h2>⏱️ Crontab 执行时间计算</h2><p class="desc">解析 Crontab 表达式，查看未来执行时间</p><p class="desc-en">Parse crontab expressions & see next execution times</p></div>
+<div class="tool-body">
+<div class="tool-row"><div class="tool-panel"><label>Crontab 表达式 <span class="label-en">Expression</span></label>
+<input type="text" id="cron" placeholder="* * * * *" value="0 9 * * 1-5">
+<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:8px;text-align:center;font-size:.7rem;color:var(--text-secondary);">
+<div>分钟 Min<br>(0-59)</div><div>小时 Hour<br>(0-23)</div><div>日 Day<br>(1-31)</div><div>月 Month<br>(1-12)</div><div>星期 Week<br>(0-7)</div>
+</div>
+<button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="calcCron()">计算下次执行 Calculate</button>
+<div style="margin-top:10px;font-size:.75rem;color:var(--text-en);">常用示例: <a href="#" onclick="document.getElementById('cron').value='*/5 * * * *';calcCron();return false;">每5分钟</a> · <a href="#" onclick="document.getElementById('cron').value='0 * * * *';calcCron();return false;">每小时</a> · <a href="#" onclick="document.getElementById('cron').value='0 9 * * 1-5';calcCron();return false;">工作日9点</a></div></div></div>
+<div class="tool-panel"><label>表达式说明 <span class="label-en">Description</span></label><div class="result-area" id="desc" style="font-family:inherit;">-</div></div>
+<div class="tool-panel"><label>未来10次执行时间 <span class="label-en">Next 10 Runs</span></label><div class="result-area" id="runs" style="font-family:monospace;font-size:.85rem;">-</div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function parseField(field,min,max){
+  if(field==='*'){var result=[];for(var i=min;i<=max;i++)result.push(i);return result;}
+  var result=[];
+  field.split(',').forEach(function(part){
+    if(part.includes('/')){
+      var sp=part.split('/');var step=parseInt(sp[1]);var range=sp[0]==='*'?[min,max]:sp[0].includes('-')?sp[0].split('-').map(Number):[parseInt(sp[0]),max];
+      for(var i=range[0];i<=range[1];i+=step)result.push(i);
+    }else if(part.includes('-')){
+      var sp=part.split('-').map(Number);
+      for(var i=sp[0];i<=sp[1];i++)result.push(i);
+    }else{result.push(parseInt(part));}
+  });
+  return result;
+}
+
+function calcCron(){
+  var expr=document.getElementById('cron').value.trim();
+  var parts=expr.split(/\s+/);
+  if(parts.length!==5){showToast('请输入5段Crontab表达式 5-part expression required');return;}
+
+  try{
+    var mins=parseField(parts[0],0,59);
+    var hours=parseField(parts[1],0,23);
+    var days=parseField(parts[2],1,31);
+    var months=parseField(parts[3],1,12);
+    var weeks=parseField(parts[4],0,7);
+
+    // 描述
+    var descText=expr;
+    if(expr==='* * * * *')descText='每分钟执行 Every minute';
+    else if(expr==='0 * * * *')descText='每小时整点执行 Every hour';
+    else if(expr==='0 0 * * *')descText='每天凌晨0点执行 Every day at midnight';
+    else if(expr==='0 9 * * 1-5')descText='工作日9点执行 Weekdays at 9:00';
+    else if(expr==='*/5 * * * *')descText='每5分钟执行 Every 5 minutes';
+    document.getElementById('desc').textContent=descText+' | 分钟:'+mins.join(',')+' 时:'+hours.join(',')+' 日:'+days.join(',')+' 月:'+months.join(',')+' 周:'+weeks.join(',');
+
+    // 计算未来执行时间
+    var now=new Date();
+    var runsHtml='';
+    var found=0,check=new Date(now);
+    check.setSeconds(0,0);
+    var maxIter=60*24*31*2; // 防止死循环
+    for(var iter=0;iter<maxIter&&found<10;iter++){
+      check.setMinutes(check.getMinutes()+1);
+      if(mins.indexOf(check.getMinutes())>=0 && hours.indexOf(check.getHours())>=0 &&
+         days.indexOf(check.getDate())>=0 && months.indexOf(check.getMonth()+1)>=0 && weeks.indexOf(check.getDay())>=0){
+        found++;
+        var nowStr=check.getFullYear()+'-'+String(check.getMonth()+1).padStart(2,'0')+'-'+String(check.getDate()).padStart(2,'0')+' '+
+          String(check.getHours()).padStart(2,'0')+':'+String(check.getMinutes()).padStart(2,'0');
+        runsHtml+='<div>'+(found)+'. '+nowStr+' ('+['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][check.getDay()]+')</div>';
+      }
+    }
+    document.getElementById('runs').innerHTML=runsHtml||'未找到执行时间 No upcoming runs found';
+  }catch(e){
+    document.getElementById('desc').textContent='表达式解析错误 Parse error';
+  }
+}
+</script>
+</body>
+</html>

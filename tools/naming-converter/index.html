@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>命名转换器 Naming Converter - 兔兔工具站</title>
+<meta name="description" content="在线命名风格转换：驼峰、蛇形、短横线等。Variable naming style converter — camelCase, snake_case, kebab-case, PascalCase.">
+<meta name="keywords" content="命名转换,camelCase,snake_case,kebab-case,PascalCase,naming convention">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 命名转换器</div><h2>🔤 命名转换器</h2><p class="desc">变量命名风格互转：驼峰、蛇形、短横线等</p><p class="desc-en">Convert between camelCase, snake_case, kebab-case & more</p></div>
+<div class="tool-body">
+<div class="tool-row"><div class="tool-panel"><label>输入 <span class="label-en">Input</span></label><input type="text" id="input" placeholder="输入变量名... variable name..."><div class="btn-row" style="margin-top:10px;">
+<button class="btn btn-primary" onclick="convert('camel')">驼峰 camelCase</button>
+<button class="btn btn-primary" onclick="convert('pascal')">帕斯卡 PascalCase</button>
+<button class="btn btn-primary" onclick="convert('snake')">蛇形 snake_case</button>
+<button class="btn btn-primary" onclick="convert('upperSnake')">大写蛇形 UPPER_SNAKE</button>
+<button class="btn btn-outline" onclick="convert('kebab')">短横线 kebab-case</button>
+<button class="btn btn-outline" onclick="convert('constant')">常量 CONSTANT_CASE</button></div></div></div>
+<div class="tool-panel"><label>结果 <span class="label-en">Result</span></label><div class="result-area" id="output" style="font-family:monospace;font-size:1.1rem;text-align:center;min-height:60px;padding:20px;">-</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;" id="allResults"></div>
+<button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function splitWords(name){
+  // 处理各种分隔符
+  if(name.includes('_')) return name.split('_').filter(Boolean).map(function(w){return w.toLowerCase();});
+  if(name.includes('-')) return name.split('-').filter(Boolean).map(function(w){return w.toLowerCase();});
+  // 驼峰/帕斯卡拆分
+  var words = [];
+  var current = '';
+  for(var i=0;i<name.length;i++){
+    if(/[A-Z]/.test(name[i]) && current && current[current.length-1]!==current[current.length-1].toUpperCase()){
+      words.push(current.toLowerCase());current='';
+    }
+    current+=name[i];
+  }
+  if(current) words.push(current.toLowerCase());
+  return words.filter(Boolean);
+}
+function convert(type){
+  var name=document.getElementById('input').value.trim();
+  if(!name)return;
+  var words=splitWords(name);
+  var result;
+  switch(type){
+    case 'camel':result=words.map(function(w,i){return i===0?w:w.charAt(0).toUpperCase()+w.slice(1);}).join('');break;
+    case 'pascal':result=words.map(function(w){return w.charAt(0).toUpperCase()+w.slice(1);}).join('');break;
+    case 'snake':result=words.join('_');break;
+    case 'upperSnake':result=words.map(function(w){return w.toUpperCase();}).join('_');break;
+    case 'kebab':result=words.join('-');break;
+    case 'constant':result=words.map(function(w){return w.toUpperCase();}).join('_');break;
+  }
+  document.getElementById('output').textContent=result;
+  // Show all formats
+  var all=[
+    ['camelCase',words.map(function(w,i){return i===0?w:w.charAt(0).toUpperCase()+w.slice(1);}).join('')],
+    ['PascalCase',words.map(function(w){return w.charAt(0).toUpperCase()+w.slice(1);}).join('')],
+    ['snake_case',words.join('_')],
+    ['UPPER_SNAKE',words.map(function(w){return w.toUpperCase();}).join('_')],
+    ['kebab-case',words.join('-')],
+    ['CONSTANT_CASE',words.map(function(w){return w.toUpperCase();}).join('_')]
+  ];
+  document.getElementById('allResults').innerHTML=all.map(function(a){return '<div style="background:#f8fafc;padding:6px 8px;border-radius:6px;font-family:monospace;font-size:.78rem;"><div style="color:var(--text-en);">'+a[0]+'</div><strong>'+a[1]+'</strong></div>';}).join('');
+}
+</script>
+</body>
+</html>

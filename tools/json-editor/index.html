@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON 编辑器 JSON Editor - 兔兔工具站</title>
+<meta name="description" content="在线JSON编辑器，树形结构编辑，添加/删除/修改字段。Visual JSON editor — add, edit, delete fields in a tree view.">
+<meta name="keywords" content="JSON编辑器,json editor,json tree,JSON可视化,json editor online">
+<link rel="stylesheet" href="../../css/style.css">
+<style>.json-node{margin-left:20px;border-left:2px solid #e5e7eb;padding-left:10px;}
+.json-key{color:#881391;font-weight:600;}.json-string{color:#1a6b3c;}.json-number{color:#1750eb;}
+.json-bool{color:#b84309;}.json-null{color:#808080;}
+.btn-xs{padding:2px 8px;font-size:.7rem;border-radius:4px;border:1px solid var(--border);background:#fff;cursor:pointer;margin-left:4px;}
+.btn-xs:hover{background:#f1f5f9;}</style></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / JSON 编辑器</div><h2>🔧 JSON 编辑器</h2><p class="desc">可视化编辑JSON，树形结构添加/删除/修改字段</p><p class="desc-en">Visual JSON editor — tree view, add/edit/delete fields</p></div>
+<div class="tool-body">
+<div class="tool-row">
+<div class="tool-panel"><label>JSON 输入 <span class="label-en">Input</span></label><textarea id="input" placeholder='{"name":"Tutu","items":[1,2,3]}' style="min-height:120px;"></textarea>
+<div class="btn-row" style="margin-top:8px;"><button class="btn btn-primary" onclick="loadJSON()">加载 Load</button><button class="btn btn-outline" onclick="showJSON()">显示JSON Show JSON</button></div></div>
+<div class="tool-panel"><label>树形编辑 <span class="label-en">Tree Editor</span></label><div class="result-area" id="tree" style="min-height:200px;max-height:400px;overflow:auto;"></div>
+<button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;" onclick="copyText(JSON.stringify(currentData,null,2))">📋 复制JSON Copy JSON</button></div>
+</div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var currentData={};
+function loadJSON(){
+  try{currentData=JSON.parse(document.getElementById('input').value);renderTree();}
+  catch(e){showToast('JSON格式错误 Invalid JSON');}
+}
+function showJSON(){
+  document.getElementById('input').value=JSON.stringify(currentData,null,2);
+  showToast('已生成JSON JSON generated');
+}
+function renderTree(){
+  document.getElementById('tree').innerHTML=renderNode(currentData,'root',true);
+}
+function renderNode(obj,key,isRoot){
+  if(obj===null)return '<span style="color:#808080;">null</span>';
+  if(typeof obj!=='object'){
+    var cls=typeof obj==='string'?'json-string':typeof obj==='number'?'json-number':typeof obj==='boolean'?'json-bool':'json-null';
+    return '<span class="'+cls+'">'+JSON.stringify(obj)+'</span>';
+  }
+  var isArr=Array.isArray(obj);
+  var html='<div'+ (isRoot?'':' class="json-node"')+'>';
+  html+='<strong>'+(key||'root')+'</strong> <span style="color:var(--text-en);font-size:.75rem;">'+(isArr?'[ ]':'{ }')+'</span>';
+  var keys=Object.keys(obj);
+  keys.forEach(function(k){
+    html+='<div style="margin:2px 0;"><span class="json-key">'+k+'</span>: ';
+    html+=renderNode(obj[k],k,false);
+    html+='<button class="btn-xs" onclick="deleteKey(\''+k+'\')">×</button></div>';
+  });
+  if(!isArr){
+    html+='<div style="margin-top:4px;"><input id="newKey" placeholder="键 key" style="width:70px;padding:3px 6px;font-size:.75rem;border:1px solid var(--border);border-radius:4px;">'+
+    '<input id="newVal" placeholder="值 value" style="width:70px;padding:3px 6px;font-size:.75rem;border:1px solid var(--border);border-radius:4px;margin-left:4px;">'+
+    '<button class="btn-xs" onclick="addKey()" style="background:var(--primary);color:#fff;">+ 添加 Add</button></div>';
+  }
+  html+='</div>';return html;
+}
+function deleteKey(k){delete currentData[k];renderTree();}
+function addKey(){
+  var k=document.getElementById('newKey').value.trim();
+  var v=document.getElementById('newVal').value.trim();
+  if(!k){showToast('请输入键名 Enter key name');return;}
+  try{currentData[k]=JSON.parse(v);}catch(e){currentData[k]=v;}
+  renderTree();
+  document.getElementById('input').value=JSON.stringify(currentData,null,2);
+}
+</script>
+</body>
+</html>

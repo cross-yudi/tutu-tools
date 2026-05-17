@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AES 加密解密 AES Encrypt - 兔兔工具站</title>
+<meta name="description" content="在线AES对称加密解密工具，支持AES-256-CBC等多种模式。AES encryption & decryption with password key.">
+<meta name="keywords" content="AES加密,AES解密,AES encrypt,对称加密,AES online">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / AES 加密解密</div><h2>🔐 AES 加密解密</h2><p class="desc">在线 AES 对称加密与解密，支持 CBC 模式</p><p class="desc-en">AES encryption & decryption — secure symmetric encryption</p></div>
+<div class="tool-body">
+<div class="tool-row"><div class="tool-panel"><label>密码 <span class="label-en">Password Key</span></label>
+<input type="text" id="password" placeholder="输入加密密码... Enter password...">
+<label style="margin-top:10px;">文本 <span class="label-en">Text</span></label>
+<textarea id="input" placeholder="输入要加密或已加密的文本... Enter text..." style="min-height:140px;"></textarea>
+<div class="btn-row" style="margin-top:8px;">
+<button class="btn btn-primary" onclick="encrypt()">🔒 加密 Encrypt</button>
+<button class="btn btn-primary" onclick="decrypt()">🔓 解密 Decrypt</button>
+<button class="btn btn-outline" onclick="clearInput('input')">清空 Clear</button></div></div></div>
+<div class="tool-panel"><label>结果 <span class="label-en">Result</span></label><div class="result-area" id="output" style="word-break:break-all;"></div>
+<div class="info-bar"><span id="infoTip"></span><button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+async function getKey(password) {
+  var enc = new TextEncoder();
+  var keyData = enc.encode(password);
+  var hash = await crypto.subtle.digest('SHA-256', keyData);
+  return crypto.subtle.importKey('raw', hash, {name:'AES-CBC'}, false, ['encrypt','decrypt']);
+}
+
+async function encrypt() {
+  var text = document.getElementById('input').value;
+  var pwd = document.getElementById('password').value;
+  if(!text||!pwd){showToast('请输入文本和密码 Enter text and password');return;}
+  try {
+    var key = await getKey(pwd);
+    var iv = crypto.getRandomValues(new Uint8Array(16));
+    var enc = new TextEncoder();
+    var buf = await crypto.subtle.encrypt({name:'AES-CBC',iv:iv}, key, enc.encode(text));
+    var result = btoa(String.fromCharCode(...new Uint8Array(iv)) + String.fromCharCode(...new Uint8Array(buf)));
+    document.getElementById('output').textContent = result;
+    document.getElementById('infoTip').textContent = '已加密 Encrypted | ' + result.length + ' 字符 chars';
+  } catch(e) { document.getElementById('output').textContent = '加密失败: '+e.message; }
+}
+
+async function decrypt() {
+  var text = document.getElementById('input').value.trim();
+  var pwd = document.getElementById('password').value;
+  if(!text||!pwd){showToast('请输入文本和密码 Enter text and password');return;}
+  try {
+    var key = await getKey(pwd);
+    var raw = atob(text);
+    var rawBytes = new Uint8Array(raw.split('').map(function(c){return c.charCodeAt(0);}));
+    var iv = rawBytes.slice(0,16);
+    var data = rawBytes.slice(16);
+    var buf = await crypto.subtle.decrypt({name:'AES-CBC',iv:iv}, key, data);
+    var result = new TextDecoder().decode(buf);
+    document.getElementById('output').textContent = result;
+    document.getElementById('infoTip').textContent = '已解密 Decrypted';
+  } catch(e) { document.getElementById('output').textContent = '解密失败: 密码错误或格式无效 Decryption failed'; }
+}
+</script>
+</body>
+</html>

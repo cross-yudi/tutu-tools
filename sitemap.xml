@@ -177,4 +177,7 @@
   <url><loc>https://gubaby.cn/tools/word-frequency/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://gubaby.cn/tools/random-number-generator/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://gubaby.cn/tools/guid-generator/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/aes-encrypt/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/ascii-converter/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gubaby.cn/tools/morse-code/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

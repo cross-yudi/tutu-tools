@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCII 编码转换 ASCII Converter - 兔兔工具站</title>
+<meta name="description" content="在线ASCII编码转换：字符转ASCII码、ASCII码转字符、Native编码互转。ASCII to char, char to ASCII, native encoding converter.">
+<meta name="keywords" content="ASCII转换,ASCII编码,字符转ASCII,ascii converter,ascii code">
+<link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main">
+<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / ASCII 编码转换</div><h2>⌨️ ASCII / Native 编码转换</h2><p class="desc">字符转ASCII码、ASCII码转字符、进制表示互转</p><p class="desc-en">ASCII code ↔ character, native encoding converter</p></div>
+<div class="tool-body">
+<div class="tool-row"><div class="tool-panel"><label>输入 <span class="label-en">Input</span></label>
+<textarea id="input" placeholder="输入字符或ASCII码... Enter text or ASCII codes..."></textarea>
+<div class="btn-row" style="margin-top:8px;">
+<button class="btn btn-primary" onclick="convert('txt2ascii')">字符→ASCII Text to ASCII</button>
+<button class="btn btn-primary" onclick="convert('ascii2txt')">ASCII→字符 ASCII to Text</button>
+<button class="btn btn-outline" onclick="convert('txt2hex')">字符→十六进制 Text to Hex</button>
+<button class="btn btn-outline" onclick="convert('hex2txt')">十六进制→字符 Hex to Text</button>
+<button class="btn btn-outline" onclick="convert('txt2bin')">字符→二进制 Text to Binary</button>
+<button class="btn btn-outline" onclick="clearInput('input')">清空 Clear</button></div></div></div>
+<div class="tool-panel"><label>结果 <span class="label-en">Result</span></label><div class="result-area" id="output"></div>
+<div class="info-bar"><span id="infoTip"></span><button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+function convert(type){
+  var val=document.getElementById('input').value;
+  var result='';
+  switch(type){
+    case 'txt2ascii':result=val.split('').map(function(c){return c.charCodeAt(0);}).join(' ');break;
+    case 'ascii2txt':
+      result=val.split(/[\s,]+/).map(function(n){return String.fromCharCode(parseInt(n));}).join('');break;
+    case 'txt2hex':
+      result=val.split('').map(function(c){return c.charCodeAt(0).toString(16).toUpperCase().padStart(2,'0');}).join(' ');break;
+    case 'hex2txt':
+      result=(val.match(/[0-9a-fA-F]{2}/g)||[]).map(function(h){return String.fromCharCode(parseInt(h,16));}).join('');break;
+    case 'txt2bin':
+      result=val.split('').map(function(c){return c.charCodeAt(0).toString(2).padStart(8,'0');}).join(' ');break;
+  }
+  document.getElementById('output').textContent=result;
+  document.getElementById('infoTip').textContent='已转换 Converted | '+result.length+' 字符 chars';
+}
+</script>
+</body>
+</html>

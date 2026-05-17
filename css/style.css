@@ -139,6 +139,7 @@ body {
   gap: 8px;
   margin-bottom: 28px;
   justify-content: flex-start;
+  width: 100%;
 }
 .cat-tab {
   padding: 7px 18px;

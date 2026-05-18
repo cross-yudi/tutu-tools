@@ -21,116 +21,108 @@ function checkWin(p){
 }
 function isDraw(){for(var r=0;r<S;r++)for(var c=0;c<S;c++)if(board[r][c]===0)return false;return true;}
 
-// Evaluate a single line of 5 positions
-function evalLine(cells, player){
-  var pCount=0, oCount=0;
-  for(var i=0;i<5;i++){
-    if(cells[i]===player)pCount++;
-    else if(cells[i]!==0)oCount++;
-  }
-  if(oCount>0&&pCount>0)return 0; // mixed line
-  if(pCount===5)return 10000000;
-  if(pCount===4)return 50000;
-  if(pCount===3)return 5000;
-  if(pCount===2)return 500;
-  if(pCount===1)return 50;
-  return 0;
-}
-
-function evaluate(player){
-  var score=0, opp=player===1?2:1;
-  for(var r=0;r<S;r++){
-    for(var c=0;c<S;c++){
-      // horizontal
-      if(c<=S-5){var cells=[];for(var i=0;i<5;i++)cells.push(board[r][c+i]);score+=evalLine(cells,player);score-=evalLine(cells,opp)*1.1;}
-      // vertical
-      if(r<=S-5){var cells=[];for(var i=0;i<5;i++)cells.push(board[r+i][c]);score+=evalLine(cells,player);score-=evalLine(cells,opp)*1.1;}
-      // diag
-      if(r<=S-5&&c<=S-5){var cells=[];for(var i=0;i<5;i++)cells.push(board[r+i][c+i]);score+=evalLine(cells,player);score-=evalLine(cells,opp)*1.1;}
-      if(r>=4&&c<=S-5){var cells=[];for(var i=0;i<5;i++)cells.push(board[r-i][c+i]);score+=evalLine(cells,player);score-=evalLine(cells,opp)*1.1;}
-    }
-  }
-  return score;
-}
-
-// Get candidate moves (empty cells near existing stones)
+// Get candidate moves (radius-1 around existing stones, top 12)
 function getCandidates(){
   var set={};
   for(var r=0;r<S;r++)for(var c=0;c<S;c++){
     if(board[r][c]!==0){
-      for(var dr=-2;dr<=2;dr++)for(var dc=-2;dc<=2;dc++){
+      for(var dr=-1;dr<=1;dr++)for(var dc=-1;dc<=1;dc++){
         var nr=r+dr,nc=c+dc;
         if(nr>=0&&nr<S&&nc>=0&&nc<S&&board[nr][nc]===0)set[nr+','+nc]=true;
       }
     }
   }
-  // If board is empty, return center
   if(Object.keys(set).length===0){set['7,7']=true;}
-  var candidates=[];
-  for(var k in set){var parts=k.split(',');candidates.push({r:parseInt(parts[0]),c:parseInt(parts[1])});}
-  return candidates;
+  var arr=[];
+  for(var k in set){var p=k.split(',');arr.push({r:+p[0],c:+p[1]});}
+  return arr;
 }
 
-// Minimax with alpha-beta pruning
-function minimax(depth, alpha, beta, isMax){
-  if(checkWin(2))return 10000000+depth;
-  if(checkWin(1))return -10000000-depth;
-  if(isDraw())return 0;
-  if(depth===0)return evaluate(2)-evaluate(1);
+// Quick candidate scoring
+function quickScore(r,c,p){
+  board[r][c]=p;var s=eval5(r,c,p);board[r][c]=0;return s;
+}
+function eval5(r,c,p){
+  var score=0,opp=p===1?2:1;
+  for(var dr=-1;dr<=1;dr++)for(var dc=-1;dc<=1;dc++){
+    if(dr===0&&dc===0)continue;
+    var cnt=1,open=0,block=0;
+    for(var i=1;i<=4;i++){var nr=r+dr*i,nc=c+dc*i;if(nr>=0&&nr<S&&nc>=0&&nc<S&&board[nr][nc]===p)cnt++;else{open++;;break;}}
+    for(var i=1;i<=4;i++){var nr=r-dr*i,nc=c-dc*i;if(nr>=0&&nr<S&&nc>=0&&nc<S&&board[nr][nc]===p)cnt++;else{open++;break;}}
+    if(cnt>=5)score+=100000;
+    else if(cnt===4){score+=open===2?50000:5000;}
+    else if(cnt===3){score+=open===2?5000:500;}
+    else if(cnt===2){score+=open===2?500:50;}
+  }
+  return score;
+}
 
-  var candidates=getCandidates();
-  // Sort candidates by heuristic for better pruning
-  candidates.sort(function(a,b){
-    board[a.r][a.c]=isMax?2:1;
-    var sa=evaluate(2)-evaluate(1);
-    board[a.r][a.c]=0;
-    board[b.r][b.c]=isMax?2:1;
-    var sb=evaluate(2)-evaluate(1);
-    board[b.r][b.c]=0;
-    return sb-sa;
-  });
-  // Limit candidates for performance
-  if(candidates.length>15)candidates=candidates.slice(0,15);
+// Minimax depth 2
+function minimax(depth, isMax){
+  var p=isMax?2:1;
+  if(depth===0)return quickEval();
+
+  var cands=getCandidates();
+  // Score and take top 10
+  var scored=cands.map(function(m){return {r:m.r,c:m.c,s:quickScore(m.r,m.c,p)};});
+  scored.sort(function(a,b){return b.s-a.s;});
+  scored=scored.slice(0,10);
 
   if(isMax){
     var best=-Infinity;
-    for(var i=0;i<candidates.length;i++){
-      var m=candidates[i];
+    for(var i=0;i<scored.length;i++){
+      var m=scored[i];
       board[m.r][m.c]=2;
-      var val=minimax(depth-1,alpha,beta,false);
+      if(checkWin(2)){board[m.r][m.c]=0;return 100000;}
+      var val=minimax(depth-1,false);
       board[m.r][m.c]=0;
       if(val>best)best=val;
-      if(best>alpha)alpha=best;
-      if(alpha>=beta)break;
     }
     return best;
   }else{
     var best=Infinity;
-    for(var i=0;i<candidates.length;i++){
-      var m=candidates[i];
+    for(var i=0;i<scored.length;i++){
+      var m=scored[i];
       board[m.r][m.c]=1;
-      var val=minimax(depth-1,alpha,beta,true);
+      if(checkWin(1)){board[m.r][m.c]=0;return -100000;}
+      var val=minimax(depth-1,true);
       board[m.r][m.c]=0;
       if(val<best)best=val;
-      if(best<beta)beta=best;
-      if(alpha>=beta)break;
     }
     return best;
   }
 }
 
+function quickEval(){
+  var s=0;
+  for(var r=0;r<S;r++)for(var c=0;c<S;c++){
+    if(board[r][c]===2)s+=quickScore(r,c,2);
+    else if(board[r][c]===1)s-=quickScore(r,c,1);
+  }
+  return s;
+}
+
 function aiMove(){
   if(gameOver)return;
-  var candidates=getCandidates();
-  if(candidates.length>20)candidates=candidates.slice(0,20);
+  var cands=getCandidates();
+  var scored=cands.map(function(m){return {r:m.r,c:m.c,s:quickScore(m.r,m.c,2)};});
+  scored.sort(function(a,b){return b.s-a.s;});
+  scored=scored.slice(0,10);
 
-  var bestMove=candidates[0]||{r:7,c:7};
+  // Check for immediate win
+  for(var i=0;i<scored.length;i++){
+    var m=scored[i];board[m.r][m.c]=2;
+    if(checkWin(2)){render();document.getElementById('status').textContent='😢 AI赢了！AI Wins!';gameOver=true;return;}
+    board[m.r][m.c]=0;
+  }
+
+  var bestMove=scored[0]||{r:7,c:7};
   var bestScore=-Infinity;
-
-  for(var i=0;i<candidates.length;i++){
-    var m=candidates[i];
+  for(var i=0;i<scored.length;i++){
+    var m=scored[i];
     board[m.r][m.c]=2;
-    var val=minimax(3,-Infinity,Infinity,false); // depth 4 = strong
+    if(checkWin(2)){board[m.r][m.c]=0;bestMove=m;break;}
+    var val=minimax(2,false);
     board[m.r][m.c]=0;
     if(val>bestScore){bestScore=val;bestMove=m;}
   }

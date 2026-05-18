@@ -2,7 +2,10 @@
 var P=[],S=[],sel=null;
 var puzzles=[['530070000','600195000','098000060','800060003','400803001','700020006','060000280','000419005','000080079'],
 ['200080300','060070084','030500209','000105408','000000000','402706000','301007040','720040060','004010003'],
-['000006000','059000008','200008000','045000000','003000000','000003006','000700049','001050000','080034010']];
+['000006000','059000008','200008000','045000000','003000000','000003006','000700049','001050000','080034010'],
+['000070900','090004060','030100008','406000000','000080000','000000301','800002070','050700090','007060000'],
+['100007090','030020008','009600500','005300900','010080002','600004000','300000010','040000007','007000300'],
+['020000000','000600003','074080000','000003002','080040010','006500070','900000500','000800090','060702000']];
 
 function ng(){var p=puzzles[Math.floor(Math.random()*puzzles.length)];P=[];S=[];for(var r=0;r<9;r++){P[r]=[];S[r]=[];for(var c=0;c<9;c++){var v=parseInt(p[r][c])||0;P[r][c]=v;S[r][c]=v;}}sel=null;rnd();}
 function rnd(){var g=document.getElementById('sg');g.innerHTML='';for(var r=0;r<9;r++)for(var c=0;c<9;c++){var d=document.createElement('div');d.className='sc';if(P[r][c]!==0)d.classList.add('given');if(S[r][c]!==0)d.textContent=S[r][c];if(sel&&sel.r===r&&sel.c===c)d.classList.add('sel');if(S[r][c]!==0&&P[r][c]===0&&!ok(r,c,S[r][c]))d.classList.add('err');if(c%3===2&&c<8)d.style.borderRight='2px solid #333';if(c%3===0&&c>0)d.style.borderLeft='2px solid #333';if(r%3===2&&r<8)d.style.borderBottom='2px solid #333';if(r%3===0&&r>0)d.style.borderTop='2px solid #333';d.onclick=(function(r,c){return function(){if(P[r][c]!==0)return;sel={r:r,c:c};rnd();};})(r,c);g.appendChild(d);}}

@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图片压缩工具 Image Compress - 兔兔工具站</title>
+<meta name="description" content="在线图片压缩工具，支持调整质量和尺寸。Compress images online — adjust quality & size.">
+<meta name="keywords" content="图片压缩,image compress,图片大小,压缩图片,reduce image size"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 图片压缩</div><h2>🖼️ 图片压缩工具</h2><p class="desc">在线压缩图片，调整质量，减小文件体积</p><p class="desc-en">Compress images — adjust quality to reduce file size</p></div>
+<div class="tool-body"><div class="tool-row"><div class="tool-panel"><label>上传图片 <span class="label-en">Upload</span></label>
+<div id="dropZone" style="border:2px dashed var(--border);border-radius:var(--radius);padding:30px;text-align:center;cursor:pointer;background:#fafbfc;"><p>📁</p><p>拖拽或点击上传图片</p><p style="font-size:.75rem;color:var(--text-en);">Drop image or click</p><input type="file" id="fileInput" accept="image/*" style="display:none;"></div>
+<label style="margin-top:10px;">压缩质量 <span class="label-en">Quality</span> <span id="qualVal" style="font-size:.75rem;">80%</span></label>
+<input type="range" id="quality" min="10" max="100" value="80" style="width:100%;" oninput="document.getElementById('qualVal').textContent=this.value+'%'">
+<button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="compress()">压缩 Compress</button></div>
+<div class="tool-panel" style="text-align:center;"><label>预览 & 下载 <span class="label-en">Preview</span></label>
+<div id="preview" style="min-height:150px;display:flex;align-items:center;justify-content:center;"><p style="color:var(--text-en);">上传图片后显示预览</p></div>
+<div style="margin-top:8px;font-size:.8rem;color:var(--text-secondary);" id="fileInfo"></div>
+<button id="dlBtn" class="btn btn-primary" style="margin-top:8px;display:none;" onclick="download()">💾 下载压缩图 Download</button></div></div></div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var dropZone=document.getElementById('dropZone'),fileInput=document.getElementById('fileInput'),selectedFile=null,compressedDataUrl='';
+dropZone.addEventListener('click',function(){fileInput.click();});
+dropZone.addEventListener('dragover',function(e){e.preventDefault();dropZone.style.borderColor='var(--primary)';});
+dropZone.addEventListener('dragleave',function(){dropZone.style.borderColor='var(--border)';});
+dropZone.addEventListener('drop',function(e){e.preventDefault();dropZone.style.borderColor='var(--border)';if(e.dataTransfer.files.length)loadFile(e.dataTransfer.files[0]);});
+fileInput.addEventListener('change',function(){if(fileInput.files.length)loadFile(fileInput.files[0]);});
+
+function loadFile(file){selectedFile=file;var reader=new FileReader();reader.onload=function(e){document.getElementById('preview').innerHTML='<img src="'+e.target.result+'" style="max-width:100%;max-height:300px;border-radius:8px;">';document.getElementById('fileInfo').textContent=file.name+' ('+(file.size/1024).toFixed(1)+' KB)';};reader.readAsDataURL(file);}
+
+function compress(){
+  if(!selectedFile){showToast('请先上传图片');return;}
+  var quality=parseInt(document.getElementById('quality').value)/100;
+  var reader=new FileReader();reader.onload=function(e){
+    var img=new Image();img.onload=function(){
+      var canvas=document.createElement('canvas');canvas.width=img.width;canvas.height=img.height;
+      var ctx=canvas.getContext('2d');ctx.drawImage(img,0,0);
+      canvas.toBlob(function(blob){compressedDataUrl=URL.createObjectURL(blob);
+        var sizeKB=(blob.size/1024).toFixed(1);
+        document.getElementById('fileInfo').textContent='压缩后 Compressed: '+sizeKB+' KB (原始 Original: '+(selectedFile.size/1024).toFixed(1)+' KB)';
+        document.getElementById('dlBtn').style.display='';},'image/jpeg',quality);
+    };img.src=e.target.result;
+  };reader.readAsDataURL(selectedFile);
+}
+
+function download(){
+  if(!compressedDataUrl){showToast('请先压缩图片');return;}
+  var a=document.createElement('a');a.href=compressedDataUrl;a.download='compressed.jpg';a.click();
+}
+</script></body></html>

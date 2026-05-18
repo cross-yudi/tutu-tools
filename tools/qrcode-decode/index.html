@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>二维码解码器 QR Decoder - 兔兔工具站</title>
+<meta name="description" content="在线二维码解码器，上传图片解析QR码内容。Online QR code decoder — upload image to decode.">
+<meta name="keywords" content="二维码解码,QR解码,qr decoder,二维码识别"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 二维码解码</div><h2>📷 二维码解码器</h2><p class="desc">上传二维码图片，解析其中内容</p><p class="desc-en">Upload a QR code image to decode its content</p></div>
+<div class="tool-body">
+<div class="tool-row"><div class="tool-panel"><label>上传二维码图片 <span class="label-en">Upload QR Image</span></label>
+<div id="dropZone" style="border:2px dashed var(--border);border-radius:var(--radius);padding:40px;text-align:center;cursor:pointer;background:#fafbfc;"><p style="font-size:2rem;">📷</p><p>拖拽或点击上传二维码</p><p style="font-size:.75rem;color:var(--text-en);">Drop QR image or click</p><input type="file" id="fileInput" accept="image/*" style="display:none;"></div>
+<div class="btn-row" style="margin-top:8px;"><button class="btn btn-primary" onclick="decode()">解码 Decode</button><button class="btn btn-outline" onclick="resetAll()">重置 Reset</button></div></div>
+<div class="tool-panel"><label>解码结果 <span class="label-en">Result</span></label><div class="result-area" id="output" style="font-family:monospace;font-size:1.1rem;min-height:100px;word-break:break-all;"></div>
+<button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<script>
+var dropZone=document.getElementById('dropZone'),fileInput=document.getElementById('fileInput'),selectedFile=null;
+dropZone.addEventListener('click',function(){fileInput.click();});
+dropZone.addEventListener('dragover',function(e){e.preventDefault();dropZone.style.borderColor='var(--primary)';});
+dropZone.addEventListener('dragleave',function(){dropZone.style.borderColor='var(--border)';});
+dropZone.addEventListener('drop',function(e){e.preventDefault();dropZone.style.borderColor='var(--border)';if(e.dataTransfer.files.length)loadFile(e.dataTransfer.files[0]);});
+fileInput.addEventListener('change',function(){if(fileInput.files.length)loadFile(fileInput.files[0]);});
+
+function loadFile(file){selectedFile=file;var reader=new FileReader();reader.onload=function(e){dropZone.innerHTML='<img src="'+e.target.result+'" style="max-width:100%;max-height:200px;border-radius:8px;">';};reader.readAsDataURL(file);}
+function decode(){
+  if(!selectedFile){showToast('请先上传二维码图片 Upload a QR image');return;}
+  var reader=new FileReader();reader.onload=function(e){
+    var img=new Image();img.onload=function(){
+      var canvas=document.createElement('canvas');canvas.width=img.width;canvas.height=img.height;
+      var ctx=canvas.getContext('2d');ctx.drawImage(img,0,0);
+      var imageData=ctx.getImageData(0,0,canvas.width,canvas.height);
+      var code=jsQR(imageData.data,canvas.width,canvas.height);
+      document.getElementById('output').textContent=code?code.data:'未检测到二维码 No QR code detected';
+    };img.src=e.target.result;
+  };reader.readAsDataURL(selectedFile);
+}
+function resetAll(){selectedFile=null;fileInput.value='';document.getElementById('output').textContent='';dropZone.innerHTML='<p style="font-size:2rem;">📷</p><p>拖拽或点击上传二维码</p><p style="font-size:.75rem;color:var(--text-en);">Drop QR image or click</p>';}
+</script></body></html>

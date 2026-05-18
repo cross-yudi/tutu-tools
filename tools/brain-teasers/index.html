@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>脑筋急转弯 Brain Teasers - 兔兔工具站</title>
+<meta name="description" content="脑筋急转弯大全，点击查看答案。Fun brain teasers & riddles — click to reveal answers.">
+<meta name="keywords" content="脑筋急转弯,brain teasers,riddles,谜语"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 脑筋急转弯</div><h2>🧠 脑筋急转弯</h2><p class="desc">点一下看答案，再点换下一题</p><p class="desc-en">Click to reveal answer, click again for next</p></div>
+<div class="tool-body">
+<div class="tool-panel" style="text-align:center;"><div class="result-area" id="card" style="font-family:inherit;font-size:1.1rem;text-align:center;min-height:150px;padding:30px;cursor:pointer;" onclick="showAnswer()">
+<p id="rQ" style="font-size:1.2rem;"></p>
+<p id="rA" style="margin-top:16px;color:var(--primary-dark);display:none;"></p>
+<p style="font-size:.75rem;color:var(--text-en);margin-top:12px;" id="hint">点击查看答案 Click for answer</p>
+</div>
+<button class="btn btn-primary" style="margin-top:10px;" onclick="nextQ()">🎲 下一题 Next</button>
+<button class="btn btn-outline btn-sm copy-btn" style="margin-top:10px;" onclick="copyText(document.getElementById('rQ').textContent+' → '+document.getElementById('rA').textContent)">📋 复制 Copy</button></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var teasers=[["什么东西越洗越脏？","水"],["什么东西有头无脚？","鱼"],["什么人一年只工作一天？","圣诞老人"],["什么车子寸步难行？","风车"],
+["什么蛋不能吃？","脸蛋"],["什么东西倒立后会增加一半？","6"],["什么鸡没有翅膀？","田鸡"],["什么门永远关不上？","球门"],
+["什么书买不到？","遗书"],["什么光完全不亮？","耳光"],["什么掌不能拍？","仙人掌"],["什么东西有五个头，但人不觉得它怪？","手和脚"],
+["一个圆孔的直径只有1厘米，而一种体积达100立方米的物体却能顺利通过这个孔，这是为什么？","因为这个物体是水"],
+["什么东西越热越爱出来？","汗"],["什么花不能摸？","火花"],["用什么拖地最干净？","用力拖"],["什么洞最深？","无底洞"],
+["什么枪把人打跑却不伤人？","发令枪"],["什么河里没有水？","银河"],["什么桥不能走？","鹊桥"],
+["什么线看不见？","无线"],["什么雷不会响？","鱼雷"],["什么鼠不怕猫？","袋鼠"],["什么马不能骑？","海马"],
+["什么鱼不能吃？","木鱼"],["什么牛不拉车？","蜗牛"],["什么羊不长毛？","羚羊"],["什么虎不吃人？","壁虎"]];
+var currentIdx=-1,revealed=false;
+function nextQ(){revealed=false;currentIdx=Math.floor(Math.random()*teasers.length);document.getElementById('rQ').textContent=teasers[currentIdx][0];document.getElementById('rA').style.display='none';document.getElementById('rA').textContent='答案：'+teasers[currentIdx][1];document.getElementById('hint').style.display='';}
+function showAnswer(){if(revealed){nextQ();}else{revealed=true;document.getElementById('rA').style.display='';document.getElementById('hint').style.display='none';}}
+nextQ();
+</script></body></html>

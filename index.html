@@ -48,6 +48,7 @@
     <button class="cat-tab" data-cat="text">📝 文本工具 <span style="font-size:.7rem;color:inherit;opacity:.7;">Text</span></button>
     <button class="cat-tab" data-cat="dev">🛠️ 开发工具 <span style="font-size:.7rem;color:inherit;opacity:.7;">Dev</span></button>
     <button class="cat-tab" data-cat="datetime">⏰ 日期时间 <span style="font-size:.7rem;color:inherit;opacity:.7;">DateTime</span></button>
+    <button class="cat-tab" data-cat="convert">📏 换算工具 <span style="font-size:.7rem;color:inherit;opacity:.7;">Convert</span></button>
   </div>
 
   <div class="tool-grid" id="toolGrid">
@@ -115,12 +116,6 @@
     </a>
 
     <!-- 📅 生活查询 Life -->
-    <a href="tools/phone-lookup/index.html" class="tool-card" data-cats="life">
-      <span class="icon">📱</span>
-      <h3>手机号归属地</h3>
-      <span class="desc-cn">查询手机号运营商和归属地</span>
-      <span class="desc-en">Phone carrier & location lookup</span>
-    </a>
     <a href="tools/id-card/index.html" class="tool-card" data-cats="life">
       <span class="icon">🆔</span>
       <h3>身份证校验</h3>
@@ -147,6 +142,11 @@
       <span class="desc-cn">随机生成强密码，可调长度和字符类型</span>
       <span class="desc-en">Strong random password with customizable options</span>
     </a>
+    <a href="tools/random-idioms/index.html" class="tool-card" data-cats="generate"><span class="icon">📚</span><h3>随机学成语</h3><span class="desc-cn">随机展示成语及释义</span><span class="desc-en">Random Chinese idioms</span></a>
+    <a href="tools/brain-teasers/index.html" class="tool-card" data-cats="generate"><span class="icon">🧠</span><h3>脑筋急转弯</h3><span class="desc-cn">点击查看答案，再看下一题</span><span class="desc-en">Brain teasers & riddles</span></a>
+    <a href="tools/barcode-gen/index.html" class="tool-card" data-cats="generate"><span class="icon">📊</span><h3>条形码生成器</h3><span class="desc-cn">在线生成条形码多格式</span><span class="desc-en">Barcode generator</span></a>
+    <a href="tools/isbn-barcode/index.html" class="tool-card" data-cats="generate"><span class="icon">📖</span><h3>ISBN条形码</h3><span class="desc-cn">图书ISBN条形码生成</span><span class="desc-en">ISBN barcode generator</span></a>
+    <a href="tools/image-compress/index.html" class="tool-card" data-cats="generate"><span class="icon">🖼️</span><h3>图片压缩工具</h3><span class="desc-cn">在线压缩图片减小体积</span><span class="desc-en">Image compressor</span></a>
     <a href="tools/qrcode-gen/index.html" class="tool-card" data-cats="generate">
       <span class="icon">📄</span>
       <h3>二维码生成</h3>
@@ -177,7 +177,7 @@
       <span class="desc-cn">URL Encode / Decode 在线转换</span>
       <span class="desc-en">URL encoding & decoding made simple</span>
     </a>
-    <a href="tools/number-base/index.html" class="tool-card" data-cats="encode">
+    <a href="tools/number-base/index.html" class="tool-card" data-cats="convert">
       <span class="icon">🔢</span>
       <h3>进制转换</h3>
       <span class="desc-cn">二进制、八进制、十进制、十六进制互转</span>
@@ -210,6 +210,7 @@
       <span class="desc-cn">文本与摩斯密码互转</span>
       <span class="desc-en">Morse code encoder & decoder</span>
     </a>
+    <a href="tools/qrcode-decode/index.html" class="tool-card" data-cats="encode"><span class="icon">📷</span><h3>二维码解码器</h3><span class="desc-cn">上传图片解析QR码内容</span><span class="desc-en">QR code decoder</span></a>
 
     <!-- 📝 文本工具 Text -->
     <a href="tools/case-converter/index.html" class="tool-card" data-cats="text">
@@ -389,6 +390,18 @@
       <span class="icon">🎲</span><h3>随机日期时间生成</h3><span class="desc-cn">指定范围批量生成随机日期</span><span class="desc-en">Random date & time generator</span>
     </a>
 
+    <!-- 📏 换算工具 Convert -->
+    <a href="tools/number-base/index.html" class="tool-card" data-cats="convert"><span class="icon">🔢</span><h3>进制转换器</h3><span class="desc-cn">二进制/八进制/十进制/十六进制</span><span class="desc-en">Number base converter</span></a>
+    <a href="tools/length-converter/index.html" class="tool-card" data-cats="convert"><span class="icon">📏</span><h3>长度单位换算器</h3><span class="desc-cn">米、千米、厘米、英寸、英尺</span><span class="desc-en">Length converter</span></a>
+    <a href="tools/area-converter/index.html" class="tool-card" data-cats="convert"><span class="icon">📐</span><h3>面积单位换算器</h3><span class="desc-cn">平方米、亩、公顷、英亩</span><span class="desc-en">Area converter</span></a>
+    <a href="tools/weight-converter/index.html" class="tool-card" data-cats="convert"><span class="icon">⚖️</span><h3>重量单位换算器</h3><span class="desc-cn">千克、斤、磅、盎司、吨</span><span class="desc-en">Weight converter</span></a>
+    <a href="tools/volume-converter/index.html" class="tool-card" data-cats="convert"><span class="icon">🧊</span><h3>体积单位换算器</h3><span class="desc-cn">立方米、升、毫升、加仑</span><span class="desc-en">Volume converter</span></a>
+    <a href="tools/density-converter/index.html" class="tool-card" data-cats="convert"><span class="icon">🔬</span><h3>密度单位换算器</h3><span class="desc-cn">kg/m³、g/cm³等</span><span class="desc-en">Density converter</span></a>
+    <a href="tools/temp-converter/index.html" class="tool-card" data-cats="convert"><span class="icon">🌡️</span><h3>温度单位换算器</h3><span class="desc-cn">摄氏度、华氏度、开尔文</span><span class="desc-en">Temperature converter</span></a>
+    <a href="tools/pressure-converter/index.html" class="tool-card" data-cats="convert"><span class="icon">💨</span><h3>压力单位换算器</h3><span class="desc-cn">Pa、Bar、atm、PSI等</span><span class="desc-en">Pressure converter</span></a>
+    <a href="tools/byte-converter/index.html" class="tool-card" data-cats="convert"><span class="icon">💾</span><h3>字节单位换算器</h3><span class="desc-cn">B、KB、MB、GB、TB等</span><span class="desc-en">Byte converter</span></a>
+    <a href="tools/time-converter/index.html" class="tool-card" data-cats="convert"><span class="icon">⏱️</span><h3>时间单位换算器</h3><span class="desc-cn">秒、分钟、小时、天、周等</span><span class="desc-en">Time converter</span></a>
+
     <a href="tools/simplified-traditional/index.html" class="tool-card" data-cats="text">
       <span class="icon">🀄</span>
       <h3>简繁转换</h3>
@@ -413,12 +426,6 @@
       <h3>工作日计算器</h3>
       <span class="desc-cn">计算两个日期工作日天数</span>
       <span class="desc-en">Business days calculator</span>
-    </a>
-    <a href="tools/chinese-calendar/index.html" class="tool-card" data-cats="datetime">
-      <span class="icon">📜</span>
-      <h3>老黄历/二十四节气</h3>
-      <span class="desc-cn">老黄历宜忌、二十四节气查询</span>
-      <span class="desc-en">Chinese calendar & solar terms</span>
     </a>
     <a href="tools/common-phone-numbers/index.html" class="tool-card" data-cats="life">
       <span class="icon">📞</span><h3>常用电话列表</h3>
@@ -465,7 +472,7 @@
       <span class="desc-cn">身高体重BMI评估健康体重</span>
       <span class="desc-en">BMI calculator & health check</span>
     </a>
-    <a href="tools/random-quotes/index.html" class="tool-card" data-cats="life">
+    <a href="tools/random-quotes/index.html" class="tool-card" data-cats="generate">
       <span class="icon">🎲</span>
       <h3>随机语录</h3>
       <span class="desc-cn">毒鸡汤、励志名言、古诗词</span>

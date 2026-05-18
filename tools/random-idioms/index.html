@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>随机学成语 Random Idioms - 兔兔工具站</title>
+<meta name="description" content="随机学成语，含释义。Random Chinese idioms with explanations.">
+<meta name="keywords" content="成语,随机成语,学成语,chinese idioms,成语大全"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 随机学成语</div><h2>📚 随机学成语</h2><p class="desc">随机展示成语及释义，每天学一个</p><p class="desc-en">Random Chinese idioms with explanations</p></div>
+<div class="tool-body">
+<div class="tool-panel" style="text-align:center;"><div class="result-area" id="output" style="font-family:inherit;font-size:1.3rem;text-align:center;min-height:120px;padding:30px;">
+<h2 id="rIdiom" style="font-size:2rem;margin-bottom:10px;"></h2>
+<p id="rMeaning" style="font-size:1rem;color:var(--text-secondary);line-height:1.8;"></p>
+</div>
+<div class="btn-row" style="justify-content:center;margin-top:12px;"><button class="btn btn-primary" onclick="randomPick()">🎲 再来一个 Next</button>
+<button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('rIdiom').textContent+'：'+document.getElementById('rMeaning').textContent)">📋 复制 Copy</button></div></div>
+</div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script>
+<script>
+var idioms=[['一心一意','形容心思专一，别无他念'],['三心二意','形容犹豫不决或意志不坚定'],['画蛇添足','比喻做了多余的事，反而不好'],
+['对牛弹琴','比喻对不懂道理的人讲道理'],['守株待兔','比喻不劳而获，坐等意外收获'],['亡羊补牢','比喻出了差错后及时补救'],
+['井底之蛙','比喻见识狭窄的人'],['叶公好龙','比喻表面上喜欢，实际上害怕'],['掩耳盗铃','比喻自己欺骗自己'],
+['狐假虎威','比喻借别人的势力来欺压人'],['画龙点睛','比喻在关键处添上精彩的一笔'],['鹤立鸡群','比喻在人群中显得特别突出'],
+['胸有成竹','比喻做事前已经有充分的准备'],['锦上添花','比喻好上加好'],['雪中送炭','比喻在别人困难时给予帮助'],
+['班门弄斧','比喻在行家面前卖弄本领'],['水滴石穿','比喻只要坚持不懈，就能成功'],['半途而废','比喻做事不能坚持到底'],
+['百发百中','形容射箭或射击非常准确'],['一举两得','比喻做一件事得到两方面的好处'],['大材小用','比喻大才能用在小地方'],
+['后来居上','比喻后来的人超过前面的人'],['见义勇为','看到正义的事就勇敢去做'],['口若悬河','形容说话滔滔不绝'],
+['名落孙山','比喻考试或选拔未中'],['南辕北辙','比喻行动与目的相反'],['破釜沉舟','比喻下定决心，义无反顾'],
+['如鱼得水','比喻得到适合自己发展的环境'],['四面楚歌','比喻陷入孤立无援的困境'],['同甘共苦','比喻同享欢乐，共渡难关'],
+['万紫千红','形容百花齐放，丰富多彩'],['先发制人','比喻先动手取得主动权'],['悬梁刺股','形容刻苦学习的精神'],
+['夜以继日','形容日夜不停地工作或学习'],['一鸣惊人','比喻平时默默无闻，一下子做出惊人之举'],['纸上谈兵','比喻空谈理论，不能解决实际问题'],
+['自相矛盾','比喻言行前后不一致'],['走马观花','比喻粗略地观察事物'],['百折不挠','形容意志坚定，不怕挫折'],
+['筚路蓝缕','形容创业的艰难']];
+function randomPick(){
+  var item=idioms[Math.floor(Math.random()*idioms.length)];
+  document.getElementById('rIdiom').textContent=item[0];
+  document.getElementById('rMeaning').textContent=item[1];
+}
+randomPick();
+</script></body></html>

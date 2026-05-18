@@ -1,0 +1,13 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>长度单位换算 Length Converter - 兔兔工具站</title>
+<meta name="description" content="在线长度单位换算：米、千米、厘米、毫米、英寸、英尺、英里等。Length unit converter.">
+<meta name="keywords" content="长度换算,长度单位,length converter,米,千米,英尺"><link rel="stylesheet" href="../../css/style.css"></head>
+<body>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 长度换算</div><h2>📏 长度单位换算器</h2><p class="desc">长度单位在线换算：米、千米、厘米、英寸、英尺等</p><p class="desc-en">Length converter — m, km, cm, in, ft, mi & more</p></div><div class="tool-body"><div class="tool-row"><div class="tool-panel"><label>输入 <span class="label-en">Input</span></label><input type="number" id="inputVal" value="1" step="any"><select id="fromUnit" style="width:100%;padding:8px;border:1.5px solid var(--border);border-radius:8px;margin-top:6px;"></select></div><div class="tool-panel"><label>结果 <span class="label-en">Result</span></label><div class="result-area" id="output" style="font-family:inherit;"><div id="resultList"></div></div><button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;" onclick="copyResult()">📋 复制全部 Copy All</button></div></div></div></main>
+<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer><script src="../../js/common.js"></script>
+<script>
+var units={name:'长度 Length',base:'米',data:{'毫米 mm':0.001,'厘米 cm':0.01,'分米 dm':0.1,'米 m':1,'千米 km':1000,'英寸 in':0.0254,'英尺 ft':0.3048,'码 yd':0.9144,'英里 mi':1609.344,'海里 nmi':1852,'光年 ly':9460730472580800}};
+</script>
+<script src="../converter-template.js"></script>
+</body></html>

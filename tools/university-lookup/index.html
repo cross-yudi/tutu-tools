@@ -1,66 +1,118 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>全国高校信息查询 University Lookup - 兔兔工具站</title>
-<meta name="description" content="查询全国高校信息：985/211/双一流大学名单。Chinese university lookup — 985, 211, Double First Class universities.">
-<meta name="keywords" content="高校查询,大学查询,985大学,211大学,university lookup,中国大学">
-<link rel="stylesheet" href="../../css/style.css"></head>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全国高校信息查询 Universities - 兔兔工具站</title>
+<meta name="description" content="全国高等学校信息查询：院校标识码、主管部门、所在地、办学层次。Chinese universities — code, administration, location, level.">
+<meta name="keywords" content="高校查询,大学查询,院校标识码,university lookup,中国大学,双一流"><link rel="stylesheet" href="../../css/style.css"></head>
 <body>
 <header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
-<main class="main">
-<div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 高校信息查询</div><h2>🎓 全国高校信息查询</h2><p class="desc">985/211/双一流大学名单速查</p><p class="desc-en">Top Chinese universities — 985, 211 & Double First Class</p></div>
+<main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 高校信息</div><h2>🎓 全国高校信息查询</h2><p class="desc">全国普通高等学校信息：院校标识码、主管部门、所在地、办学层次</p><p class="desc-en">Chinese universities — code, administration, location & level</p></div>
 <div class="tool-body">
 <div class="tool-panel"><label>筛选 <span class="label-en">Filter</span></label>
-<div class="btn-row">
-<button class="btn btn-primary" onclick="filterList('985')">985工程</button>
-<button class="btn btn-primary" onclick="filterList('211')">211工程</button>
-<button class="btn btn-outline" onclick="filterList('all')">全部 All</button>
-</div>
-<input type="text" id="search" placeholder="搜索大学... Search..." oninput="doFilter()" style="margin-top:8px;"></div>
-<div class="tool-panel"><label>高校列表 <span class="label-en">Universities</span></label><div class="result-area" id="list" style="font-family:inherit;font-size:.82rem;max-height:400px;overflow:auto;"></div></div>
-</div></main>
-<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
-<script>
+<div class="btn-row"><button class="btn btn-primary" onclick="filterList('985')">985</button><button class="btn btn-primary" onclick="filterList('211')">211</button><button class="btn btn-primary" onclick="filterList('双一流')">双一流</button><button class="btn btn-outline" onclick="filterList('all')">全部 All</button></div>
+<input type="text" id="search" placeholder="搜索大学/城市/省份..." oninput="doFilter()" style="margin-top:8px;"></div>
+<div class="tool-panel"><label>高校列表 <span class="label-en">Universities</span></label><div class="result-area" id="list" style="font-family:inherit;font-size:.78rem;max-height:450px;overflow:auto;"></div>
+<span id="countInfo" style="font-size:.75rem;color:var(--text-en);"></span></div>
+</div></main><footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<script src="../../js/common.js"></script><script>
 var unis=[
-  {name:'清华大学 Tsinghua',city:'北京',tag:'985,211,c9'},
-  {name:'北京大学 Peking',city:'北京',tag:'985,211,c9'},
-  {name:'复旦大学 Fudan',city:'上海',tag:'985,211,c9'},
-  {name:'上海交通大学 SJTU',city:'上海',tag:'985,211,c9'},
-  {name:'浙江大学 Zhejiang',city:'杭州',tag:'985,211,c9'},
-  {name:'南京大学 Nanjing',city:'南京',tag:'985,211,c9'},
-  {name:'中国科大 USTC',city:'合肥',tag:'985,211,c9'},
-  {name:'哈工大 HIT',city:'哈尔滨',tag:'985,211,c9'},
-  {name:'西安交大 XJTU',city:'西安',tag:'985,211,c9'},
-  {name:'武汉大学 WHU',city:'武汉',tag:'985,211'},
-  {name:'华中科大 HUST',city:'武汉',tag:'985,211'},
-  {name:'中山大学 SYSU',city:'广州',tag:'985,211'},
-  {name:'四川大学 SCU',city:'成都',tag:'985,211'},
-  {name:'南开大学 Nankai',city:'天津',tag:'985,211'},
-  {name:'天津大学 TJU',city:'天津',tag:'985,211'},
-  {name:'同济大学 Tongji',city:'上海',tag:'985,211'},
-  {name:'北航 Beihang',city:'北京',tag:'985,211'},
-  {name:'北京理工 BIT',city:'北京',tag:'985,211'},
-  {name:'人民大学 RUC',city:'北京',tag:'985,211'},
-  {name:'山东大学 SDU',city:'济南',tag:'985,211'},
-  {name:'东南大学 SEU',city:'南京',tag:'985,211'},
-  {name:'厦门大学 XMU',city:'厦门',tag:'985,211'},
-  {name:'中南大学 CSU',city:'长沙',tag:'985,211'},
-  {name:'吉林大学 JLU',city:'长春',tag:'985,211'},
-  {name:'电子科大 UESTC',city:'成都',tag:'985,211'},
-  {name:'华南理工 SCUT',city:'广州',tag:'985,211'},
-  {name:'大连理工 DUT',city:'大连',tag:'985,211'},
-  {name:'重庆大学 CQU',city:'重庆',tag:'985,211'},
-  {name:'西北工大 NPU',city:'西安',tag:'985,211'},
-  {name:'兰州大学 LZU',city:'兰州',tag:'985,211'},
-  {name:'中国农大 CAU',city:'北京',tag:'985,211'},
-  {name:'上海财大 SUFE',city:'上海',tag:'211'},
-  {name:'中央财大 CUFE',city:'北京',tag:'211'},
-  {name:'对外经贸 UIBE',city:'北京',tag:'211'},
-  {name:'中国政法 CUPL',city:'北京',tag:'211'},
-  {name:'北京邮电 BUPT',city:'北京',tag:'211'},
-  {name:'中国传媒 CUC',city:'北京',tag:'211'},
-  {name:'北京交通 BJTU',city:'北京',tag:'211'},
-  {name:'北京科技 USTB',city:'北京',tag:'211'}
+{name:'北京大学',code:'10001',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'985,211,双一流'},
+{name:'清华大学',code:'10003',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'985,211,双一流'},
+{name:'中国人民大学',code:'10002',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'985,211,双一流'},
+{name:'北京航空航天大学',code:'10006',admin:'工业和信息化部',prov:'北京市',city:'北京',level:'本科',tag:'985,211,双一流'},
+{name:'北京理工大学',code:'10007',admin:'工业和信息化部',prov:'北京市',city:'北京',level:'本科',tag:'985,211,双一流'},
+{name:'中国农业大学',code:'10019',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'985,211,双一流'},
+{name:'北京师范大学',code:'10027',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'985,211,双一流'},
+{name:'中央民族大学',code:'10052',admin:'国家民委',prov:'北京市',city:'北京',level:'本科',tag:'985,211,双一流'},
+{name:'复旦大学',code:'10246',admin:'教育部',prov:'上海市',city:'上海',level:'本科',tag:'985,211,双一流'},
+{name:'上海交通大学',code:'10248',admin:'教育部',prov:'上海市',city:'上海',level:'本科',tag:'985,211,双一流'},
+{name:'同济大学',code:'10247',admin:'教育部',prov:'上海市',city:'上海',level:'本科',tag:'985,211,双一流'},
+{name:'华东师范大学',code:'10269',admin:'教育部',prov:'上海市',city:'上海',level:'本科',tag:'985,211,双一流'},
+{name:'浙江大学',code:'10335',admin:'教育部',prov:'浙江省',city:'杭州',level:'本科',tag:'985,211,双一流'},
+{name:'南京大学',code:'10284',admin:'教育部',prov:'江苏省',city:'南京',level:'本科',tag:'985,211,双一流'},
+{name:'东南大学',code:'10286',admin:'教育部',prov:'江苏省',city:'南京',level:'本科',tag:'985,211,双一流'},
+{name:'中国科学技术大学',code:'10358',admin:'中国科学院',prov:'安徽省',city:'合肥',level:'本科',tag:'985,211,双一流'},
+{name:'武汉大学',code:'10486',admin:'教育部',prov:'湖北省',city:'武汉',level:'本科',tag:'985,211,双一流'},
+{name:'华中科技大学',code:'10487',admin:'教育部',prov:'湖北省',city:'武汉',level:'本科',tag:'985,211,双一流'},
+{name:'中山大学',code:'10558',admin:'教育部',prov:'广东省',city:'广州',level:'本科',tag:'985,211,双一流'},
+{name:'华南理工大学',code:'10561',admin:'教育部',prov:'广东省',city:'广州',level:'本科',tag:'985,211,双一流'},
+{name:'四川大学',code:'10610',admin:'教育部',prov:'四川省',city:'成都',level:'本科',tag:'985,211,双一流'},
+{name:'电子科技大学',code:'10614',admin:'教育部',prov:'四川省',city:'成都',level:'本科',tag:'985,211,双一流'},
+{name:'西安交通大学',code:'10698',admin:'教育部',prov:'陕西省',city:'西安',level:'本科',tag:'985,211,双一流'},
+{name:'西北工业大学',code:'10699',admin:'工业和信息化部',prov:'陕西省',city:'西安',level:'本科',tag:'985,211,双一流'},
+{name:'南开大学',code:'10055',admin:'教育部',prov:'天津市',city:'天津',level:'本科',tag:'985,211,双一流'},
+{name:'天津大学',code:'10056',admin:'教育部',prov:'天津市',city:'天津',level:'本科',tag:'985,211,双一流'},
+{name:'山东大学',code:'10422',admin:'教育部',prov:'山东省',city:'济南',level:'本科',tag:'985,211,双一流'},
+{name:'中国海洋大学',code:'10423',admin:'教育部',prov:'山东省',city:'青岛',level:'本科',tag:'985,211,双一流'},
+{name:'厦门大学',code:'10384',admin:'教育部',prov:'福建省',city:'厦门',level:'本科',tag:'985,211,双一流'},
+{name:'哈尔滨工业大学',code:'10213',admin:'工业和信息化部',prov:'黑龙江省',city:'哈尔滨',level:'本科',tag:'985,211,双一流'},
+{name:'吉林大学',code:'10183',admin:'教育部',prov:'吉林省',city:'长春',level:'本科',tag:'985,211,双一流'},
+{name:'大连理工大学',code:'10141',admin:'教育部',prov:'辽宁省',city:'大连',level:'本科',tag:'985,211,双一流'},
+{name:'东北大学',code:'10145',admin:'教育部',prov:'辽宁省',city:'沈阳',level:'本科',tag:'985,211,双一流'},
+{name:'重庆大学',code:'10611',admin:'教育部',prov:'重庆市',city:'重庆',level:'本科',tag:'985,211,双一流'},
+{name:'中南大学',code:'10533',admin:'教育部',prov:'湖南省',city:'长沙',level:'本科',tag:'985,211,双一流'},
+{name:'湖南大学',code:'10532',admin:'教育部',prov:'湖南省',city:'长沙',level:'本科',tag:'985,211,双一流'},
+{name:'兰州大学',code:'10730',admin:'教育部',prov:'甘肃省',city:'兰州',level:'本科',tag:'985,211,双一流'},
+{name:'西北农林科技大学',code:'10712',admin:'教育部',prov:'陕西省',city:'杨凌',level:'本科',tag:'985,211,双一流'},
+{name:'国防科技大学',code:'91002',admin:'中央军委',prov:'湖南省',city:'长沙',level:'本科',tag:'985,211,双一流'},
+{name:'北京交通大学',code:'10004',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'211,双一流'},
+{name:'北京科技大学',code:'10008',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'211,双一流'},
+{name:'北京邮电大学',code:'10013',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'211,双一流'},
+{name:'北京化工大学',code:'10010',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'211,双一流'},
+{name:'中国传媒大学',code:'10033',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'211,双一流'},
+{name:'中央财经大学',code:'10034',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'211,双一流'},
+{name:'中国政法大学',code:'10053',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'211,双一流'},
+{name:'对外经济贸易大学',code:'10036',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'211,双一流'},
+{name:'北京工业大学',code:'10005',admin:'北京市',prov:'北京市',city:'北京',level:'本科',tag:'211,双一流'},
+{name:'上海财经大学',code:'10272',admin:'教育部',prov:'上海市',city:'上海',level:'本科',tag:'211,双一流'},
+{name:'上海大学',code:'10280',admin:'上海市',prov:'上海市',city:'上海',level:'本科',tag:'211,双一流'},
+{name:'华东理工大学',code:'10251',admin:'教育部',prov:'上海市',city:'上海',level:'本科',tag:'211,双一流'},
+{name:'东华大学',code:'10255',admin:'教育部',prov:'上海市',city:'上海',level:'本科',tag:'211,双一流'},
+{name:'南京航空航天大学',code:'10287',admin:'工业和信息化部',prov:'江苏省',city:'南京',level:'本科',tag:'211,双一流'},
+{name:'南京理工大学',code:'10288',admin:'工业和信息化部',prov:'江苏省',city:'南京',level:'本科',tag:'211,双一流'},
+{name:'苏州大学',code:'10285',admin:'江苏省',prov:'江苏省',city:'苏州',level:'本科',tag:'211,双一流'},
+{name:'江南大学',code:'10295',admin:'教育部',prov:'江苏省',city:'无锡',level:'本科',tag:'211,双一流'},
+{name:'中国矿业大学',code:'10290',admin:'教育部',prov:'江苏省',city:'徐州',level:'本科',tag:'211,双一流'},
+{name:'西南交通大学',code:'10613',admin:'教育部',prov:'四川省',city:'成都',level:'本科',tag:'211,双一流'},
+{name:'西南财经大学',code:'10651',admin:'教育部',prov:'四川省',city:'成都',level:'本科',tag:'211,双一流'},
+{name:'华中师范大学',code:'10511',admin:'教育部',prov:'湖北省',city:'武汉',level:'本科',tag:'211,双一流'},
+{name:'武汉理工大学',code:'10497',admin:'教育部',prov:'湖北省',city:'武汉',level:'本科',tag:'211,双一流'},
+{name:'中南财经政法大学',code:'10520',admin:'教育部',prov:'湖北省',city:'武汉',level:'本科',tag:'211,双一流'},
+{name:'中国地质大学(武汉)',code:'10491',admin:'教育部',prov:'湖北省',city:'武汉',level:'本科',tag:'211,双一流'},
+{name:'暨南大学',code:'10559',admin:'国务院侨办',prov:'广东省',city:'广州',level:'本科',tag:'211,双一流'},
+{name:'华南师范大学',code:'10574',admin:'广东省',prov:'广东省',city:'广州',level:'本科',tag:'211,双一流'},
+{name:'湖南师范大学',code:'10542',admin:'湖南省',prov:'湖南省',city:'长沙',level:'本科',tag:'211,双一流'},
+{name:'郑州大学',code:'10459',admin:'河南省',prov:'河南省',city:'郑州',level:'本科',tag:'211,双一流'},
+{name:'云南大学',code:'10673',admin:'云南省',prov:'云南省',city:'昆明',level:'本科',tag:'211,双一流'},
+{name:'广西大学',code:'10593',admin:'广西壮族自治区',prov:'广西',city:'南宁',level:'本科',tag:'211,双一流'},
+{name:'贵州大学',code:'10657',admin:'贵州省',prov:'贵州省',city:'贵阳',level:'本科',tag:'211,双一流'},
+{name:'新疆大学',code:'10755',admin:'新疆维吾尔自治区',prov:'新疆',city:'乌鲁木齐',level:'本科',tag:'211,双一流'},
+{name:'石河子大学',code:'10759',admin:'新疆生产建设兵团',prov:'新疆',city:'石河子',level:'本科',tag:'211,双一流'},
+{name:'西藏大学',code:'10694',admin:'西藏自治区',prov:'西藏',city:'拉萨',level:'本科',tag:'211,双一流'},
+{name:'青海大学',code:'10743',admin:'青海省',prov:'青海省',city:'西宁',level:'本科',tag:'211,双一流'},
+{name:'宁夏大学',code:'10749',admin:'宁夏回族自治区',prov:'宁夏',city:'银川',level:'本科',tag:'211,双一流'},
+{name:'海南大学',code:'10589',admin:'海南省',prov:'海南省',city:'海口',level:'本科',tag:'211,双一流'},
+{name:'内蒙古大学',code:'10126',admin:'内蒙古自治区',prov:'内蒙古',city:'呼和浩特',level:'本科',tag:'211,双一流'},
+{name:'南昌大学',code:'10403',admin:'江西省',prov:'江西省',city:'南昌',level:'本科',tag:'211,双一流'},
+{name:'福州大学',code:'10386',admin:'福建省',prov:'福建省',city:'福州',level:'本科',tag:'211,双一流'},
+{name:'河北工业大学',code:'10080',admin:'河北省',prov:'河北省',city:'天津',level:'本科',tag:'211,双一流'},
+{name:'太原理工大学',code:'10112',admin:'山西省',prov:'山西省',city:'太原',level:'本科',tag:'211,双一流'},
+{name:'深圳大学',code:'10590',admin:'广东省',prov:'广东省',city:'深圳',level:'本科',tag:''},
+{name:'首都师范大学',code:'10028',admin:'北京市',prov:'北京市',city:'北京',level:'本科',tag:''},
+{name:'南京师范大学',code:'10319',admin:'江苏省',prov:'江苏省',city:'南京',level:'本科',tag:'211,双一流'},
+{name:'东北师范大学',code:'10200',admin:'教育部',prov:'吉林省',city:'长春',level:'本科',tag:'211,双一流'},
+{name:'陕西师范大学',code:'10718',admin:'教育部',prov:'陕西省',city:'西安',level:'本科',tag:'211,双一流'},
+{name:'合肥工业大学',code:'10359',admin:'教育部',prov:'安徽省',city:'合肥',level:'本科',tag:'211,双一流'},
+{name:'河海大学',code:'10294',admin:'教育部',prov:'江苏省',city:'南京',level:'本科',tag:'211,双一流'},
+{name:'中国石油大学(华东)',code:'10425',admin:'教育部',prov:'山东省',city:'青岛',level:'本科',tag:'211,双一流'},
+{name:'西南大学',code:'10635',admin:'教育部',prov:'重庆市',city:'重庆',level:'本科',tag:'211,双一流'},
+{name:'西北大学',code:'10697',admin:'陕西省',prov:'陕西省',city:'西安',level:'本科',tag:'211,双一流'},
+{name:'北京外国语大学',code:'10030',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'211,双一流'},
+{name:'上海外国语大学',code:'10271',admin:'教育部',prov:'上海市',city:'上海',level:'本科',tag:'211,双一流'},
+{name:'华北电力大学',code:'10054',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'211,双一流'},
+{name:'南方科技大学',code:'14325',admin:'广东省',prov:'广东省',city:'深圳',level:'本科',tag:'双一流'},
+{name:'哈尔滨工程大学',code:'10217',admin:'工业和信息化部',prov:'黑龙江省',city:'哈尔滨',level:'本科',tag:'211,双一流'},
+{name:'北京中医药大学',code:'10026',admin:'教育部',prov:'北京市',city:'北京',level:'本科',tag:'211,双一流'},
+{name:'中国药科大学',code:'10316',admin:'教育部',prov:'江苏省',city:'南京',level:'本科',tag:'211,双一流'},
+{name:'中国美术学院',code:'10355',admin:'浙江省',prov:'浙江省',city:'杭州',level:'本科',tag:'双一流'}
 ];
 var currentTag='all';
 function filterList(tag){currentTag=tag;doFilter();}
@@ -68,18 +120,17 @@ function doFilter(){
   var kw=document.getElementById('search').value.toLowerCase();
   var filtered=unis.filter(function(u){
     var mTag=currentTag==='all'||u.tag.indexOf(currentTag)>=0;
-    var mKw=!kw||(u.name+u.city).toLowerCase().indexOf(kw)>=0;
+    var mKw=!kw||(u.name+u.city+u.prov+u.admin+u.code).toLowerCase().indexOf(kw)>=0;
     return mTag&&mKw;
   });
-  var html = '<table style="width:100%;border-collapse:collapse;"><tr style="background:var(--bg);font-weight:600;"><td>大学</td><td>城市</td><td>标签</td></tr>';
+  var html='<table style="width:100%;border-collapse:collapse;"><tr style="background:var(--bg);font-weight:600;font-size:.7rem;"><td>院校名称</td><td>标识码</td><td>主管部门</td><td>所在地</td><td>层次</td><td>标签</td></tr>';
   filtered.forEach(function(u){
-    var tagDisplay = u.tag.split(',').map(function(t){return '<span style="background:'+(t==='985'?'#fed7aa':t==='211'?'#dbeafe':'#fef3c7')+';padding:1px 6px;border-radius:4px;font-size:.7rem;margin:0 2px;">'+t+'</span>';}).join('');
-    html+='<tr><td style="padding:4px 8px;border-bottom:1px solid #f1f5f9;">'+u.name+'</td><td style="padding:4px 8px;border-bottom:1px solid #f1f5f9;">'+u.city+'</td><td style="padding:4px 8px;border-bottom:1px solid #f1f5f9;">'+tagDisplay+'</td></tr>';
+    var tagDisplay=u.tag?u.tag.split(',').map(function(t){return '<span style="background:'+(t==='985'?'#fed7aa':t==='211'?'#dbeafe':t==='双一流'?'#fef3c7':t==='c9'?'#e0e7ff':'#f1f5f9')+';padding:1px 5px;border-radius:3px;font-size:.65rem;margin:0 1px;">'+t+'</span>';}).join(''):'-';
+    html+='<tr><td style="padding:3px 6px;border-bottom:1px solid #f1f5f9;"><strong>'+u.name+'</strong></td><td style="padding:3px 6px;border-bottom:1px solid #f1f5f9;font-family:monospace;">'+u.code+'</td><td style="padding:3px 6px;border-bottom:1px solid #f1f5f9;color:var(--text-secondary);">'+u.admin+'</td><td style="padding:3px 6px;border-bottom:1px solid #f1f5f9;">'+u.prov+' '+u.city+'</td><td style="padding:3px 6px;border-bottom:1px solid #f1f5f9;">'+u.level+'</td><td style="padding:3px 6px;border-bottom:1px solid #f1f5f9;">'+tagDisplay+'</td></tr>';
   });
   html+='</table>';
   document.getElementById('list').innerHTML=html;
+  document.getElementById('countInfo').textContent='共 '+filtered.length+' 所高校 Total '+filtered.length+' universities';
 }
 doFilter();
-</script>
-</body>
-</html>
+</script></body></html>

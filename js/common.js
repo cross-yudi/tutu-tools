@@ -45,3 +45,37 @@ function clearInput(id) {
   var el = document.getElementById(id);
   if (el) { el.value = ''; el.focus(); }
 }
+
+// 点赞功能
+(function() {
+  var pageId = location.pathname.replace(/\/index\.html$/, '').replace(/^\//, '').replace(/\//g, '-') || 'home';
+  var key = 'tutu_likes_' + pageId;
+  var likes = parseInt(localStorage.getItem(key) || '0');
+  var liked = localStorage.getItem('tutu_liked_' + pageId) === '1';
+
+  function renderBtn() {
+    var container = document.querySelector('.tool-header');
+    if (!container) return;
+    var btn = document.createElement('button');
+    btn.className = 'like-btn' + (liked ? ' liked' : '');
+    btn.innerHTML = (liked ? '❤️ ' : '🤍 ') + '<span class="like-count">' + likes + '</span>';
+    btn.title = '点赞 Like';
+    btn.addEventListener('click', function() {
+      if (liked) return;
+      liked = true;
+      likes++;
+      localStorage.setItem(key, likes);
+      localStorage.setItem('tutu_liked_' + pageId, '1');
+      btn.className = 'like-btn liked';
+      btn.innerHTML = '❤️ <span class="like-count">' + likes + '</span>';
+      showToast('感谢点赞！Thanks!');
+    });
+    container.appendChild(btn);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderBtn);
+  } else {
+    renderBtn();
+  }
+})();

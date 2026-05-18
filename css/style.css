@@ -381,3 +381,22 @@ body {
   align-items: center;
   gap: 4px;
 }
+
+/* === Like Button === */
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  background: #fff;
+  cursor: pointer;
+  font-size: .85rem;
+  transition: all .2s;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.like-btn:hover { border-color: #ef4444; background: #fef2f2; }
+.like-btn.liked { border-color: #ef4444; background: #fef2f2; color: #ef4444; }
+.like-count { font-weight: 600; }

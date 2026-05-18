@@ -1,7 +1,34 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>打字速度测试 Typing Test - 兔兔工具站</title><meta name="description" content="在线打字速度测试。Typing speed test — WPM & accuracy."><meta name="keywords" content="打字测试,typing test,WPM"><link rel="stylesheet" href="../../css/style.css"><style>#typing{width:100%;min-height:120px;padding:14px;font-size:1.1rem;font-family:monospace;border:2px solid var(--border);border-radius:8px;resize:none;outline:none;}#target{font-size:1.1rem;line-height:1.8;padding:12px;background:#f8fafc;border-radius:8px;min-height:80px;}.correct{color:#10b981;}.wrong{color:#ef4444;}.current{background:#fef3c7;}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 打字测试</div><h2>⌨️ 打字速度测试</h2><p class="desc">测试你的英文打字速度和准确率</p><p class="desc-en">Test your typing speed & accuracy (WPM)</p></div><div class="tool-body"><div class="tool-row"><div class="tool-panel"><label>范文 <span class="label-en">Target</span></label><div id="target"></div></div></div><div class="tool-row"><div class="tool-panel"><label>输入区 <span class="label-en">Type Here</span></label><textarea id="typing" placeholder="在这里打字... Start typing here..." autofocus></textarea></div></div><div style="text-align:center;margin-top:8px;">WPM：<strong id="wpm" style="font-size:1.5rem;">0</strong> | 准确率 Accuracy：<strong id="acc" style="font-size:1.5rem;">100%</strong> | 时间 Time：<strong id="timer">0</strong>s</div><button class="btn btn-primary" style="margin-top:8px;" onclick="newTest()">新测试 New Test</button></div></main><footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer><script src="../../js/common.js"></script><script>
 var texts=['The quick brown fox jumps over the lazy dog. Programming is the art of telling another human what one wants the computer to do.',
 'A journey of a thousand miles begins with a single step. Practice makes perfect, so keep typing to improve your skills every day.',
-'Technology is best when it brings people together. The best way to predict the future is to invent it. Code is like humor.'];
+'Technology is best when it brings people together. The best way to predict the future is to invent it. Code is like humor.',
+'Learning to write programs stretches your mind and helps you think better. It creates a way of thinking about things that is helpful.',
+'Simplicity is the soul of efficiency. Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+'The computer was born to solve problems that did not exist before. Software is a great combination between artistry and engineering.',
+'First solve the problem then write the code. Make it work, make it right, make it fast. Walking on water is easy if you know where the stones are.',
+'Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live. Write clean code.',
+'Measuring programming progress by lines of code is like measuring aircraft building progress by weight. Less is more in software.',
+'Debugging is twice as hard as writing the code in the first place. Therefore if you write the code as cleverly as possible you are not smart enough to debug it.',
+'It is not enough for code to work. Code should be beautiful. Clean code reads like well written prose. Good code is its own best documentation.',
+'The most important property of a program is whether it accomplishes the intention of its user. The purpose of software is to help people.',
+'Every great developer you know got there by solving problems they were unqualified to solve until they actually did it. Keep pushing forward.',
+'Experience is the name everyone gives to their mistakes. The only way to learn a new programming language is by writing programs in it.',
+'Any application that can be written in JavaScript will eventually be written in JavaScript. The web is the platform of the future.',
+'Talk is cheap. Show me the code. Ideas are easy, implementation is hard. The best error message is the one that never shows up.',
+'You might not think that programmers are artists, but programming is an extremely creative profession. It is logic based creativity.',
+'There are two ways of constructing a software design. One way is to make it so simple that there are obviously no deficiencies.',
+'Before software can be reusable it first has to be usable. A good programmer is someone who always looks both ways before crossing a one way street.',
+'The function of good software is to make the complex appear to be simple. Software is like entropy: it is difficult to grasp, weighs nothing, and obeys the second law of thermodynamics.',
+'It is not the strongest of the species that survives, nor the most intelligent. It is the one that is most adaptable to change.',
+'In three words I can sum up everything I have learned about life: it goes on. Do not cry because it is over, smile because it happened.',
+'The only impossible journey is the one you never begin. The future belongs to those who believe in the beauty of their dreams.',
+'Life is what happens when you are busy making other plans. Get busy living or get busy dying. That is the truth of existence.',
+'To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment.',
+'Success is not final, failure is not fatal. It is the courage to continue that counts. Keep calm and carry on with determination.',
+'The greatest glory in living lies not in never falling, but in rising every time we fall. The best preparation for tomorrow is doing your best today.',
+'Twenty years from now you will be more disappointed by the things you did not do than by the ones you did do. So throw off the bowlines. Sail away from the safe harbor.',
+'Be the change that you wish to see in the world. An eye for an eye only ends up making the whole world blind. Live as if you were to die tomorrow.',
+'Darkness cannot drive out darkness, only light can do that. Hate cannot drive out hate, only love can do that. We must accept finite disappointment, but never lose infinite hope.'];
 var target='',started=false,startTime=0,timerId=null;
 function newTest(){target=texts[Math.floor(Math.random()*texts.length)];document.getElementById('target').textContent=target;document.getElementById('typing').value='';document.getElementById('wpm').textContent='0';document.getElementById('acc').textContent='100%';document.getElementById('timer').textContent='0';started=false;if(timerId)clearInterval(timerId);}
 function updateWPM(){var input=document.getElementById('typing').value;if(!started&&input.length>0){started=true;startTime=Date.now();timerId=setInterval(function(){document.getElementById('timer').textContent=Math.floor((Date.now()-startTime)/1000);},500);}

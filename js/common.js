@@ -54,11 +54,10 @@ function clearInput(id) {
   var liked = localStorage.getItem('tutu_liked_' + pageId) === '1';
 
   function renderBtn() {
-    var container = document.querySelector('.tool-header');
-    if (!container) return;
-    var btn = document.createElement('button');
+    if (!document.querySelector('.tool-header')) return;
+    var btn = document.createElement('div');
     btn.className = 'like-btn' + (liked ? ' liked' : '');
-    btn.innerHTML = (liked ? '❤️ ' : '🤍 ') + '<span class="like-count">' + likes + '</span>';
+    btn.innerHTML = (liked ? '❤️' : '🤍') + ' 点赞 Like <span class="like-count">' + likes + '</span>';
     btn.title = '点赞 Like';
     btn.addEventListener('click', function() {
       if (liked) return;
@@ -67,10 +66,10 @@ function clearInput(id) {
       localStorage.setItem(key, likes);
       localStorage.setItem('tutu_liked_' + pageId, '1');
       btn.className = 'like-btn liked';
-      btn.innerHTML = '❤️ <span class="like-count">' + likes + '</span>';
+      btn.innerHTML = '❤️ 点赞 Like <span class="like-count">' + likes + '</span>';
       showToast('感谢点赞！Thanks!');
     });
-    container.appendChild(btn);
+    document.body.appendChild(btn);
   }
 
   if (document.readyState === 'loading') {

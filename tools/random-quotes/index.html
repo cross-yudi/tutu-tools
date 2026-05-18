@@ -38,6 +38,7 @@
       </div>
       <div class="info-bar">
         <span id="infoTip" style="display:none;"></span>
+        <button class="btn btn-outline btn-sm" id="nextBtn" onclick="nextPick()" style="display:none;">🎲 下一个 Next</button>
         <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button>
       </div>
     </div>
@@ -47,11 +48,17 @@
 <script src="../../js/common.js"></script>
 <script src="quotes-data.js"></script>
 <script>
-var names = {poison:'毒鸡汤',inspire:'励志名言',movie:'经典台词',poetry:'古诗词'};
+var currentType = '';
 function pick(type) {
+  currentType = type;
   var pool = quotes[type];
   var item = pool[Math.floor(Math.random() * pool.length)];
   document.getElementById('output').textContent = item;
+  document.getElementById('nextBtn').style.display = '';
+}
+function nextPick() {
+  if (!currentType) return;
+  pick(currentType);
 }
 </script>
 </body>

@@ -26,7 +26,7 @@ function play(p){
   document.getElementById('playerIcon').textContent=icons[p];
   document.getElementById('compIcon').textContent=icons[c];
   var r,cl;
-  if(p===c){r='平局';cl='#9ca3af';}else if((p==='r'&&c==='s')||(p==='s'&&c==='p')||(p==='p'&&c==='r')){r='你赢了!';cl='#16a34a';streak++;if(streak>best){best=streak;localStorage.setItem('rps_best',best);document.getElementById('best').textContent=best;}}else{r='你输了';cl='#dc2626';streak=0;}
+  if(p===c){r='平局';cl='#f59e0b';}else if((p==='r'&&c==='s')||(p==='s'&&c==='p')||(p==='p'&&c==='r')){r='你赢了!';cl='#10b981';streak++;if(streak>best){best=streak;localStorage.setItem('rps_best',best);document.getElementById('best').textContent=best;}}else{r='你输了';cl='#ef4444';streak=0;}
   document.getElementById('streak').textContent=streak;
   document.getElementById('resultText').textContent=r;
   moves.unshift({p:icons[p],c:icons[c],cl:cl});
@@ -44,6 +44,5 @@ function renderHistory(){
 }
 function resetGame(){streak=0;moves=[];document.getElementById('streak').textContent='0';document.getElementById('playerIcon').textContent='🤔';document.getElementById('compIcon').textContent='🤔';document.getElementById('resultText').textContent='选择出拳';renderHistory();}
 // 初始测试：显示一条示例记录来验证显示正常
-moves.push({p:'✊',c:'🖐',cl:'#dc2626'});
 renderHistory();
 </script></body></html>

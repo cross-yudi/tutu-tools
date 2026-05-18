@@ -40,7 +40,7 @@ function getCandidates(){
 
 // Quick candidate scoring
 function quickScore(r,c,p){
-  board[r][c]=p;var s=eval5(r,c,p);board[r][c]=0;return s;
+  var orig=board[r][c];board[r][c]=p;var s=eval5(r,c,p);board[r][c]=orig;return s;
 }
 function eval5(r,c,p){
   var score=0,opp=p===1?2:1;
@@ -134,5 +134,4 @@ function aiMove(){
   else{document.getElementById('status').textContent='你的回合 Your turn ⚫';}
 }
 init();
-</script>
 </script></body></html>

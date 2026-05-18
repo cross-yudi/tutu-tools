@@ -35,14 +35,15 @@ function play(p){
 }
 function renderHistory(){
   var hp=document.getElementById('histP'),hc=document.getElementById('histC');
-  var ph='',ch='';
+  hp.innerHTML='';hc.innerHTML='';
+  if(history.length===0){hp.innerHTML='<div style="font-size:24px;color:#ccc;text-align:center;">-</div>';hc.innerHTML='<div style="font-size:24px;color:#ccc;text-align:center;">-</div>';return;}
   for(var i=0;i<history.length;i++){
-    ph+='<div style="font-size:28px;width:40px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:'+history[i].cl+'20;">'+history[i].p+'</div>';
-    ch+='<div style="font-size:28px;width:40px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:'+history[i].cl+'20;">'+history[i].c+'</div>';
+    var d1=document.createElement('div');d1.style.cssText='font-size:24px;width:40px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:'+history[i].cl+'20;margin:1px 0;';d1.textContent=history[i].p;hp.appendChild(d1);
+    var d2=document.createElement('div');d2.style.cssText='font-size:24px;width:40px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:'+history[i].cl+'20;margin:1px 0;';d2.textContent=history[i].c;hc.appendChild(d2);
   }
-  hp.innerHTML=ph||'<div style="font-size:28px;color:#ccc;width:40px;height:34px;display:flex;align-items:center;justify-content:center;">-</div>';
-  hc.innerHTML=ch||'<div style="font-size:28px;color:#ccc;width:40px;height:34px;display:flex;align-items:center;justify-content:center;">-</div>';
 }
 function resetGame(){streak=0;history=[];document.getElementById('streak').textContent='0';document.getElementById('playerIcon').textContent='🤔';document.getElementById('compIcon').textContent='🤔';document.getElementById('resultText').textContent='选择出拳';renderHistory();}
+// 初始测试：显示一条示例记录来验证显示正常
+history.push({p:'✊',c:'🖐',cl:'#dc2626'});
 renderHistory();
 </script></body></html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>俄罗斯方块 Tetris - 兔兔工具站</title><meta name="description" content="经典俄罗斯方块。Classic Tetris game."><meta name="keywords" content="俄罗斯方块,tetris"><link rel="stylesheet" href="../../css/style.css"><style>canvas{border:2px solid var(--border);border-radius:8px;display:block;margin:0 auto;}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 俄罗斯方块</div><h2>🟦 俄罗斯方块</h2><p class="desc">经典俄罗斯方块，方向键控制</p><p class="desc-en">Classic Tetris — arrow keys to play</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><div>分数 Score：<strong id="score" style="font-size:2rem;">0</strong></div><canvas id="c" width="300" height="600"></canvas><p style="font-size:.75rem;color:var(--text-en);">← → 移动 | ↑ 旋转 | ↓ 加速 | 空格 硬降</p><button class="btn btn-primary" style="margin-top:8px;" onclick="init()">重新开始 Restart</button></div></div></main><footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer><script src="../../js/common.js"></script><script>
+var c=document.getElementById('c'),ctx=c.getContext('2d'),gs=30,cols=10,rows=20,board=[],piece=null,score=0,gameOver=false,interval;
+var shapes=[[[1,1,1,1]],[[1,1],[1,1]],[[0,1,0],[1,1,1]],[[1,0,0],[1,1,1]],[[0,0,1],[1,1,1]],[[0,1,1],[1,1,0]],[[1,1,0],[0,1,1]]];
+var colors=['#0ea5e9','#f59e0b','#8b5cf6','#10b981','#ef4444','#3b82f6','#ec4899'];
+function init(){board=[];for(var r=0;r<rows;r++){board[r]=[];for(var c=0;c<cols;c++)board[r][c]=0;}score=0;gameOver=false;document.getElementById('score').textContent='0';spawn();if(interval)clearInterval(interval);interval=setInterval(tick,800);draw();}
+function spawn(){var idx=Math.floor(Math.random()*shapes.length);piece={shape:shapes[idx],color:colors[idx],x:Math.floor((cols-shapes[idx][0].length)/2),y:0};if(!valid(piece.shape,piece.x,piece.y)){gameOver=true;clearInterval(interval);}}
+function valid(shape,px,py){for(var r=0;r<shape.length;r++)for(var c=0;c<shape[r].length;c++)if(shape[r][c]){var nr=py+r,nc=px+c;if(nc<0||nc>=cols||nr>=rows||(nr>=0&&board[nr][nc]))return false;}return true;}
+function place(){for(var r=0;r<piece.shape.length;r++)for(var c=0;c<piece.shape[r].length;c++)if(piece.shape[r][c])board[piece.y+r][piece.x+c]=piece.color;clearLines();spawn();}
+function clearLines(){var cleared=0;for(var r=rows-1;r>=0;r--){if(board[r].every(function(c){return c!==0;})){board.splice(r,1);board.unshift(new Array(cols).fill(0));cleared++;r++;}}
+  if(cleared){score+=[0,100,300,500,800][cleared];document.getElementById('score').textContent=score;}}
+function move(dx,dy){if(valid(piece.shape,piece.x+dx,piece.y+dy)){piece.x+=dx;piece.y+=dy;return true;}if(dy>0){place();}return false;}
+function rotate(){var s=piece.shape,rot=s[0].map(function(_,i){return s.map(function(r){return r[i];}).reverse();});if(valid(rot,piece.x,piece.y))piece.shape=rot;}
+function hardDrop(){while(valid(piece.shape,piece.x,piece.y+1))piece.y++;place();draw();}
+function tick(){if(gameOver)return;if(!move(0,1)){if(gameOver)return;}draw();}
+function draw(){ctx.fillStyle='#111';ctx.fillRect(0,0,300,600);
+  for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)if(board[r][c]){ctx.fillStyle=board[r][c];ctx.fillRect(c*gs,r*gs,gs-1,gs-1);ctx.fillStyle='rgba(255,255,255,.15)';ctx.fillRect(c*gs,r*gs,gs-1,4);}
+  if(piece&&!gameOver){ctx.fillStyle=piece.color;for(var r=0;r<piece.shape.length;r++)for(var c=0;c<piece.shape[r].length;c++)if(piece.shape[r][c]){ctx.fillRect((piece.x+c)*gs,(piece.y+r)*gs,gs-1,gs-1);}}
+  if(gameOver){ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(0,0,300,600);ctx.fillStyle='#fff';ctx.font='24px sans-serif';ctx.textAlign='center';ctx.fillText('Game Over',150,300);}
+}
+document.addEventListener('keydown',function(e){if(gameOver)return;e.preventDefault();if(e.key==='ArrowLeft')move(-1,0);else if(e.key==='ArrowRight')move(1,0);else if(e.key==='ArrowDown')move(0,1);else if(e.key==='ArrowUp')rotate();else if(e.key===' ')hardDrop();draw();});
+init();
+</script></body></html>

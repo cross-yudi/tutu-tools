@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>接水果 Fruit Catch - 兔兔工具站</title><meta name="description" content="移动篮子接住掉落的水果。Catch falling fruits with your basket."><meta name="keywords" content="接水果,fruit catch,休闲游戏"><link rel="stylesheet" href="../../css/style.css"><style>canvas{border:2px solid var(--border);border-radius:8px;display:block;margin:0 auto;background:#1a1a2e;}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 接水果</div><h2>🎣 接水果</h2><p class="desc">移动篮子接住掉落的水果</p><p class="desc-en">Move the basket to catch falling fruits!</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><div>分数 Score：<strong id="score" style="font-size:2rem;">0</strong></div><canvas id="c" width="400" height="500"></canvas><p style="font-size:.75rem;color:var(--text-en);margin-top:4px;">鼠标/触控移动 Mouse/Touch to move</p><button class="btn btn-primary" style="margin-top:8px;" onclick="init()">重新开始 Restart</button></div></div></main><footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer><script src="../../js/common.js"></script><script>
+var c=document.getElementById('c'),ctx=c.getContext('2d'),W=400,H=500,basket={x:170,w:60,h:12},fruits=[],score=0,gameOver=false,animId;
+var fruitEmojis=['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🍌','🍐','🥝'];
+function init(){basket.x=170;fruits=[];score=0;gameOver=false;document.getElementById('score').textContent='0';if(animId)cancelAnimationFrame(animId);loop();}
+function spawn(){if(Math.random()<0.02){fruits.push({x:Math.random()*(W-20)+10,y:-20,speed:1.5+Math.random()*2,emoji:fruitEmojis[Math.floor(Math.random()*fruitEmojis.length)],r:14});}}
+function loop(){if(gameOver)return;ctx.fillStyle='#1a1a2e';ctx.fillRect(0,0,W,H);
+  spawn();
+  ctx.fillStyle='#fff';ctx.fillRect(basket.x,H-30,basket.w,basket.h);
+  for(var i=fruits.length-1;i>=0;i--){var f=fruits[i];f.y+=f.speed;ctx.font='28px sans-serif';ctx.textAlign='center';ctx.fillText(f.emoji,f.x,f.y);
+    if(f.y>H-45&&f.y<H-10&&Math.abs(f.x-basket.x-basket.w/2)<basket.w/2+15){score+=10;document.getElementById('score').textContent=score;fruits.splice(i,1);}
+    else if(f.y>H){gameOver=true;ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(0,0,W,H);ctx.fillStyle='#fff';ctx.font='24px sans-serif';ctx.textAlign='center';ctx.fillText('Game Over',W/2,H/2-10);ctx.fillText('Score: '+score,W/2,H/2+30);}
+  }
+  animId=requestAnimationFrame(loop);
+}
+c.addEventListener('mousemove',function(e){var rect=c.getBoundingClientRect();basket.x=(e.clientX-rect.left)*(W/rect.width)-basket.w/2;if(basket.x<0)basket.x=0;if(basket.x>W-basket.w)basket.x=W-basket.w;});
+c.addEventListener('touchmove',function(e){e.preventDefault();var rect=c.getBoundingClientRect();basket.x=(e.touches[0].clientX-rect.left)*(W/rect.width)-basket.w/2;if(basket.x<0)basket.x=0;if(basket.x>W-basket.w)basket.x=W-basket.w;});
+c.addEventListener('click',function(){if(gameOver)init();});
+init();
+</script></body></html>

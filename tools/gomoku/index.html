@@ -21,59 +21,69 @@ function checkWin(p){
 }
 function isDraw(){for(var r=0;r<S;r++)for(var c=0;c<S;c++)if(board[r][c]===0)return false;return true;}
 
-// Get candidate moves (radius-1 around existing stones, top 12)
+// Get candidate moves — all empty cells within range-2 of any stone
 function getCandidates(){
   var set={};
   for(var r=0;r<S;r++)for(var c=0;c<S;c++){
     if(board[r][c]!==0){
-      for(var dr=-1;dr<=1;dr++)for(var dc=-1;dc<=1;dc++){
+      for(var dr=-2;dr<=2;dr++)for(var dc=-2;dc<=2;dc++){
         var nr=r+dr,nc=c+dc;
-        if(nr>=0&&nr<S&&nc>=0&&nc<S&&board[nr][nc]===0)set[nr+','+nc]=true;
+        if(nr>=0&&nr<S&&nc>=0&&nc<S&&board[nr][nc]===0)set[nr*S+nc]=[nr,nc];
       }
     }
   }
-  if(Object.keys(set).length===0){set['7,7']=true;}
-  var arr=[];
-  for(var k in set){var p=k.split(',');arr.push({r:+p[0],c:+p[1]});}
+  var arr=[];for(var k in set)arr.push({r:set[k][0],c:set[k][1]});
+  if(arr.length===0)arr.push({r:7,c:7});
   return arr;
 }
 
-// Quick candidate scoring
-function quickScore(r,c,p){
-  var orig=board[r][c];board[r][c]=p;var s=eval5(r,c,p);board[r][c]=orig;return s;
-}
-function eval5(r,c,p){
-  var score=0,opp=p===1?2:1;
-  for(var dr=-1;dr<=1;dr++)for(var dc=-1;dc<=1;dc++){
-    if(dr===0&&dc===0)continue;
-    var cnt=1,open=0,block=0;
-    for(var i=1;i<=4;i++){var nr=r+dr*i,nc=c+dc*i;if(nr>=0&&nr<S&&nc>=0&&nc<S&&board[nr][nc]===p)cnt++;else{open++;;break;}}
-    for(var i=1;i<=4;i++){var nr=r-dr*i,nc=c-dc*i;if(nr>=0&&nr<S&&nc>=0&&nc<S&&board[nr][nc]===p)cnt++;else{open++;break;}}
-    if(cnt>=5)score+=100000;
-    else if(cnt===4){score+=open===2?50000:5000;}
-    else if(cnt===3){score+=open===2?5000:500;}
-    else if(cnt===2){score+=open===2?500:50;}
+// Line-based evaluation: scan all lines of length 5
+function evalBoard(){
+  var aiScore=0,playerScore=0;
+  var dirs=[[0,1],[1,0],[1,1],[1,-1]];
+  for(var r=0;r<S;r++)for(var c=0;c<S;c++){
+    for(var d=0;d<4;d++){
+      var dr=dirs[d][0],dc=dirs[d][1];
+      if(r+4*dr>=S||c+4*dc>=S||c+4*dc<0)continue;
+      var ai=0,pl=0;
+      for(var i=0;i<5;i++){var v=board[r+dr*i][c+dc*i];if(v===2)ai++;else if(v===1)pl++;}
+      if(ai>0&&pl>0)continue;
+      if(ai===5)aiScore+=10000000;
+      else if(ai===4)aiScore+=100000;
+      else if(ai===3)aiScore+=1000;
+      else if(ai===2)aiScore+=10;
+      else if(ai===1)aiScore+=1;
+      if(pl===5)playerScore+=10000000;
+      else if(pl===4)playerScore+=100000;
+      else if(pl===3)playerScore+=1000;
+      else if(pl===2)playerScore+=10;
+      else if(pl===1)playerScore+=1;
+    }
   }
-  return score;
+  return aiScore - playerScore*1.2;
 }
 
-// Minimax depth 2
 function minimax(depth, isMax){
-  var p=isMax?2:1;
-  if(depth===0)return quickEval();
+  if(checkWin(2))return 10000000+depth;
+  if(checkWin(1))return -10000000-depth;
+  if(depth===0)return evalBoard();
 
   var cands=getCandidates();
-  // Score and take top 10
-  var scored=cands.map(function(m){return {r:m.r,c:m.c,s:quickScore(m.r,m.c,p)};});
-  scored.sort(function(a,b){return b.s-a.s;});
-  scored=scored.slice(0,10);
+  // Score and pick top 8
+  if(cands.length>8){
+    for(var i=0;i<cands.length;i++){
+      var m=cands[i];board[m.r][m.c]=isMax?2:1;
+      cands[i].s=evalBoard();
+      board[m.r][m.c]=0;
+    }
+    cands.sort(function(a,b){return isMax?b.s-a.s:a.s-b.s;});
+    cands=cands.slice(0,8);
+  }
 
   if(isMax){
     var best=-Infinity;
-    for(var i=0;i<scored.length;i++){
-      var m=scored[i];
-      board[m.r][m.c]=2;
-      if(checkWin(2)){board[m.r][m.c]=0;return 100000;}
+    for(var i=0;i<cands.length;i++){
+      var m=cands[i];board[m.r][m.c]=2;
       var val=minimax(depth-1,false);
       board[m.r][m.c]=0;
       if(val>best)best=val;
@@ -81,10 +91,8 @@ function minimax(depth, isMax){
     return best;
   }else{
     var best=Infinity;
-    for(var i=0;i<scored.length;i++){
-      var m=scored[i];
-      board[m.r][m.c]=1;
-      if(checkWin(1)){board[m.r][m.c]=0;return -100000;}
+    for(var i=0;i<cands.length;i++){
+      var m=cands[i];board[m.r][m.c]=1;
       var val=minimax(depth-1,true);
       board[m.r][m.c]=0;
       if(val<best)best=val;
@@ -93,42 +101,36 @@ function minimax(depth, isMax){
   }
 }
 
-function quickEval(){
-  var s=0;
-  for(var r=0;r<S;r++)for(var c=0;c<S;c++){
-    if(board[r][c]===2)s+=quickScore(r,c,2);
-    else if(board[r][c]===1)s-=quickScore(r,c,1);
-  }
-  return s;
-}
-
 function aiMove(){
   if(gameOver)return;
   var cands=getCandidates();
-  var scored=cands.map(function(m){return {r:m.r,c:m.c,s:quickScore(m.r,m.c,2)};});
-  scored.sort(function(a,b){return b.s-a.s;});
-  scored=scored.slice(0,10);
 
-  // Check for immediate win
-  for(var i=0;i<scored.length;i++){
-    var m=scored[i];board[m.r][m.c]=2;
-    if(checkWin(2)){render();document.getElementById('status').textContent='😢 AI赢了！AI Wins!';gameOver=true;return;}
-    board[m.r][m.c]=0;
+  // Check immediate win or block
+  for(var i=0;i<cands.length;i++){
+    var m=cands[i];
+    board[m.r][m.c]=2;if(checkWin(2)){playerTurn=true;render();document.getElementById('status').textContent='😢 AI赢了！AI Wins!';gameOver=true;return;}board[m.r][m.c]=0;
+  }
+  for(var i=0;i<cands.length;i++){
+    var m=cands[i];
+    board[m.r][m.c]=1;if(checkWin(1)){board[m.r][m.c]=0;board[m.r][m.c]=2;playerTurn=true;render();document.getElementById('status').textContent='AI防守了！Your turn ⚫';return;}board[m.r][m.c]=0;
   }
 
-  var bestMove=scored[0]||{r:7,c:7};
+  // Score and pick top 8
+  for(var i=0;i<cands.length;i++){var m=cands[i];board[m.r][m.c]=2;cands[i].s=evalBoard();board[m.r][m.c]=0;}
+  cands.sort(function(a,b){return b.s-a.s;});
+  var top8=cands.slice(0,8);
+
+  var bestMove=top8[0]||{r:7,c:7};
   var bestScore=-Infinity;
-  for(var i=0;i<scored.length;i++){
-    var m=scored[i];
-    board[m.r][m.c]=2;
+  for(var i=0;i<top8.length;i++){
+    var m=top8[i];board[m.r][m.c]=2;
     if(checkWin(2)){board[m.r][m.c]=0;bestMove=m;break;}
     var val=minimax(2,false);
     board[m.r][m.c]=0;
     if(val>bestScore){bestScore=val;bestMove=m;}
   }
 
-  board[bestMove.r][bestMove.c]=2;
-  playerTurn=true;render();
+  board[bestMove.r][bestMove.c]=2;playerTurn=true;render();
   if(checkWin(2)){document.getElementById('status').textContent='😢 AI赢了！AI Wins!';gameOver=true;}
   else if(isDraw()){document.getElementById('status').textContent='平局 Draw!';gameOver=true;}
   else{document.getElementById('status').textContent='你的回合 Your turn ⚫';}

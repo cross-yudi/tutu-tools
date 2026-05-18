@@ -384,26 +384,21 @@ body {
 
 /* === Like Button === */
 .like-btn {
-  position: fixed;
-  top: 72px;
-  right: 20px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 8px 16px;
+  padding: 5px 12px;
   border: 1.5px solid var(--border);
   border-radius: 20px;
   background: #fff;
   cursor: pointer;
-  font-size: .85rem;
+  font-size: .75rem;
+  font-weight: 400;
   transition: all .2s;
-  box-shadow: var(--shadow-md);
-  z-index: 99;
+  margin-left: 10px;
   user-select: none;
+  vertical-align: middle;
 }
-.like-btn:hover { border-color: #ef4444; background: #fef2f2; transform: scale(1.05); }
+.like-btn:hover { border-color: #ef4444; background: #fef2f2; }
 .like-btn.liked { border-color: #ef4444; background: #fef2f2; color: #ef4444; }
 .like-count { font-weight: 600; }
-@media (max-width: 640px) {
-  .like-btn { top: auto; bottom: 20px; right: 16px; }
-}

@@ -54,12 +54,14 @@ function clearInput(id) {
   var liked = localStorage.getItem('tutu_liked_' + pageId) === '1';
 
   function renderBtn() {
-    if (!document.querySelector('.tool-header')) return;
-    var btn = document.createElement('div');
+    var h2 = document.querySelector('.tool-header h2');
+    if (!h2) return;
+    var btn = document.createElement('span');
     btn.className = 'like-btn' + (liked ? ' liked' : '');
     btn.innerHTML = (liked ? '❤️' : '🤍') + ' 点赞 Like <span class="like-count">' + likes + '</span>';
     btn.title = '点赞 Like';
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
       if (liked) return;
       liked = true;
       likes++;
@@ -69,7 +71,7 @@ function clearInput(id) {
       btn.innerHTML = '❤️ 点赞 Like <span class="like-count">' + likes + '</span>';
       showToast('感谢点赞！Thanks!');
     });
-    document.body.appendChild(btn);
+    h2.appendChild(btn);
   }
 
   if (document.readyState === 'loading') {

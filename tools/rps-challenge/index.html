@@ -34,8 +34,10 @@ function play(player){
 
 function renderHistory(){
   var h=document.getElementById('history');
+  if(history.length===0){h.innerHTML='<span style="color:var(--text-en);font-size:.8rem;">开始出拳后显示记录 History after first move</span>';return;}
   h.innerHTML=history.slice(0,20).map(function(item){return '<span class="hist-item '+item.cls+'">'+item.player+' vs '+item.comp+'</span>';}).join('');
 }
+renderHistory();
 
 function resetGame(){streak=0;history=[];document.getElementById('streak').textContent='0';document.getElementById('playerIcon').textContent='🤔';document.getElementById('compIcon').textContent='🤔';document.getElementById('resultText').textContent='选择出拳 Pick your move';document.getElementById('history').innerHTML='';}
 </script></body></html>

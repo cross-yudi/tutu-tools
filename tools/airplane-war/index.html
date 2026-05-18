@@ -5,7 +5,7 @@ function spawnEnemy(){if(frames%40===0){enemies.push({x:Math.random()*(W-40)+20,
 function shoot(){if(frames%10===0){bullets.push({x:player.x,y:player.y-30,speed:5});}}
 function drawPlane(x,y,isPlayer){
   ctx.save();ctx.translate(x,y);
-  ctx.rotate(Math.PI/2);
+  ctx.rotate(-Math.PI/2);
   ctx.font='34px sans-serif';ctx.textAlign='center';
   ctx.fillText(isPlayer?'🚀':'🛸',0,0);
   ctx.restore();

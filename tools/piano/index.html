@@ -1,16 +1,58 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>在线钢琴 Piano - 兔兔工具站</title><meta name="description" content="在线钢琴，用键盘弹奏。Online piano — play with keyboard."><meta name="keywords" content="在线钢琴,piano,键盘弹奏"><link rel="stylesheet" href="../../css/style.css"><style>.keys{display:flex;justify-content:center;position:relative;height:180px;}.wk{width:46px;height:180px;background:#fff;border:1px solid #ccc;border-radius:0 0 6px 6px;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;font-size:.75rem;color:#999;transition:background .05s;}.wk:active,.wk.active{background:#e0e7ff;}.bk{position:absolute;width:32px;height:110px;background:#333;border-radius:0 0 4px 4px;cursor:pointer;z-index:1;}.bk:active,.bk.active{background:#6366f1;}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 在线钢琴</div><h2>🎹 在线钢琴</h2><p class="desc">用键盘弹奏，按键提示在琴键下方</p><p class="desc-en">Play piano with your keyboard</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><div class="keys" id="keys"></div><p style="font-size:.75rem;color:var(--text-en);margin-top:8px;">按键 ZXCVBNM,./ / QWERTYU / 23456789</p></div></div></main><footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer><script src="../../js/common.js"></script><script>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>在线钢琴 Piano - 兔兔工具站</title><meta name="description" content="在线钢琴，用键盘弹奏。Online piano."><meta name="keywords" content="在线钢琴,piano"><link rel="stylesheet" href="../../css/style.css"><style>.piano-wrap{overflow-x:auto;padding:10px 0;}.piano{position:relative;height:170px;margin:0 auto;}.wk{width:44px;height:170px;background:#fff;border:1px solid #ccc;border-radius:0 0 6px 6px;cursor:pointer;position:absolute;bottom:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font-size:.7rem;color:#999;transition:background .1s;}.wk:active,.wk.active{background:#bfdbfe;}.bk{width:30px;height:105px;background:#333;border-radius:0 0 4px 4px;cursor:pointer;position:absolute;top:0;z-index:2;transition:background .1s;}.bk:active,.bk.active{background:#6366f1;}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 在线钢琴</div><h2>🎹 在线钢琴</h2><p class="desc">用键盘弹奏，按键 ZXCVBNM,. / QWERTYU</p><p class="desc-en">Play piano with keyboard</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><div class="piano-wrap"><div class="piano" id="piano" style="width:748px;"></div></div><p style="font-size:.75rem;color:var(--text-en);margin-top:8px;">键盘：ZXCVBNM,. / QWERTYU / 低音2345 高音6789</p></div></div></main><footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer><script src="../../js/common.js"></script><script>
 var notes=['C','D','E','F','G','A','B','C2','D2','E2','F2','G2','A2','B2','C3','D3','E3'];
 var freqs=[261.6,293.7,329.6,349.2,392,440,493.9,523.3,587.3,659.3,698.5,784,880,987.8,1046.5,1174.7,1318.5];
-var keyMap={'Z':0,'X':1,'C':2,'V':3,'B':4,'N':5,'M':6,',':7,'.':8,'/':9,'Q':10,'W':11,'E':12,'R':13,'T':14,'Y':15,'U':16};
+// White key keyboard mapping (left to right, 17 keys)
+var wkKeys=['Z','X','C','V','B','N','M',',','.','/','2','3','4','5','6','7','8','9'];
+// Map keyboard key -> note index
+var keyMap={};
+for(var i=0;i<17;i++)keyMap[wkKeys[i]]=i;
+// Black keys: which note indices have them, and their keyboard keys
+var bkData=[{note:1,key:'S'},{note:2,key:'D'},{note:4,key:'G'},{note:5,key:'H'},{note:6,key:'J'},{note:8,key:'L'},{note:9,key:';'},{note:11,key:'W'},{note:12,key:'E'},{note:13,key:'T'},{note:15,key:'Y'},{note:16,key:'U'},{note:18,key:'I'},{note:19,key:'O'}];
+for(var i=0;i<bkData.length;i++){if(bkData[i].note<17)keyMap[bkData[i].key]=bkData[i].note;}
+
 var audioCtx=null;
-function playNote(i){try{if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='triangle';o.frequency.value=freqs[i];g.gain.setValueAtTime(.3,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.5);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.5);
-  var el=document.querySelector('[data-note="'+i+'"]');if(el){el.classList.add('active');setTimeout(function(){el.classList.remove('active');},200);}}catch(e){}}
-document.addEventListener('keydown',function(e){if(keyMap[e.key]!==undefined){e.preventDefault();playNote(keyMap[e.key]);}});
+function playNote(i){
+  try{
+    if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    var o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type='triangle';o.frequency.value=freqs[i];
+    g.gain.setValueAtTime(.25,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.6);
+    o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.6);
+    var el=document.querySelector('[data-note="'+i+'"]');
+    if(el){el.classList.add('active');setTimeout(function(){el.classList.remove('active');},150);}
+  }catch(e){}
+}
+
+document.addEventListener('keydown',function(e){
+  var note=keyMap[e.key];
+  if(note!==undefined){e.preventDefault();playNote(note);}
+});
+
 // Build keyboard
-var g=document.getElementById('keys'),whiteNotes=[0,2,4,0,7,9,11,0,14,16,18,0,21,23,25,0,27];
-var bkPos=[1,2,4,5,6,8,9,11,13,14,16,17,18,20,21,23,24];var wkIdx=0,bkIdx=0;
-for(var i=0;i<17;i++){var wk=document.createElement('div');wk.className='wk';wk.setAttribute('data-note',i);wk.innerHTML='<span>'+notes[i]+'</span>';wk.onclick=function(){var n=parseInt(this.getAttribute('data-note'));playNote(n);};g.appendChild(wk);}
-g.style.position='relative';
-var bkOffsets=[22,68,136,182,228,297,343,389,458,504,550,596,665,711,757,826,872];var bkNotes=[1,2,4,5,6,8,9,11,12,13,15,16,17,19,20,22,23];
-for(var i=0;i<bkOffsets.length;i++){if(bkNotes[i]>=17)continue;var bk=document.createElement('div');bk.className='bk';bk.setAttribute('data-note',bkNotes[i]);bk.style.left=bkOffsets[i]+'px';bk.onclick=function(){var n=parseInt(this.getAttribute('data-note'));playNote(n);};g.appendChild(bk);}
+var piano=document.getElementById('piano'),wkW=44,wkGap=0;
+// White keys positions (17 keys): left offset for each
+var wkPositions=[];
+for(var i=0;i<17;i++)wkPositions.push(i*(wkW+wkGap));
+// Black key positions (right of their left white key)
+var bkOffsets=[{note:1,left:29},{note:2,left:73},{note:4,left:161},{note:5,left:205},{note:6,left:249},{note:8,left:337},{note:9,left:381},{note:11,left:469},{note:12,left:513},{note:13,left:557},{note:15,left:645},{note:16,left:689},{note:18,left:777},{note:19,left:821}];
+
+// Draw white keys
+for(var i=0;i<17;i++){
+  var wk=document.createElement('div');wk.className='wk';
+  wk.setAttribute('data-note',i);
+  wk.style.left=wkPositions[i]+'px';
+  wk.textContent=notes[i];
+  wk.onclick=function(){playNote(parseInt(this.getAttribute('data-note')));};
+  piano.appendChild(wk);
+}
+// Draw black keys
+for(var i=0;i<bkOffsets.length;i++){
+  var bo=bkOffsets[i];if(bo.note>=17)continue;
+  var bk=document.createElement('div');bk.className='bk';
+  bk.setAttribute('data-note',bo.note);
+  bk.style.left=bo.left+'px';
+  bk.onclick=function(){playNote(parseInt(this.getAttribute('data-note')));};
+  piano.appendChild(bk);
+}
 </script></body></html>

@@ -11,10 +11,24 @@ function loop(){ctx.fillStyle='#1a1a2e';ctx.fillRect(0,0,W,H);ctx.strokeStyle='#
   if(ball.x>W){p1.score++;updateScore();ball.x=W/2;ball.y=H/2;speed=4;ball.vx=-4;ball.vy=(Math.random()-.5)*3;}
   // AI
   var targetY=ball.y-paddleH/2;if(p2.y+paddleH/2<ball.y)p2.y+=3;else if(p2.y+paddleH/2>ball.y)p2.y-=3;if(p2.y<0)p2.y=0;if(p2.y>H-paddleH)p2.y=H-paddleH;
-  ctx.fillStyle='#10b981';ctx.fillRect(p1.x,p1.y,paddleW,paddleH);
-  ctx.fillStyle='#ef4444';ctx.fillRect(p2.x,p2.y,paddleW,paddleH);
+  // Player paddle (table tennis bat shape)
+  drawPaddle(p1.x,p1.y,paddleW,paddleH,'#10b981','left');
+  // AI paddle
+  drawPaddle(p2.x,p2.y,paddleW,paddleH,'#ef4444','right');
   ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);ctx.fill();
   animId=requestAnimationFrame(loop);
+}
+function drawPaddle(x,y,w,h,color,side){
+  ctx.fillStyle=color;
+  // Handle
+  var hx=side==='left'?x+w-4:x;
+  ctx.fillRect(hx,y+h*.25,4,h*.5);
+  // Blade (rounded rectangle)
+  var bx=side==='left'?x:x+4;
+  var bw=w-4,br=4;
+  ctx.beginPath();ctx.moveTo(bx+br,y);ctx.lineTo(bx+bw-br,y);ctx.quadraticCurveTo(bx+bw,y,bx+bw,y+br);ctx.lineTo(bx+bw,y+h-br);ctx.quadraticCurveTo(bx+bw,y+h,bx+bw-br,y+h);ctx.lineTo(bx+br,y+h);ctx.quadraticCurveTo(bx,y+h,bx,y+h-br);ctx.lineTo(bx,y+br);ctx.quadraticCurveTo(bx,y,bx+br,y);ctx.closePath();ctx.fill();
+  // Rubber surface highlight
+  ctx.fillStyle='rgba(255,255,255,.2)';ctx.fillRect(bx+2,y+3,bw-4,h-7);
 }
 function updateScore(){document.getElementById('pScore').textContent=p1.score;document.getElementById('aScore').textContent=p2.score;}
 c.addEventListener('mousemove',function(e){var rect=c.getBoundingClientRect();p1.y=(e.clientY-rect.top)*(H/rect.height)-paddleH/2;if(p1.y<0)p1.y=0;if(p1.y>H-paddleH)p1.y=H-paddleH;});

@@ -38,8 +38,8 @@ function renderHistory(){
   hp.innerHTML='';hc.innerHTML='';
   if(moves.length===0){hp.innerHTML='<div style="font-size:24px;color:#ccc;text-align:center;">-</div>';hc.innerHTML='<div style="font-size:24px;color:#ccc;text-align:center;">-</div>';return;}
   for(var i=0;i<moves.length;i++){
-    var d1=document.createElement('div');d1.style.cssText='font-size:24px;width:40px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:'+moves[i].cl+'20;margin:1px 0;';d1.textContent=moves[i].p;hp.appendChild(d1);
-    var d2=document.createElement('div');d2.style.cssText='font-size:24px;width:40px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:'+moves[i].cl+'20;margin:1px 0;';d2.textContent=moves[i].c;hc.appendChild(d2);
+    var d1=document.createElement('div');d1.style.cssText='font-size:32px;width:46px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:'+ (moves[i].cl==='#10b981'?'#ef4444':'transparent')+';margin:1px 0;';d1.textContent=moves[i].p;hp.appendChild(d1);
+    var d2=document.createElement('div');d2.style.cssText='font-size:32px;width:46px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:'+ (moves[i].cl==='#10b981'?'#ef4444':'transparent')+';margin:1px 0;';d2.textContent=moves[i].c;hc.appendChild(d2);
   }
 }
 function resetGame(){streak=0;moves=[];document.getElementById('streak').textContent='0';document.getElementById('playerIcon').textContent='🤔';document.getElementById('compIcon').textContent='🤔';document.getElementById('resultText').textContent='选择出拳';renderHistory();}

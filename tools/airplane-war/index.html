@@ -1,22 +1,26 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>飞机大战 Airplane War - 兔兔工具站</title><meta name="description" content="经典飞机大战射击游戏。Classic airplane shooting game."><meta name="keywords" content="飞机大战,airplane war,射击游戏"><link rel="stylesheet" href="../../css/style.css"><style>canvas{border:2px solid var(--border);border-radius:8px;display:block;margin:0 auto;background:#0a0a2e;}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 飞机大战</div><h2>✈️ 飞机大战</h2><p class="desc">鼠标移动战机，自动射击消灭敌机</p><p class="desc-en">Move with mouse, auto-shoot enemies!</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><div>分数 Score：<strong id="score" style="font-size:2rem;color:#f59e0b;">0</strong></div><canvas id="c" width="400" height="600"></canvas><p style="font-size:.75rem;color:var(--text-en);">鼠标移动战机 Move with mouse</p><button class="btn btn-primary" style="margin-top:8px;" onclick="init()">重新开始 Restart</button></div></div></main><footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer><script src="../../js/common.js"></script><script>
-var c=document.getElementById('c'),ctx=c.getContext('2d'),W=400,H=600,player={x:W/2,y:H-80,w:40,h:40},bullets=[],enemies=[],score=0,gameOver=false,animId,frames=0;
-function init(){player.x=W/2;bullets=[];enemies=[];score=0;gameOver=false;frames=0;document.getElementById('score').textContent='0';if(animId)cancelAnimationFrame(animId);loop();}
-function spawnEnemy(){if(frames%30===0){enemies.push({x:Math.random()*(W-30)+15,y:-30,w:30,h:30,speed:1.5+Math.random()*2});}}
-function shoot(){if(frames%12===0){bullets.push({x:player.x,y:player.y-20,w:4,h:12,speed:6});}}
+var c=document.getElementById('c'),ctx=c.getContext('2d'),W=400,H=600,player={x:W/2,y:H-80},bullets=[],eBullets=[],enemies=[],score=0,gameOver=false,animId,frames=0;
+function init(){player.x=W/2;bullets=[];eBullets=[];enemies=[];score=0;gameOver=false;frames=0;document.getElementById('score').textContent='0';if(animId)cancelAnimationFrame(animId);loop();}
+function spawnEnemy(){if(frames%40===0){enemies.push({x:Math.random()*(W-40)+20,y:-30,speed:1+Math.random()*1.5});}}
+function shoot(){if(frames%10===0){bullets.push({x:player.x,y:player.y-30,speed:5});}}
+function enemyShoot(e){if(frames%80===Math.floor(e.x)%80){eBullets.push({x:e.x,y:e.y+15,speed:2.5});}}
 function loop(){if(gameOver)return;frames++;ctx.fillStyle='#0a0a2e';ctx.fillRect(0,0,W,H);
-  // Stars
-  ctx.fillStyle='#fff';for(var i=0;i<30;i++){var sx=(i*137+frames*0.5)%W,sy=(i*73+frames)%H;ctx.fillRect(sx,sy,2,2);}
+  ctx.fillStyle='#fff';for(var i=0;i<40;i++){var sx=(i*137+frames*0.5)%W,sy=(i*73+frames)%H;ctx.fillRect(sx,sy,1.5,1.5);}
   spawnEnemy();shoot();
-  // Player
-  ctx.fillStyle='#3b82f6';ctx.fillRect(player.x-player.w/2,player.y-player.h/2,player.w,player.h);ctx.fillStyle='#60a5fa';ctx.fillRect(player.x-8,player.y-player.h/2-8,16,8);
-  // Bullets
-  ctx.fillStyle='#fbbf24';for(var i=bullets.length-1;i>=0;i--){var b=bullets[i];b.y-=b.speed;ctx.fillRect(b.x-b.w/2,b.y,b.w,b.h);if(b.y<-10)bullets.splice(i,1);}
+  // Player plane
+  ctx.font='36px sans-serif';ctx.textAlign='center';ctx.fillText('✈️',player.x,player.y);
+  // Player bullets
+  ctx.fillStyle='#fbbf24';for(var i=bullets.length-1;i>=0;i--){var b=bullets[i];b.y-=b.speed;ctx.fillRect(b.x-2,b.y-8,4,16);if(b.y<-10)bullets.splice(i,1);}
+  // Enemy bullets
+  ctx.fillStyle='#f87171';for(var i=eBullets.length-1;i>=0;i--){var eb=eBullets[i];eb.y+=eb.speed;ctx.beginPath();ctx.arc(eb.x,eb.y,4,0,Math.PI*2);ctx.fill();if(eb.y>H+10)eBullets.splice(i,1);
+    if(Math.abs(eb.x-player.x)<25&&Math.abs(eb.y-player.y)<30){gameOver=true;}
+  }
   // Enemies
-  ctx.fillStyle='#ef4444';for(var i=enemies.length-1;i>=0;i--){var e=enemies[i];e.y+=e.speed;ctx.fillRect(e.x-e.w/2,e.y-e.h/2,e.w,e.h);if(e.y>H+40){gameOver=true;}
-    // Collision
-    for(var j=bullets.length-1;j>=0;j--){var b=bullets[j];if(Math.abs(b.x-e.x)<20&&Math.abs(b.y-e.y)<25){enemies.splice(i,1);bullets.splice(j,1);score+=10;document.getElementById('score').textContent=score;break;}}
-    // Player collision
-    if(Math.abs(e.x-player.x)<35&&Math.abs(e.y-player.y)<35){gameOver=true;}
+  for(var i=enemies.length-1;i>=0;i--){var e=enemies[i];e.y+=e.speed;ctx.font='30px sans-serif';ctx.textAlign='center';ctx.fillText('🛩️',e.x,e.y);
+    enemyShoot(e);
+    if(e.y>H+40){gameOver=true;}
+    for(var j=bullets.length-1;j>=0;j--){var b=bullets[j];if(Math.abs(b.x-e.x)<25&&Math.abs(b.y-e.y)<25){enemies.splice(i,1);bullets.splice(j,1);score+=10;document.getElementById('score').textContent=score;break;}}
+    if(Math.abs(e.x-player.x)<30&&Math.abs(e.y-player.y)<30){gameOver=true;}
   }
   if(gameOver){ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(0,0,W,H);ctx.fillStyle='#fff';ctx.font='28px sans-serif';ctx.textAlign='center';ctx.fillText('Game Over',W/2,H/2-10);ctx.font='16px sans-serif';ctx.fillText('Score: '+score,W/2,H/2+30);return;}
   animId=requestAnimationFrame(loop);

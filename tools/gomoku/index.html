@@ -1,12 +1,146 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>五子棋 Gomoku - 兔兔工具站</title><meta name="description" content="经典五子棋游戏，人机对战。Classic Gomoku — play against AI."><meta name="keywords" content="五子棋,gomoku,五子连珠,棋类游戏"><link rel="stylesheet" href="../../css/style.css"><style>#goban{display:grid;grid-template-columns:repeat(15,24px);gap:0;margin:0 auto;width:fit-content;background:#dcb35c;padding:8px;border-radius:8px;}.go-cell{width:24px;height:24px;background:#dcb35c;border:1px solid #c9a040;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;}.go-cell:hover{background:#c9a040;}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 五子棋</div><h2>♟️ 五子棋</h2><p class="desc">经典五子棋，你先手⚫，AI后手⚪</p><p class="desc-en">Gomoku — you play black, AI plays white</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><label>状态 <span class="label-en">Status</span></label><div style="font-size:1.2rem;margin:8px 0;" id="status">你的回合 Your turn ⚫</div><div id="goban"></div><button class="btn btn-primary" style="margin-top:10px;" onclick="init()">🔄 重新开始 Restart</button></div></div></main><footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer><script src="../../js/common.js"></script><script>
 var board=[],gameOver=false,playerTurn=true;
-function init(){board=[];for(var r=0;r<15;r++){board[r]=[];for(var c=0;c<15;c++)board[r][c]=0;}gameOver=false;playerTurn=true;document.getElementById('status').textContent='你的回合 Your turn ⚫';render();}
-function render(){var g=document.getElementById('goban');g.innerHTML='';for(var r=0;r<15;r++)for(var c=0;c<15;c++){var cell=document.createElement('div');cell.className='go-cell';cell.textContent=board[r][c]===1?'⚫':board[r][c]===2?'⚪':'';cell.onclick=function(r,c){return function(){if(gameOver||!playerTurn)return;if(board[r][c]!==0)return;board[r][c]=1;playerTurn=false;render();if(checkWin(1)){document.getElementById('status').textContent='🎉 你赢了！You Win!';gameOver=true;return;}if(isDraw()){document.getElementById('status').textContent='平局 Draw!';gameOver=true;return;}document.getElementById('status').textContent='AI思考中... AI thinking...';setTimeout(aiMove,200);}}(r,c);g.appendChild(cell);}}
-function checkWin(p){for(var r=0;r<15;r++)for(var c=0;c<15;c++){if(c<11&&board[r][c]===p&&board[r][c+1]===p&&board[r][c+2]===p&&board[r][c+3]===p&&board[r][c+4]===p)return true;if(r<11&&board[r][c]===p&&board[r+1][c]===p&&board[r+2][c]===p&&board[r+3][c]===p&&board[r+4][c]===p)return true;if(r<11&&c<11&&board[r][c]===p&&board[r+1][c+1]===p&&board[r+2][c+2]===p&&board[r+3][c+3]===p&&board[r+4][c+4]===p)return true;if(r>=4&&c<11&&board[r][c]===p&&board[r-1][c+1]===p&&board[r-2][c+2]===p&&board[r-3][c+3]===p&&board[r-4][c+4]===p)return true;}return false;}
-function isDraw(){for(var r=0;r<15;r++)for(var c=0;c<15;c++)if(board[r][c]===0)return false;return true;}
-function aiMove(){if(gameOver)return;var best={r:7,c:7,score:-Infinity};for(var r=0;r<15;r++)for(var c=0;c<15;c++)if(board[r][c]===0){board[r][c]=2;var s=evaluate(2)-evaluate(1);if(s>best.score){best={r:r,c:c,score:s};}board[r][c]=0;}
-board[best.r][best.c]=2;playerTurn=true;render();if(checkWin(2)){document.getElementById('status').textContent='😢 AI赢了！AI Wins!';gameOver=true;}else if(isDraw()){document.getElementById('status').textContent='平局 Draw!';gameOver=true;}else{document.getElementById('status').textContent='你的回合 Your turn ⚫';}}
-function evaluate(p){var score=0;for(var r=0;r<15;r++)for(var c=0;c<15;c++){if(board[r][c]===p){score+=countDir(r,c,p,1,0)+countDir(r,c,p,0,1)+countDir(r,c,p,1,1)+countDir(r,c,p,1,-1);}}return score;}
-function countDir(r,c,p,dr,dc){var count=0;for(var i=1;i<5;i++){var nr=r+dr*i,nc=c+dc*i;if(nr>=0&&nr<15&&nc>=0&&nc<15&&board[nr][nc]===p)count++;else break;}return count*count;}
+var S=15; // board size
+
+// Pattern scoring
+var scores = {5:10000000, open4:500000, closed4:50000, open3:50000, closed3:5000, open2:5000, closed2:500, open1:500, closed1:50};
+
+function init(){board=[];for(var r=0;r<S;r++){board[r]=[];for(var c=0;c<S;c++)board[r][c]=0;}gameOver=false;playerTurn=true;document.getElementById('status').textContent='你的回合 Your turn ⚫';render();}
+
+function render(){var g=document.getElementById('goban');g.innerHTML='';for(var r=0;r<S;r++)for(var c=0;c<S;c++){var cell=document.createElement('div');cell.className='go-cell';cell.textContent=board[r][c]===1?'⚫':board[r][c]===2?'⚪':'';cell.onclick=function(r,c){return function(){if(gameOver||!playerTurn)return;if(board[r][c]!==0)return;board[r][c]=1;playerTurn=false;render();if(checkWin(1)){document.getElementById('status').textContent='🎉 你赢了！You Win!';gameOver=true;return;}if(isDraw()){document.getElementById('status').textContent='平局 Draw!';gameOver=true;return;}document.getElementById('status').textContent='AI思考中... AI thinking...';setTimeout(aiMove,50);}}(r,c);g.appendChild(cell);}}
+
+function checkWin(p){
+  for(var r=0;r<S;r++)for(var c=0;c<S;c++){
+    if(p===board[r][c]){
+      if(c<=S-5&&board[r][c+1]===p&&board[r][c+2]===p&&board[r][c+3]===p&&board[r][c+4]===p)return true;
+      if(r<=S-5&&board[r+1][c]===p&&board[r+2][c]===p&&board[r+3][c]===p&&board[r+4][c]===p)return true;
+      if(r<=S-5&&c<=S-5&&board[r+1][c+1]===p&&board[r+2][c+2]===p&&board[r+3][c+3]===p&&board[r+4][c+4]===p)return true;
+      if(r>=4&&c<=S-5&&board[r-1][c+1]===p&&board[r-2][c+2]===p&&board[r-3][c+3]===p&&board[r-4][c+4]===p)return true;
+    }
+  }return false;
+}
+function isDraw(){for(var r=0;r<S;r++)for(var c=0;c<S;c++)if(board[r][c]===0)return false;return true;}
+
+// Evaluate a single line of 5 positions
+function evalLine(cells, player){
+  var pCount=0, oCount=0;
+  for(var i=0;i<5;i++){
+    if(cells[i]===player)pCount++;
+    else if(cells[i]!==0)oCount++;
+  }
+  if(oCount>0&&pCount>0)return 0; // mixed line
+  if(pCount===5)return 10000000;
+  if(pCount===4)return 50000;
+  if(pCount===3)return 5000;
+  if(pCount===2)return 500;
+  if(pCount===1)return 50;
+  return 0;
+}
+
+function evaluate(player){
+  var score=0, opp=player===1?2:1;
+  for(var r=0;r<S;r++){
+    for(var c=0;c<S;c++){
+      // horizontal
+      if(c<=S-5){var cells=[];for(var i=0;i<5;i++)cells.push(board[r][c+i]);score+=evalLine(cells,player);score-=evalLine(cells,opp)*1.1;}
+      // vertical
+      if(r<=S-5){var cells=[];for(var i=0;i<5;i++)cells.push(board[r+i][c]);score+=evalLine(cells,player);score-=evalLine(cells,opp)*1.1;}
+      // diag
+      if(r<=S-5&&c<=S-5){var cells=[];for(var i=0;i<5;i++)cells.push(board[r+i][c+i]);score+=evalLine(cells,player);score-=evalLine(cells,opp)*1.1;}
+      if(r>=4&&c<=S-5){var cells=[];for(var i=0;i<5;i++)cells.push(board[r-i][c+i]);score+=evalLine(cells,player);score-=evalLine(cells,opp)*1.1;}
+    }
+  }
+  return score;
+}
+
+// Get candidate moves (empty cells near existing stones)
+function getCandidates(){
+  var set={};
+  for(var r=0;r<S;r++)for(var c=0;c<S;c++){
+    if(board[r][c]!==0){
+      for(var dr=-2;dr<=2;dr++)for(var dc=-2;dc<=2;dc++){
+        var nr=r+dr,nc=c+dc;
+        if(nr>=0&&nr<S&&nc>=0&&nc<S&&board[nr][nc]===0)set[nr+','+nc]=true;
+      }
+    }
+  }
+  // If board is empty, return center
+  if(Object.keys(set).length===0){set['7,7']=true;}
+  var candidates=[];
+  for(var k in set){var parts=k.split(',');candidates.push({r:parseInt(parts[0]),c:parseInt(parts[1])});}
+  return candidates;
+}
+
+// Minimax with alpha-beta pruning
+function minimax(depth, alpha, beta, isMax){
+  if(checkWin(2))return 10000000+depth;
+  if(checkWin(1))return -10000000-depth;
+  if(isDraw())return 0;
+  if(depth===0)return evaluate(2)-evaluate(1);
+
+  var candidates=getCandidates();
+  // Sort candidates by heuristic for better pruning
+  candidates.sort(function(a,b){
+    board[a.r][a.c]=isMax?2:1;
+    var sa=evaluate(2)-evaluate(1);
+    board[a.r][a.c]=0;
+    board[b.r][b.c]=isMax?2:1;
+    var sb=evaluate(2)-evaluate(1);
+    board[b.r][b.c]=0;
+    return sb-sa;
+  });
+  // Limit candidates for performance
+  if(candidates.length>15)candidates=candidates.slice(0,15);
+
+  if(isMax){
+    var best=-Infinity;
+    for(var i=0;i<candidates.length;i++){
+      var m=candidates[i];
+      board[m.r][m.c]=2;
+      var val=minimax(depth-1,alpha,beta,false);
+      board[m.r][m.c]=0;
+      if(val>best)best=val;
+      if(best>alpha)alpha=best;
+      if(alpha>=beta)break;
+    }
+    return best;
+  }else{
+    var best=Infinity;
+    for(var i=0;i<candidates.length;i++){
+      var m=candidates[i];
+      board[m.r][m.c]=1;
+      var val=minimax(depth-1,alpha,beta,true);
+      board[m.r][m.c]=0;
+      if(val<best)best=val;
+      if(best<beta)beta=best;
+      if(alpha>=beta)break;
+    }
+    return best;
+  }
+}
+
+function aiMove(){
+  if(gameOver)return;
+  var candidates=getCandidates();
+  if(candidates.length>20)candidates=candidates.slice(0,20);
+
+  var bestMove=candidates[0]||{r:7,c:7};
+  var bestScore=-Infinity;
+
+  for(var i=0;i<candidates.length;i++){
+    var m=candidates[i];
+    board[m.r][m.c]=2;
+    var val=minimax(3,-Infinity,Infinity,false); // depth 4 = strong
+    board[m.r][m.c]=0;
+    if(val>bestScore){bestScore=val;bestMove=m;}
+  }
+
+  board[bestMove.r][bestMove.c]=2;
+  playerTurn=true;render();
+  if(checkWin(2)){document.getElementById('status').textContent='😢 AI赢了！AI Wins!';gameOver=true;}
+  else if(isDraw()){document.getElementById('status').textContent='平局 Draw!';gameOver=true;}
+  else{document.getElementById('status').textContent='你的回合 Your turn ⚫';}
+}
 init();
+</script>
 </script></body></html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>打砖块 Breakout - 兔兔工具站</title><meta name="description" content="经典打砖块游戏，鼠标/触控移动挡板。Classic Breakout — move paddle to bounce ball."><meta name="keywords" content="打砖块,breakout,经典游戏,小游戏"><link rel="stylesheet" href="../../css/style.css"><style>canvas{border:2px solid var(--border);border-radius:8px;display:block;margin:0 auto;background:#1a1a2e;}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 打砖块</div><h2>🧱 打砖块</h2><p class="desc">移动鼠标或手指控制挡板，消灭所有砖块！</p><p class="desc-en">Breakout — move paddle to destroy all bricks!</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><label>分数 <span class="label-en">Score</span></label><div style="font-size:2rem;font-weight:800;color:var(--primary-dark);" id="score">0</div><canvas id="c" width="400" height="500"></canvas><p style="font-size:.75rem;color:var(--text-en);margin-top:8px;">鼠标/触控移动挡板 Move paddle with mouse/touch</p><button class="btn btn-primary" style="margin-top:8px;" onclick="init()">🔄 重新开始 Restart</button></div></div></main><footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer><script src="../../js/common.js"></script><script>
+var c=document.getElementById('c'),ctx=c.getContext('2d'),paddle={w:70,h:12,x:165},ball={x:200,y:400,r:6,dx:3,dy:-3},bricks=[],score=0,gameOver=false,animId;
+var colors=['#ef4444','#f59e0b','#10b981','#3b82f6','#8b5cf6'];
+function init(){paddle={w:70,h:12,x:165};ball={x:200,y:400,r:6,dx:3,dy:-3};score=0;gameOver=false;bricks=[];for(var r=0;r<5;r++)for(var c=0;c<8;c++)bricks.push({x:c*50+4,y:r*22+40,w:46,h:18,color:colors[r],alive:true});document.getElementById('score').textContent='0';if(animId)cancelAnimationFrame(animId);loop();}
+function loop(){if(gameOver)return;ctx.fillStyle='#1a1a2e';ctx.fillRect(0,0,400,500);
+  bricks.forEach(function(b){if(b.alive){ctx.fillStyle=b.color;ctx.fillRect(b.x,b.y,b.w,b.h);}});
+  ctx.fillStyle='#fff';ctx.fillRect(paddle.x,480,paddle.w,paddle.h);
+  ball.x+=ball.dx;ball.y+=ball.dy;
+  if(ball.x-ball.r<0||ball.x+ball.r>400)ball.dx*=-1;
+  if(ball.y-ball.r<0)ball.dy*=-1;
+  if(ball.y+ball.r>480&&ball.y<490&&ball.x>paddle.x&&ball.x<paddle.x+paddle.w){ball.dy=-Math.abs(ball.dy);var hitPos=(ball.x-paddle.x)/paddle.w;ball.dx=(hitPos-0.5)*8;}
+  if(ball.y>500){gameOver=true;ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(0,0,400,500);ctx.fillStyle='#fff';ctx.font='24px sans-serif';ctx.textAlign='center';ctx.fillText('游戏结束 Game Over',200,240);ctx.font='14px sans-serif';ctx.fillText('点击重新开始 Click to restart',200,270);return;}
+  bricks.forEach(function(b){if(b.alive&&ball.x>b.x&&ball.x<b.x+b.w&&ball.y>b.y&&ball.y<b.y+b.h){b.alive=false;ball.dy*=-1;score+=10;document.getElementById('score').textContent=score;
+    if(bricks.every(function(b2){return !b2.alive;})){gameOver=true;ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(0,0,400,500);ctx.fillStyle='#fff';ctx.font='24px sans-serif';ctx.textAlign='center';ctx.fillText('🎉 你赢了！You Win!',200,240);}}});}
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);ctx.fill();
+  animId=requestAnimationFrame(loop);
+}
+c.addEventListener('mousemove',function(e){var rect=c.getBoundingClientRect();paddle.x=e.clientX-rect.left-paddle.w/2;if(paddle.x<0)paddle.x=0;if(paddle.x>400-paddle.w)paddle.x=400-paddle.w;});
+c.addEventListener('touchmove',function(e){e.preventDefault();var rect=c.getBoundingClientRect();paddle.x=e.touches[0].clientX-rect.left-paddle.w/2;if(paddle.x<0)paddle.x=0;if(paddle.x>400-paddle.w)paddle.x=400-paddle.w;});
+c.addEventListener('click',function(){if(gameOver)init();});
+init();
+</script></body></html>

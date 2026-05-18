@@ -1,0 +1,17 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>猜拳连胜挑战 RPS Challenge - 兔兔工具站</title><meta name="description" content="石头剪刀布连胜挑战，看你能赢几局！Rock Paper Scissors streak challenge."><meta name="keywords" content="猜拳,石头剪刀布,RPS,rock paper scissors,小游戏"><link rel="stylesheet" href="../../css/style.css"><style>.rps-btn{font-size:3rem;padding:16px 24px;border:2px solid var(--border);border-radius:16px;background:#fff;cursor:pointer;transition:all .2s;}.rps-btn:hover{transform:scale(1.1);border-color:var(--primary);box-shadow:var(--shadow-md);}.streak{font-size:3rem;font-weight:800;color:var(--primary-dark);}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 猜拳挑战</div><h2>✊ 猜拳连胜挑战</h2><p class="desc">石头剪刀布，看看你能连胜多少局</p><p class="desc-en">RPS streak — how many can you win in a row?</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><label>当前连胜 <span class="label-en">Streak</span></label><div class="streak" id="streak">0</div><div style="margin:4px 0;font-size:.8rem;">最佳 Best: <strong id="best">0</strong></div><div style="display:flex;gap:12px;justify-content:center;margin:16px 0;"><button class="rps-btn" onclick="play('rock')">✊</button><button class="rps-btn" onclick="play('scissors')">✌️</button><button class="rps-btn" onclick="play('paper')">🖐️</button></div><div style="font-size:.9rem;">电脑 Computer：<span id="compChoice" style="font-size:1.5rem;">-</span></div><div id="result" style="margin-top:8px;font-size:1.1rem;"></div><button class="btn btn-outline btn-sm" style="margin-top:10px;" onclick="resetGame()">重置 Reset</button></div></div></main><footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer><script src="../../js/common.js"></script><script>
+var streak=0,best=parseInt(localStorage.getItem('rps_best')||'0');document.getElementById('best').textContent=best;
+var choices={rock:'✊',scissors:'✌️',paper:'🖐️'};
+function play(player){
+  var comp=Object.keys(choices)[Math.floor(Math.random()*3)];
+  document.getElementById('compChoice').textContent=choices[comp];
+  var result='';
+  if(player===comp)result='平局 Draw';
+  else if((player==='rock'&&comp==='scissors')||(player==='scissors'&&comp==='paper')||(player==='paper'&&comp==='rock')){
+    result='🎉 你赢了！You Win!';streak++;
+    if(streak>best){best=streak;localStorage.setItem('rps_best',best);document.getElementById('best').textContent=best;}
+  }else{result='😢 你输了！You Lose...';streak=0;}
+  document.getElementById('streak').textContent=streak;
+  document.getElementById('result').textContent=result+' ('+choices[player]+' vs '+choices[comp]+')';
+}
+function resetGame(){streak=0;document.getElementById('streak').textContent='0';document.getElementById('compChoice').textContent='-';document.getElementById('result').textContent='';}
+</script></body></html>

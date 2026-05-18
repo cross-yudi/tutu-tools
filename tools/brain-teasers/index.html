@@ -16,15 +16,8 @@
 </div></main>
 <footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
 <script src="../../js/common.js"></script>
+<script src="teasers-data.js"></script>
 <script>
-var teasers=[["什么东西越洗越脏？","水"],["什么东西有头无脚？","鱼"],["什么人一年只工作一天？","圣诞老人"],["什么车子寸步难行？","风车"],
-["什么蛋不能吃？","脸蛋"],["什么东西倒立后会增加一半？","6"],["什么鸡没有翅膀？","田鸡"],["什么门永远关不上？","球门"],
-["什么书买不到？","遗书"],["什么光完全不亮？","耳光"],["什么掌不能拍？","仙人掌"],["什么东西有五个头，但人不觉得它怪？","手和脚"],
-["一个圆孔的直径只有1厘米，而一种体积达100立方米的物体却能顺利通过这个孔，这是为什么？","因为这个物体是水"],
-["什么东西越热越爱出来？","汗"],["什么花不能摸？","火花"],["用什么拖地最干净？","用力拖"],["什么洞最深？","无底洞"],
-["什么枪把人打跑却不伤人？","发令枪"],["什么河里没有水？","银河"],["什么桥不能走？","鹊桥"],
-["什么线看不见？","无线"],["什么雷不会响？","鱼雷"],["什么鼠不怕猫？","袋鼠"],["什么马不能骑？","海马"],
-["什么鱼不能吃？","木鱼"],["什么牛不拉车？","蜗牛"],["什么羊不长毛？","羚羊"],["什么虎不吃人？","壁虎"]];
 var currentIdx=-1,revealed=false;
 function nextQ(){revealed=false;currentIdx=Math.floor(Math.random()*teasers.length);document.getElementById('rQ').textContent=teasers[currentIdx][0];document.getElementById('rA').style.display='none';document.getElementById('rA').textContent='答案：'+teasers[currentIdx][1];document.getElementById('hint').style.display='';}
 function showAnswer(){if(revealed){nextQ();}else{revealed=true;document.getElementById('rA').style.display='';document.getElementById('hint').style.display='none';}}

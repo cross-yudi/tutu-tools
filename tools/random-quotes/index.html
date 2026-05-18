@@ -45,34 +45,13 @@
 </main>
 <footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
 <script src="../../js/common.js"></script>
+<script src="quotes-data.js"></script>
 <script>
-var quotes = {
-  poison: [
-    '宝剑锋从磨砺出，梅花香自苦寒来。','世上无难事，只怕有心人。',
-    '千里之行，始于足下。——老子','不积跬步，无以至千里；不积小流，无以成江海。——荀子',
-    '长风破浪会有时，直挂云帆济沧海。——李白','天生我材必有用，千金散尽还复来。——李白',
-    '海纳百川，有容乃大；壁立千仞，无欲则刚。——林则徐','业精于勤荒于嬉，行成于思毁于随。——韩愈'
-  ],
-  movie: [
-    '生活就像一盒巧克力，你永远不知道下一颗是什么味道。——《阿甘正传》','希望是美好的，也许是世间最美好的东西，美好的事物永不消逝。——《肖申克的救赎》',
-    '人生总是那么痛苦吗？还是只有小时候是这样？——总是如此。——《这个杀手不太冷》','你得丢开以往的事，才能不断继续前进。——《阿甘正传》',
-    '有些鸟儿是关不住的，它们的羽毛太鲜亮了。——《肖申克的救赎》','我知道这世上有人在等我，但我不知道我在等谁。——《那时花开》',
-    '做人如果没有梦想，那跟咸鱼有什么分别？——《少林足球》','曾经有一份真诚的爱情摆在我面前，我没有珍惜。——《大话西游》'
-  ],
-  poetry: [
-    '床前明月光，疑是地上霜。举头望明月，低头思故乡。——李白《静夜思》','春眠不觉晓，处处闻啼鸟。夜来风雨声，花落知多少。——孟浩然《春晓》',
-    '白日依山尽，黄河入海流。欲穷千里目，更上一层楼。——王之涣《登鹳雀楼》','大漠孤烟直，长河落日圆。萧关逢候骑，都护在燕然。——王维《使至塞上》',
-    '明月几时有？把酒问青天。不知天上宫阙，今夕是何年。——苏轼《水调歌头》','会当凌绝顶，一览众山小。——杜甫《望岳》',
-    '人生自古谁无死，留取丹心照汗青。——文天祥《过零丁洋》','落霞与孤鹜齐飞，秋水共长天一色。——王勃《滕王阁序》'
-  ]
-};
-var names = {poison:'毒鸡汤 Poison Chicken Soup',inspire:'励志名言 Inspiration',movie:'经典台词 Movie Quotes',poetry:'古诗词 Chinese Poetry'};
-
+var names = {poison:'毒鸡汤',inspire:'励志名言',movie:'经典台词',poetry:'古诗词'};
 function pick(type) {
   var pool = quotes[type];
   var item = pool[Math.floor(Math.random() * pool.length)];
   document.getElementById('output').textContent = item;
-  document.getElementById('infoTip').textContent = names[type] + ' | 共 ' + pool.length + ' 条 Total ' + pool.length + ' quotes';
 }
 </script>
 </body>

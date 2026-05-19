@@ -1,4 +1,4 @@
-// 兔兔工具站 — 公共函数
+// 兔兔在线工具站 — 公共函数
 
 // Toast 提示
 function showToast(msg) {

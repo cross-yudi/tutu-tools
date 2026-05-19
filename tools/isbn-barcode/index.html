@@ -1,9 +1,9 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ISBN条形码生成 ISBN Barcode - 兔兔工具站</title>
+<title>ISBN条形码生成 ISBN Barcode - 兔兔在线工具站</title>
 <meta name="description" content="在线生成ISBN条形码，支持ISBN-10和ISBN-13。Generate ISBN barcodes for books.">
 <meta name="keywords" content="ISBN,条形码,ISBN条形码,book barcode,书号条码"><link rel="stylesheet" href="../../css/style.css"></head>
 <body>
-<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
+<header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header>
 <main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / ISBN条码</div><h2>📖 ISBN 条形码生成工具</h2><p class="desc">生成图书ISBN条形码</p><p class="desc-en">Generate ISBN barcodes for books</p></div>
 <div class="tool-body"><div class="tool-row"><div class="tool-panel"><label>ISBN号 <span class="label-en">ISBN Number</span></label>
 <input type="text" id="isbn" value="978-7-111-12345-1" placeholder="如：978-7-111-12345-1">
@@ -11,7 +11,7 @@
 <select id="type" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;"><option value="isbn13">ISBN-13 (13位)</option><option value="isbn10">ISBN-10 (10位)</option></select>
 <button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="gen()">生成 Generate</button></div>
 <div class="tool-panel" style="text-align:center;"><label>ISBN条码 <span class="label-en">Barcode</span></label><svg id="barcode" style="max-width:100%;"></svg></div></div></div></main>
-<footer class="footer">© 2026 兔兔工具站 Tutu Tools</footer>
+<footer class="footer">© 2026 兔兔在线工具站 Tutu Tools</footer>
 <script src="../../js/common.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script>

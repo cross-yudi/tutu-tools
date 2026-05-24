@@ -106,5 +106,12 @@ function clearInput(id) {
     localStorage.setItem('tutu_dark', isDark ? '1' : '0');
     toggle.innerHTML = isDark ? '☀️' : '🌙';
   };
-  document.body.appendChild(toggle);
+
+  function injectToggle(){
+    var nav = document.querySelector('.header-inner nav');
+    if (nav) { nav.parentNode.insertBefore(toggle, nav.nextSibling); }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectToggle);
+  } else { injectToggle(); }
 })();

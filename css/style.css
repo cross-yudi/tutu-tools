@@ -417,11 +417,9 @@ body {
 
 /* === Dark Mode Toggle === */
 #darkToggle {
-  position: fixed; top: 12px; right: 16px; z-index: 101;
-  background: #fff; border: 1.5px solid var(--border);
-  border-radius: 20px; padding: 6px 12px; cursor: pointer;
-  font-size: 1.1rem; transition: all .2s;
-  box-shadow: var(--shadow-md);
+  background: none; border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 4px 10px; cursor: pointer;
+  font-size: 1rem; margin-left: 12px; transition: all .2s;
 }
 #darkToggle:hover { background: var(--primary-light); }
 body.dark #darkToggle { background: #1e293b; }

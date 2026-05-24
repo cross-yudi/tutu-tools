@@ -97,21 +97,17 @@ function clearInput(id) {
   var saved = localStorage.getItem('tutu_dark');
   if (saved === '1') document.body.classList.add('dark');
 
-  var toggle = document.createElement('button');
-  toggle.id = 'darkToggle';
-  toggle.innerHTML = document.body.classList.contains('dark') ? '☀️' : '🌙';
-  toggle.title = '暗色/亮色模式 Dark/Light';
-  toggle.onclick = function(){
-    var isDark = document.body.classList.toggle('dark');
-    localStorage.setItem('tutu_dark', isDark ? '1' : '0');
-    toggle.innerHTML = isDark ? '☀️' : '🌙';
-  };
-
-  function injectToggle(){
-    var nav = document.querySelector('.header-inner nav');
-    if (nav) { nav.parentNode.insertBefore(toggle, nav.nextSibling); }
+  var hdr = document.querySelector('.header-inner');
+  if (hdr) {
+    var toggle = document.createElement('button');
+    toggle.id = 'darkToggle';
+    toggle.innerHTML = document.body.classList.contains('dark') ? '☀️' : '🌙';
+    toggle.title = '暗色/亮色模式 Dark/Light';
+    toggle.onclick = function(){
+      var isDark = document.body.classList.toggle('dark');
+      localStorage.setItem('tutu_dark', isDark ? '1' : '0');
+      toggle.innerHTML = isDark ? '☀️' : '🌙';
+    };
+    hdr.appendChild(toggle);
   }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', injectToggle);
-  } else { injectToggle(); }
 })();

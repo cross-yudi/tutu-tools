@@ -98,7 +98,12 @@ function clearInput(id) {
   if (saved === '1') document.body.classList.add('dark');
 
   var hdr = document.querySelector('.header-inner');
-  if (hdr) {
+  var nav = hdr ? hdr.querySelector('nav') : null;
+  if (nav) {
+    var wrap = document.createElement('span');
+    wrap.style.cssText = 'display:inline-flex;align-items:center;gap:6px;';
+    nav.parentNode.insertBefore(wrap, nav);
+    wrap.appendChild(nav);
     var toggle = document.createElement('button');
     toggle.id = 'darkToggle';
     toggle.innerHTML = document.body.classList.contains('dark') ? '☀️' : '🌙';
@@ -108,6 +113,6 @@ function clearInput(id) {
       localStorage.setItem('tutu_dark', isDark ? '1' : '0');
       toggle.innerHTML = isDark ? '☀️' : '🌙';
     };
-    hdr.appendChild(toggle);
+    wrap.appendChild(toggle);
   }
 })();

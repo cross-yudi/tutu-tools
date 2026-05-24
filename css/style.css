@@ -402,3 +402,43 @@ body {
 .like-btn:hover { border-color: #ef4444; background: #fef2f2; }
 .like-btn.liked { border-color: #ef4444; background: #fef2f2; color: #ef4444; }
 .like-count { font-weight: 600; }
+
+/* === Back to Top === */
+#backTop {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--primary); color: #fff; border: none;
+  font-size: 1.3rem; cursor: pointer; z-index: 99;
+  box-shadow: var(--shadow-md); transition: all .3s;
+  display: none; align-items: center; justify-content: center;
+}
+#backTop.show { display: flex; }
+#backTop:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+/* === Dark Mode Toggle === */
+#darkToggle {
+  background: none; border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 4px 10px; cursor: pointer;
+  font-size: 1rem; margin-left: 12px; transition: all .2s;
+}
+#darkToggle:hover { background: var(--primary-light); }
+
+/* === Dark Mode === */
+body.dark {
+  --bg: #0f172a; --bg-card: #1e293b; --text: #e2e8f0;
+  --text-secondary: #94a3b8; --text-en: #64748b;
+  --border: #334155;
+}
+body.dark .header { background: rgba(15,23,42,.9); }
+body.dark .tool-panel, body.dark .tool-card, body.dark .cat-tab,
+body.dark .btn-outline, body.dark .result-area { background: var(--bg-card); }
+body.dark .tool-panel textarea, body.dark .tool-panel input[type="text"],
+body.dark .tool-panel input[type="number"] { background: #0f172a; color: #e2e8f0; }
+body.dark .tool-panel textarea:focus, body.dark .tool-panel input:focus { background: #0f172a; }
+body.dark .search-input { background: #1e293b; color: #e2e8f0; }
+body.dark .like-btn { background: #1e293b; }
+body.dark .toast { background: #e2e8f0; color: #0f172a; }
+body.dark .sd-num, body.dark .choice-btn { background: #1e293b; }
+body.dark .sc { background: #1e293b; }
+body.dark .sc.given { background: #334155; }
+body.dark .ms-cell { background: #475569; }

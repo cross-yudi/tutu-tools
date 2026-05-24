@@ -80,3 +80,45 @@ function clearInput(id) {
     renderBtn();
   }
 })();
+
+// 回到顶部按钮
+(function(){
+  var btn = document.createElement('button');
+  btn.id = 'backTop'; btn.innerHTML = '⬆'; btn.title = '回到顶部 Back to top';
+  btn.onclick = function(){ window.scrollTo({top:0,behavior:'smooth'}); };
+  document.body.appendChild(btn);
+  window.addEventListener('scroll', function(){
+    btn.classList.toggle('show', window.scrollY > 300);
+  });
+})();
+
+// 暗色模式
+(function(){
+  var saved = localStorage.getItem('tutu_dark');
+  if (saved === '1') document.body.classList.add('dark');
+
+  var toggle = document.createElement('button');
+  toggle.id = 'darkToggle';
+  toggle.innerHTML = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  toggle.title = '切换暗色/亮色模式 Toggle dark mode';
+  toggle.onclick = function(){
+    var isDark = document.body.classList.toggle('dark');
+    localStorage.setItem('tutu_dark', isDark ? '1' : '0');
+    toggle.innerHTML = isDark ? '☀️' : '🌙';
+  };
+
+  function injectToggle(){
+    var nav = document.querySelector('.header-inner nav');
+    if (nav) {
+      nav.parentNode.insertBefore(toggle, nav);
+    } else {
+      var hdr = document.querySelector('.header-inner');
+      if (hdr) hdr.appendChild(toggle);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectToggle);
+  } else {
+    injectToggle();
+  }
+})();

@@ -100,25 +100,11 @@ function clearInput(id) {
   var toggle = document.createElement('button');
   toggle.id = 'darkToggle';
   toggle.innerHTML = document.body.classList.contains('dark') ? '☀️' : '🌙';
-  toggle.title = '切换暗色/亮色模式 Toggle dark mode';
+  toggle.title = '暗色/亮色模式 Dark/Light';
   toggle.onclick = function(){
     var isDark = document.body.classList.toggle('dark');
     localStorage.setItem('tutu_dark', isDark ? '1' : '0');
     toggle.innerHTML = isDark ? '☀️' : '🌙';
   };
-
-  function injectToggle(){
-    var nav = document.querySelector('.header-inner nav');
-    if (nav) {
-      nav.parentNode.insertBefore(toggle, nav);
-    } else {
-      var hdr = document.querySelector('.header-inner');
-      if (hdr) hdr.appendChild(toggle);
-    }
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', injectToggle);
-  } else {
-    injectToggle();
-  }
+  document.body.appendChild(toggle);
 })();

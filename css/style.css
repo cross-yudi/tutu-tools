@@ -433,6 +433,9 @@ body.dark {
 body.dark .header { background: rgba(15,23,42,.9); }
 body.dark .tool-panel, body.dark .tool-card, body.dark .cat-tab,
 body.dark .btn-outline, body.dark .result-area { background: var(--bg-card); }
+body.dark .cat-tab { color: #94a3b8; }
+body.dark .cat-tab:hover { color: var(--primary); border-color: var(--primary); }
+body.dark .cat-tab.active { color: #fff; }
 body.dark .tool-panel textarea, body.dark .tool-panel input[type="text"],
 body.dark .tool-panel input[type="number"] { background: #0f172a; color: #e2e8f0; }
 body.dark .tool-panel textarea:focus, body.dark .tool-panel input:focus { background: #0f172a; }

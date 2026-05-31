@@ -116,3 +116,26 @@ function clearInput(id) {
     wrap.appendChild(toggle);
   }
 })();
+
+// 工具使用说明
+(function(){
+  function addUsageGuide(){
+    var main = document.querySelector('.main');
+    if (!main) return;
+    var h2 = document.querySelector('.tool-header h2');
+    if (!h2) return;
+    var toolName = h2.textContent.replace(/🎲🎯🎨🔤🔢🔐🔄🔗⏰📋📊📱🆔📅💰📏📝🔧🏗️🗄️🔍📡💱🌍📑🏦📄📜🐍🧠✈️🎹♟️💣🧩✊🖱️⌨️💼📆🏙️📈✨🔒📦👴📸📖📚🧮💵🖼️🏓⚖️🔬🌡️💨💾⏱️📐🌈🎣🎰🔷🎻🥁📖⚙️🌐😀💫📊📈📯/g,'').replace(/\s+/g,' ').trim();
+    var desc = document.querySelector('.tool-header .desc');
+    var section = document.createElement('div');
+    section.style.cssText = 'margin-top:24px;padding:18px 20px;background:#f8fafc;border-radius:12px;border:1px solid var(--border);font-size:.85rem;line-height:1.9;';
+    section.innerHTML = '<h3 style="font-size:1rem;margin-bottom:8px;">📖 '+toolName+' 使用说明 <span style="font-size:.75rem;color:var(--text-en);">How to Use</span></h3>'+
+      '<p style="color:var(--text-secondary);">本工具完全免费，无需下载安装，在浏览器中直接使用。'+
+      (desc?desc.textContent+'。':'')+
+      '如有建议或反馈，欢迎联系：gubaby@proton.me</p>'+
+      '<p style="color:var(--text-en);font-size:.78rem;">This tool is 100% free — no download, no sign-up. Just open and use in your browser. Questions? Contact gubaby@proton.me</p>';
+    main.appendChild(section);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', addUsageGuide);
+  } else { addUsageGuide(); }
+})();

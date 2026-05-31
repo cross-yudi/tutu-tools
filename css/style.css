@@ -451,7 +451,7 @@ body.dark .usage-guide p { color: #94a3b8; }
 
 /* === Related Tools === */
 .related-tools {
-  margin-top: 32px; padding: 20px 24px;
+  margin-top: 48px; padding: 24px 28px;
   background: #f8fafc; border: 2px solid var(--border);
   border-radius: 12px;
 }

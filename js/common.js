@@ -452,3 +452,34 @@ function clearInput(id) {
     document.addEventListener('DOMContentLoaded', insertAd);
   } else { insertAd(); }
 })();
+
+// Google Analytics — 创建账号后设置: localStorage.setItem('tutu_ga_id','G-XXXXXXXXXX')
+(function(){
+  var gaId = localStorage.getItem('tutu_ga_id') || '';
+  if (!gaId) return;
+  var s1 = document.createElement('script');
+  s1.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+  s1.async = true; document.head.appendChild(s1);
+  s1.onload = function(){
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date()); gtag('config', gaId);
+  };
+})();
+
+// 分享按钮
+(function(){
+  function addShare(){
+    var hdr = document.querySelector('.tool-header');
+    if (!hdr) return;
+    var container = document.createElement('div');
+    container.style.cssText = 'display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;';
+    container.innerHTML =
+      '<button onclick="navigator.clipboard.writeText(location.href);showToast(\'链接已复制 Link copied!\')" style="padding:4px 12px;border:1px solid var(--border);border-radius:16px;background:#fff;cursor:pointer;font-size:.78rem;">📋 复制链接 Copy</button>'+
+      '<button onclick="window.open(\'https://twitter.com/intent/tweet?text=\'+encodeURIComponent(document.title)+\'&url=\'+encodeURIComponent(location.href))" style="padding:4px 12px;border:1px solid var(--border);border-radius:16px;background:#fff;cursor:pointer;font-size:.78rem;">X 分享 Share</button>';
+    hdr.appendChild(container);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', addShare);
+  } else { addShare(); }
+})();

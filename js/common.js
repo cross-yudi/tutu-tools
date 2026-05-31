@@ -422,3 +422,33 @@ function clearInput(id) {
     document.head.appendChild(meta);
   });
 })();
+
+// Google AdSense — AdSense审核通过后，将下面的 ca-pub-XXXX 替换为你的发布商ID
+// After AdSense approval, replace ca-pub-XXXX with your publisher ID
+(function(){
+  var pubId = 'ca-pub-XXXXXXXXXXXXXXXX'; // 替换这里 Replace here
+  if (pubId.indexOf('XXXX') >= 0) return; // 未配置 skip if not set
+  var s = document.createElement('script');
+  s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + pubId;
+  s.crossOrigin = 'anonymous'; s.async = true;
+  document.head.appendChild(s);
+
+  function insertAd(){
+    var main = document.querySelector('.main');
+    if (!main || main.querySelector('.adsbygoogle')) return;
+    var guide = document.querySelector('.usage-guide');
+    var ins = document.createElement('ins');
+    ins.className = 'adsbygoogle';
+    ins.style.cssText = 'display:block;text-align:center;margin:24px 0;max-height:90px;';
+    ins.setAttribute('data-ad-client', pubId);
+    ins.setAttribute('data-ad-slot', 'auto');
+    ins.setAttribute('data-ad-format', 'auto');
+    ins.setAttribute('data-full-width-responsive', 'true');
+    if (guide) { main.insertBefore(ins, guide); }
+    else { main.appendChild(ins); }
+    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', insertAd);
+  } else { insertAd(); }
+})();

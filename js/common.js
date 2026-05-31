@@ -117,6 +117,27 @@ function clearInput(id) {
   }
 })();
 
+// SEO 结构化数据
+(function(){
+  var path = location.pathname.replace(/.*\/tools\//,'').replace(/\/index\.html$/,'').replace(/\/$/,'') || 'home';
+  var title = document.title || '兔兔在线工具站';
+  var desc = document.querySelector('meta[name="description"]')?.content || '';
+  var ld = {
+    '@context':'https://schema.org',
+    '@type':'WebApplication',
+    'name':title,
+    'description':desc,
+    'url':location.href,
+    'applicationCategory':'UtilityApplication',
+    'operatingSystem':'All',
+    'offers':{'@type':'Offer','price':'0','priceCurrency':'CNY'}
+  };
+  var script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(ld);
+  document.head.appendChild(script);
+})();
+
 // 工具使用说明
 (function(){
   var guides = {

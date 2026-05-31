@@ -467,3 +467,28 @@ function clearInput(id) {
   };
 })();
 
+
+// 首页分享按钮
+(function(){
+  function addHomeShare(){
+    var nav = document.querySelector('.header-inner nav');
+    if (!nav) return;
+    var btn = document.createElement('button');
+    btn.textContent = '📤 分享 Share';
+    btn.style.cssText = 'padding:4px 12px;border:1px solid var(--border);border-radius:16px;background:#fff;cursor:pointer;font-size:.78rem;margin-right:8px;transition:all .15s;';
+    btn.onmouseover = function(){ this.style.borderColor='var(--primary)'; this.style.background='var(--primary-light)'; };
+    btn.onmouseout = function(){ this.style.borderColor='var(--border)'; this.style.background='#fff'; };
+    btn.onclick = function(){
+      var url = location.origin + '/';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function(){ showToast('首页链接已复制！Home link copied!'); });
+      } else {
+        var ta = document.createElement('textarea'); ta.value = url; ta.style.opacity = '0'; ta.style.position = 'fixed'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('首页链接已复制！Home link copied!');
+      }
+    };
+    nav.parentNode.insertBefore(btn, nav);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', addHomeShare);
+  } else { addHomeShare(); }
+})();

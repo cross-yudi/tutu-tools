@@ -439,13 +439,15 @@ body.dark .cat-tab.active { background: transparent; color: var(--primary); bord
 
 /* === Usage Guide === */
 .usage-guide {
-  margin-top: 24px; padding: 18px 20px;
-  background: #f8fafc; border: 1px solid var(--border);
-  border-radius: 12px; font-size: .85rem; line-height: 1.9;
+  margin-top: 48px; padding: 24px 28px;
+  background: #f8fafc; border: 2px solid var(--border);
+  border-radius: 12px; font-size: .87rem; line-height: 2;
 }
-.usage-guide h3 { font-size: 1rem; margin-bottom: 6px; }
+.usage-guide h3 { font-size: 1.05rem; margin-bottom: 10px; color: var(--primary-dark); }
 .usage-guide p { color: var(--text-secondary); }
-body.dark .usage-guide { background: #1e293b; }
+body.dark .usage-guide { background: #1e293b; border-color: #334155; }
+body.dark .usage-guide h3 { color: var(--primary); }
+body.dark .usage-guide p { color: #94a3b8; }
 body.dark .tool-panel textarea, body.dark .tool-panel input[type="text"],
 body.dark .tool-panel input[type="number"] { background: #0f172a; color: #e2e8f0; }
 body.dark .tool-panel textarea:focus, body.dark .tool-panel input:focus { background: #0f172a; }

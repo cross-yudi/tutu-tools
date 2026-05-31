@@ -436,6 +436,16 @@ body.dark .btn-outline, body.dark .result-area { background: var(--bg-card); }
 body.dark .cat-tab { color: #e2e8f0; }
 body.dark .cat-tab:hover { border-color: var(--primary); }
 body.dark .cat-tab.active { background: transparent; color: var(--primary); border-color: var(--primary); font-weight: 700; }
+
+/* === Usage Guide === */
+.usage-guide {
+  margin-top: 24px; padding: 18px 20px;
+  background: #f8fafc; border: 1px solid var(--border);
+  border-radius: 12px; font-size: .85rem; line-height: 1.9;
+}
+.usage-guide h3 { font-size: 1rem; margin-bottom: 6px; }
+.usage-guide p { color: var(--text-secondary); }
+body.dark .usage-guide { background: #1e293b; }
 body.dark .tool-panel textarea, body.dark .tool-panel input[type="text"],
 body.dark .tool-panel input[type="number"] { background: #0f172a; color: #e2e8f0; }
 body.dark .tool-panel textarea:focus, body.dark .tool-panel input:focus { background: #0f172a; }

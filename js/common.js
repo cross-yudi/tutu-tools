@@ -467,20 +467,3 @@ function clearInput(id) {
   };
 })();
 
-// 分享按钮
-(function(){
-  function addShare(){
-    var hdr = document.querySelector('.tool-header');
-    if (!hdr) return;
-    var container = document.createElement('div');
-    container.style.cssText = 'display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;';
-    container.innerHTML =
-      '<button class="btn-copy-link" style="padding:4px 12px;border:1px solid var(--border);border-radius:16px;background:#fff;cursor:pointer;font-size:.78rem;">📋 复制链接 Copy</button>'+
-      '<button onclick="window.open(\'https://twitter.com/intent/tweet?text=\'+encodeURIComponent(document.title)+\'&url=\'+encodeURIComponent(location.href))" style="padding:4px 12px;border:1px solid var(--border);border-radius:16px;background:#fff;cursor:pointer;font-size:.78rem;">X 分享 Share</button>';
-    hdr.appendChild(container);
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', addShare);
-  } else { addShare(); }
-    setTimeout(function(){ var btns = document.querySelectorAll(".btn-copy-link"); btns.forEach(function(b){ b.onclick = function(){ copyText(location.href); }; }); }, 200);
-})();

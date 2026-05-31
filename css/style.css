@@ -448,6 +448,17 @@ body.dark .cat-tab.active { background: transparent; color: var(--primary); bord
 body.dark .usage-guide { background: #1e293b; border-color: #334155; }
 body.dark .usage-guide h3 { color: var(--primary); }
 body.dark .usage-guide p { color: #94a3b8; }
+
+/* === Related Tools === */
+.related-tools {
+  margin-top: 32px; padding: 20px 24px;
+  background: #f8fafc; border: 2px solid var(--border);
+  border-radius: 12px;
+}
+.related-tools h3 { font-size: 1rem; margin-bottom: 10px; }
+body.dark .related-tools { background: #1e293b; border-color: #334155; }
+body.dark .related-tools a { background: #0f172a; color: #e2e8f0; border-color: #334155; }
+body.dark .related-tools a:hover { border-color: var(--primary) !important; background: #1a2332 !important; }
 body.dark .tool-panel textarea, body.dark .tool-panel input[type="text"],
 body.dark .tool-panel input[type="number"] { background: #0f172a; color: #e2e8f0; }
 body.dark .tool-panel textarea:focus, body.dark .tool-panel input:focus { background: #0f172a; }

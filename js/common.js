@@ -267,3 +267,60 @@ function clearInput(id) {
     document.addEventListener('DOMContentLoaded', addUsageGuide);
   } else { addUsageGuide(); }
 })();
+
+// 相关工具推荐
+(function(){
+  var relatedMap = {
+    'case-converter':[{name:'字数统计 Word Counter',url:'../../tools/word-counter/'},{name:'简繁转换 Simplified↔Traditional',url:'../../tools/simplified-traditional/'},{name:'全角半角转换 Fullwidth↔Halfwidth',url:'../../tools/fullwidth-halfwidth/'}],
+    'word-counter':[{name:'大小写转换 Case Converter',url:'../../tools/case-converter/'},{name:'词频统计 Word Frequency',url:'../../tools/word-frequency/'},{name:'文本去重排序 Text Dedup',url:'../../tools/text-dedup/'}],
+    'password-gen':[{name:'GUID 生成器 GUID Generator',url:'../../tools/guid-generator/'},{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'MD5/SHA 哈希 Hash Tool',url:'../../tools/hash-tool/'}],
+    'base64':[{name:'URL 编码解码 URL Encode',url:'../../tools/url-encode/'},{name:'图片转 Base64 Image to Base64',url:'../../tools/image-base64/'},{name:'AES 加密解密 AES Encrypt',url:'../../tools/aes-encrypt/'}],
+    'url-encode':[{name:'Base64 编码解码 Base64',url:'../../tools/base64/'},{name:'ASCII 编码转换 ASCII',url:'../../tools/ascii-converter/'},{name:'摩斯电码 Morse Code',url:'../../tools/morse-code/'}],
+    'timestamp':[{name:'时间戳批量转换 Timestamp Batch',url:'../../tools/timestamp-batch/'},{name:'日期计算器 Date Calc',url:'../../tools/date-calc/'},{name:'世界时间 World Time',url:'../../tools/world-time/'}],
+    'json-formatter':[{name:'JSON 编辑器 JSON Editor',url:'../../tools/json-editor/'},{name:'JSON 转 TS 类型 JSON to TS',url:'../../tools/json-to-typescript/'},{name:'CSS 格式化 CSS Formatter',url:'../../tools/css-formatter/'}],
+    'color-tool':[{name:'颜色挑战 Color Challenge',url:'../../tools/color-challenge/'},{name:'CSS 格式化 CSS Formatter',url:'../../tools/css-formatter/'}],
+    'markdown-preview':[{name:'HTML 格式化 HTML Formatter',url:'../../tools/html-formatter/'},{name:'文本转 HTML Text to HTML',url:'../../tools/text-to-html/'}],
+    'qrcode-gen':[{name:'二维码解码 QR Decoder',url:'../../tools/qrcode-decode/'},{name:'条形码生成 Barcode Gen',url:'../../tools/barcode-gen/'}],
+    'rmb-upper':[{name:'英文金额大写 English Amount',url:'../../tools/english-amount/'},{name:'支票日期大写 Check Date',url:'../../tools/check-date-upper/'},{name:'个税计算器 Tax Calculator',url:'../../tools/tax-calculator/'}],
+    'bmi-calc':[{name:'日期计算器 Date Calc',url:'../../tools/date-calc/'},{name:'血型遗传 Blood Type',url:'../../tools/blood-type/'}]
+  };
+  function addRelated(){
+    var main = document.querySelector('.main');
+    if (!main) return;
+    var path = location.pathname.replace(/.*\/tools\//,'').replace(/\/index\.html$/,'').replace(/\/$/,'');
+    var related = relatedMap[path];
+    if (!related) return;
+    var section = document.createElement('div');
+    section.className = 'related-tools';
+    var html = '<h3>🔗 相关工具 <span style="font-size:.75rem;color:var(--text-en);">Related Tools</span></h3><div style="display:flex;flex-wrap:wrap;gap:8px;">';
+    related.forEach(function(r){
+      html += '<a href="'+r.url+'" style="display:inline-block;padding:6px 14px;background:#fff;border:1px solid var(--border);border-radius:8px;text-decoration:none;color:var(--text);font-size:.85rem;transition:all .15s;" onmouseover="this.style.borderColor=\'var(--primary)\';this.style.background=\'var(--primary-light)\'" onmouseout="this.style.borderColor=\'var(--border)\';this.style.background=\'#fff\'">'+r.name+'</a>';
+    });
+    html += '</div>';
+    section.innerHTML = html;
+    main.appendChild(section);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', addRelated);
+  } else { addRelated(); }
+})();
+
+// Open Graph 社交分享标签
+(function(){
+  var title = document.title || '兔兔在线工具站';
+  var desc = (document.querySelector('meta[name="description"]')||{}).content || '免费在线工具集合';
+  var ogTags = [
+    {property:'og:title',content:title},
+    {property:'og:description',content:desc},
+    {property:'og:type',content:'website'},
+    {property:'og:url',content:location.href},
+    {property:'og:site_name',content:'兔兔在线工具站 Tutu Tools'},
+    {property:'og:locale',content:'zh_CN'}
+  ];
+  ogTags.forEach(function(tag){
+    var meta = document.createElement('meta');
+    meta.setAttribute('property',tag.property);
+    meta.content = tag.content;
+    document.head.appendChild(meta);
+  });
+})();

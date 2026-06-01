@@ -75,7 +75,7 @@ function showHist(){
   var h=document.getElementById('history');
   if(!h)return;
   if(!hist.length){h.innerHTML='<div style="color:var(--text-en);font-size:.82rem;">摇骰后显示记录 Roll to see history</div>';return;}
-  h.innerHTML='<div style="font-size:.78rem;color:var(--primary-dark);margin-bottom:4px;">共 '+hist.length+' 次 Total</div>'+hist.map(function(item,i){var icons=item.dice.split(',').map(function(v){return['','⚀','⚁','⚂','⚃','⚄','⚅'][parseInt(v)];}).join(' ');return '<div style="padding:3px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem;">'+(i+1)+'. '+icons+' <strong>'+item.sum+'</strong> <span style="color:var(--text-en);font-size:.7rem;">'+item.time+'</span></div>';}).join('');
+  h.innerHTML='<div style="font-size:.78rem;color:var(--primary-dark);margin-bottom:4px;">共 '+hist.length+' 次 Total</div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;">'+hist.map(function(item,i){var icons=item.dice.split(',').map(function(v){return['','⚀','⚁','⚂','⚃','⚄','⚅'][parseInt(v)];}).join(' ');return '<div style="padding:4px 6px;border:1px solid var(--border);border-radius:6px;font-size:.82rem;background:#fff;">'+(i+1)+'. '+icons+' <strong>'+item.sum+'</strong></div>';}).join('')+'</div>';
 }
 
 function clearHist(){hist=[];localStorage.setItem('dice_hist','[]');showHist();}

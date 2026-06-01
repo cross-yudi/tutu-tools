@@ -38,12 +38,8 @@ function draw(){
   ctx.fillStyle='#333';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.fillText(spinning?'...':'SPIN',cx,cy+5);
   // SPIN text
   ctx.fillStyle='#333';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.fillText(spinning?'...':'SPIN',cx,cy+5);
-  // Static pointer arrow at top
-  var px=cx,py=cy-15;
-  ctx.beginPath();ctx.moveTo(px,py-95);ctx.lineTo(px-8,py);ctx.lineTo(px+8,py);ctx.closePath();
-  ctx.fillStyle='#ef4444';ctx.fill();ctx.strokeStyle='#b91c1c';ctx.lineWidth=2;ctx.stroke();
-  // Arrow shaft
-  ctx.fillStyle='#ef4444';ctx.fillRect(px-3,py-95,6,95);
+  // Clock-hand pointer from center upward
+  ctx.save();ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx-6,cy-20);ctx.lineTo(cx,cy-110);ctx.lineTo(cx+6,cy-20);ctx.closePath();ctx.fillStyle='#1a1a2e';ctx.fill();ctx.restore();
 }
 draw();
 

@@ -33,9 +33,9 @@ renderStats();showHist();
 function flip(){
   if(flipping)return;flipping=true;
   var coin=document.getElementById('coin');coin.classList.add('flipping');
-  setTimeout(function(){coin.classList.remove('flipping');flipping=false;},800);
   var isHeads=Math.random()>.5;
-  var side=isHeads?'heads':'tails',icon=isHeads?'正面 Heads':'反面 Tails';
+  setTimeout(function(){coin.classList.remove('flipping');flipping=false;coin.querySelector('.coin-inner').style.transform=isHeads?'rotateY(0)':'rotateY(180deg)';},800);
+  var side=isHeads?'heads':'tails',icon=isHeads?'🪙 正面 Heads':'💰 反面 Tails';
   document.getElementById('resultText').textContent='🎲 '+icon;
   if(isHeads)heads++;else tails++;
   renderStats();

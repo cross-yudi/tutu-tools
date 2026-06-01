@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>抛硬币 Coin Flip - 兔兔在线工具站</title><meta name="description" content="在线抛硬币，有翻转动画、历史记录和正反统计。Online coin flip with animation, history and stats."><meta name="keywords" content="抛硬币,coin flip,硬币,掷硬币"><link rel="stylesheet" href="../../css/style.css"><style>
+.coin{width:120px;height:120px;margin:16px auto;perspective:400px;cursor:pointer;}
+.coin-inner{width:100%;height:100%;position:relative;transition:transform 1s;transform-style:preserve-3d;}
+.coin.flipping .coin-inner{animation:flip .8s ease-out;}
+@keyframes flip{0%{transform:rotateY(0) rotateX(0);}25%{transform:rotateY(180deg) rotateX(30deg);}50%{transform:rotateY(360deg) rotateX(0);}75%{transform:rotateY(540deg) rotateX(-20deg);}100%{transform:rotateY(720deg) rotateX(0);}}
+.coin-front,.coin-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:4rem;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,.2);}
+.coin-front{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;text-shadow:2px 2px 4px rgba(0,0,0,.2);}
+.coin-back{background:linear-gradient(135deg,#c0c0c0,#9ca3af);color:#fff;transform:rotateY(180deg);text-shadow:2px 2px 4px rgba(0,0,0,.2);}
+.stat-bar{display:flex;gap:2px;height:20px;border-radius:10px;overflow:hidden;margin:6px 0;}
+.stat-heads{background:#f59e0b;transition:flex .3s;}
+.stat-tails{background:#9ca3af;transition:flex .3s;}
+</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 抛硬币</div><h2>🪙 抛硬币</h2><p class="desc">点击硬币翻转，正反统计 + 历史记录</p><p class="desc-en">Flip the coin — animation, stats & history</p></div><div class="tool-body"><div class="tool-row">
+<div class="tool-panel" style="text-align:center;">
+<label>硬币 <span class="label-en">Coin</span></label>
+<div class="coin" id="coin" onclick="flip()"><div class="coin-inner"><div class="coin-front">正面</div><div class="coin-back">反面</div></div></div>
+<div style="font-size:1.3rem;" id="resultText">点击硬币开始 Click to flip</div>
+<button class="btn btn-primary" style="margin-top:8px;" onclick="flip()">🪙 抛硬币 Flip</button>
+<label style="margin-top:10px;">统计 <span class="label-en">Stats</span></label>
+<div style="font-size:.85rem;display:flex;justify-content:center;gap:20px;">正 Heads：<strong id="hCount" style="color:#f59e0b;">0</strong> 反 Tails：<strong id="tCount" style="color:#9ca3af;">0</strong></div>
+<div class="stat-bar"><div class="stat-heads" id="hBar" style="flex:1;"></div><div class="stat-tails" id="tBar" style="flex:1;"></div></div>
+</div>
+<div class="tool-panel">
+<label>历史记录 <span class="label-en">History</span></label>
+<div class="result-area" id="history" style="font-family:inherit;height:240px;overflow-y:auto;"></div>
+<button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="clearAll()">清空 Clear</button>
+</div>
+</div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js"></script><script>
+var heads=0,tails=0,hist=JSON.parse(localStorage.getItem('coin_hist')||'[]'),flipping=false;
+heads=hist.filter(function(h){return h.side==='heads';}).length;
+tails=hist.filter(function(h){return h.side==='tails';}).length;
+renderStats();showHist();
+
+function flip(){
+  if(flipping)return;flipping=true;
+  var coin=document.getElementById('coin');coin.classList.add('flipping');
+  setTimeout(function(){coin.classList.remove('flipping');flipping=false;},800);
+  var isHeads=Math.random()>.5;
+  var side=isHeads?'heads':'tails',icon=isHeads?'正面 Heads':'反面 Tails';
+  document.getElementById('resultText').textContent='🎲 '+icon;
+  if(isHeads)heads++;else tails++;
+  renderStats();
+  hist.unshift({side:side,icon:icon,time:new Date().toLocaleString('zh-CN')});
+  if(hist.length>100)hist.length=100;
+  localStorage.setItem('coin_hist',JSON.stringify(hist));showHist();
+}
+
+function renderStats(){
+  document.getElementById('hCount').textContent=heads;document.getElementById('tCount').textContent=tails;
+  var total=heads+tails||1;document.getElementById('hBar').style.flex=heads/total;document.getElementById('tBar').style.flex=tails/total;
+}
+
+function showHist(){
+  var h=document.getElementById('history');if(!h)return;
+  if(!hist.length){h.innerHTML='<div style="color:var(--text-en);font-size:.82rem;">抛硬币后显示记录 History here</div>';return;}
+  h.innerHTML='<div style="font-size:.78rem;color:var(--primary-dark);margin-bottom:4px;">共 '+hist.length+' 次 Total</div>'+hist.map(function(item,i){var c=item.side==='heads'?'#f59e0b':'#9ca3af';return '<div style="padding:3px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem;">'+(i+1)+'. <span style="color:'+c+';font-weight:600;">'+item.icon+'</span> <span style="color:var(--text-en);font-size:.7rem;">'+item.time+'</span></div>';}).join('');
+}
+
+function clearAll(){heads=0;tails=0;hist=[];localStorage.setItem('coin_hist','[]');renderStats();showHist();}
+</script></body></html>

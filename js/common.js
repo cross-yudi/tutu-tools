@@ -250,7 +250,7 @@ function clearInput(id) {
     'service-tax-calc':'个人劳务报酬所得税在线计算器，按最新劳务报酬税率表计算应缴税额。<br>Calculate personal service income tax with the latest tax brackets.',
     'tax-rate-calc':'税金税率在线计算器，支持增值税含税/不含税价格计算。<br>VAT and tax rate calculator — calculate price with or without tax.',
     'world-currency':'世界各国和地区的货币名称、符号、代码速查表。<br>World currencies reference — names, symbols and ISO codes for all countries.',
-    'spin-wheel':'在线随机转盘工具，可自定义8个选项，点击按钮随机转出结果并保存历史记录。适用于抽奖、决策、游戏等场景。<br>Online spin wheel with 8 customizable options. Spin to get a random result with history tracking. Perfect for raffles, decisions and games.'
+    'spin-wheel':'在线随机转盘工具，可自定义8个选项，点击按钮随机转出结果并保存历史记录。适用于抽奖、决策、游戏等场景。<br>Online spin wheel with 8 customizable options. Spin to get a random result with history tracking. Perfect for raffles, decisions and games.',
     'dice-roller':'在线摇骰子工具，可选1-6个骰子，随机摇出结果并显示总和，自动保存历史记录。适用于桌游、抽奖、决策等场景。<br>Online dice roller with 1-6 dice. Roll randomly with sum display and history tracking. Perfect for board games and decision making.',
     'coin-flip':'在线抛硬币工具，点击硬币或按钮翻转，3D 旋转动画效果。自动统计正反面次数和比例，保存历史记录。适用于决策、游戏、教学等场景。<br>Online coin flip with 3D animation. Auto-counts heads/tails ratio and saves history. Great for decisions, games and demonstrations.',
   };
@@ -384,7 +384,7 @@ function clearInput(id) {
     'tax-rate-calc':[{name:'个税计算器 Tax Calculator',url:'../../tools/tax-calculator/'},{name:'服务报酬个税 Service Tax',url:'../../tools/service-tax-calc/'}],
     'world-currency':[{name:'货币汇率换算 Currency Exchange',url:'../../tools/currency-exchange/'},{name:'国家代码 Country Codes',url:'../../tools/country-codes/'}],
     'phone-lookup':[{name:'区号邮编 Area Code',url:'../../tools/area-code-lookup/'},{name:'身份证校验 ID Card',url:'../../tools/id-card/'}],
-    'spin-wheel':[{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'猜拳挑战 RPS',url:'../../tools/rps-challenge/'},{name:'猜数字 Guess Number',url:'../../tools/guess-number/'}]
+    'spin-wheel':[{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'猜拳挑战 RPS',url:'../../tools/rps-challenge/'},{name:'猜数字 Guess Number',url:'../../tools/guess-number/'}],
     'coin-flip':[{name:'摇骰子 Dice Roller',url:'../../tools/dice-roller/'},{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'猜拳挑战 RPS',url:'../../tools/rps-challenge/'}],
     'dice-roller':[{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'随机转盘 Spin Wheel',url:'../../tools/spin-wheel/'},{name:'猜数字 Guess Number',url:'../../tools/guess-number/'}],
   };

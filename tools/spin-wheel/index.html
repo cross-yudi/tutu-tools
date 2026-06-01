@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>随机转盘 Spin Wheel - 兔兔在线工具站</title><meta name="description" content="在线随机转盘，自定义8个选项，点击转出结果。Online spin wheel with 8 customizable options."><meta name="keywords" content="随机转盘,spin wheel,幸运转盘,抽奖转盘,decision wheel"><link rel="stylesheet" href="../../css/style.css"></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 随机转盘</div><h2>🎡 随机转盘</h2><p class="desc">设置8个选项，点击转盘随机转出结果</p><p class="desc-en">Customize 8 options and spin the wheel!</p></div><div class="tool-body"><div class="tool-row"><div class="tool-panel" style="text-align:center;"><label>转盘 <span class="label-en">Wheel</span></label><canvas id="wheel" width="300" height="300" style="cursor:pointer;"></canvas><div style="font-size:1.2rem;margin-top:8px;" id="resultText">点击转盘中心开始 Click to spin</div><button class="btn btn-primary" style="margin-top:8px;" onclick="spin()">🎯 开始旋转 Spin</button></div><div class="tool-panel"><label>设置选项 <span class="label-en">Options</span></label><div id="inputs">\n</div><div class="btn-row" style="margin-top:8px;"><button class="btn btn-outline btn-sm" onclick="resetOpts()">重置默认 Reset</button></div><label style="margin-top:10px;">旋转记录 <span class="label-en">History</span></label><div class="result-area" id="history" style="font-family:inherit;max-height:180px;overflow-y:auto;"></div><button class="btn btn-outline btn-sm" style="margin-top:4px;" onclick="clearHistory()">清空记录 Clear</button></div></div></div></main><footer class="footer">© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js"></script><script>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>随机转盘 Spin Wheel - 兔兔在线工具站</title><meta name="description" content="在线随机转盘，自定义8个选项，点击转出结果。Online spin wheel with 8 customizable options."><meta name="keywords" content="随机转盘,spin wheel,幸运转盘,抽奖转盘,decision wheel"><link rel="stylesheet" href="../../css/style.css"></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 随机转盘</div><h2>🎡 随机转盘</h2><p class="desc">设置8个选项，点击转盘随机转出结果</p><p class="desc-en">Customize 8 options and spin the wheel!</p></div><div class="tool-body"><div class="tool-row"><div class="tool-panel" style="text-align:center;"><label>转盘 <span class="label-en">Wheel</span></label><canvas id="wheel" width="300" height="300" style="cursor:pointer;"></canvas><div style="font-size:1.2rem;margin-top:8px;" id="resultText">点击转盘中心开始 Click to spin</div><button class="btn btn-primary" style="margin-top:8px;" onclick="spin()">🎯 开始旋转 Spin</button></div><div class="tool-panel"><label>设置选项 <span class="label-en">Options</span></label><div id="inputs"></div><div class="btn-row" style="margin-top:8px;"><button class="btn btn-outline btn-sm" onclick="resetOpts()">重置默认 Reset</button></div><label style="margin-top:10px;">旋转记录 <span class="label-en">History</span></label><div class="result-area" id="history" style="font-family:inherit;max-height:180px;overflow-y:auto;"></div><button class="btn btn-outline btn-sm" style="margin-top:4px;" onclick="clearHistory()">清空记录 Clear</button></div></div></div></main><footer class="footer">© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js"></script><script>
 var colors=['#ef4444','#f59e0b','#10b981','#3b82f6','#8b5cf6','#ec4899','#14b8a6','#f97316'];
 var defaults=['选项1 Opt1','选项2 Opt2','选项3 Opt3','选项4 Opt4','选项5 Opt5','选项6 Opt6','选项7 Opt7','选项8 Opt8'];
 var options=JSON.parse(localStorage.getItem('wheel_opts')||JSON.stringify(defaults));
@@ -49,10 +49,8 @@ function spin(){
     drawWheel();
     if(progress<1){requestAnimationFrame(animate);}else{
       spinning=false;
-      var normalized=((angle%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
-      resultIdx=Math.floor(normalized/(Math.PI/4));
-      if(resultIdx>=8)resultIdx=8-resultIdx;
-      resultIdx=Math.abs(8-resultIdx)%8;
+      var norm=((angle%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+      resultIdx=Math.floor(((2*Math.PI-norm+Math.PI/8)%(Math.PI*2))/(Math.PI/4))%8;
       var result=options[resultIdx];
       document.getElementById('resultText').textContent='🎉 结果：'+result+' Result: '+result;
       history.unshift({opt:result,time:new Date().toLocaleString('zh-CN')});
@@ -67,7 +65,9 @@ function spin(){
 
 function renderHistory(){
   var h=document.getElementById('history');
-  h.innerHTML=history.map(function(item,i){return '<div style="padding:3px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem;">'+(i+1)+'. <strong>'+item.opt+'</strong> <span style="color:var(--text-en);font-size:.7rem;">'+item.time+'</span></div>';}).join('');
+  if(!h)return;
+  if(!history.length){h.innerHTML='<div style="color:var(--text-en);font-size:.8rem;">旋转后显示记录 History after spin</div>';return;}
+  h.innerHTML='<div style="color:var(--primary-dark);font-weight:600;margin-bottom:4px;">共 '+history.length+' 次 Total</div>'+history.map(function(item,i){return '<div style="padding:3px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem;">'+(i+1)+'. <strong>'+item.opt+'</strong> <span style="color:var(--text-en);font-size:.7rem;">'+item.time+'</span></div>';}).join('');
 }
-renderHistory();
+setTimeout(renderHistory,100);
 </script></body></html>

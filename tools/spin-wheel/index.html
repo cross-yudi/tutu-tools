@@ -29,9 +29,9 @@ function draw(){
     ctx.fillStyle=colors[i];ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
     // Text rotated in middle of segment
     ctx.save();ctx.translate(cx,cy);ctx.rotate((a1+a2)/2);
-    ctx.fillStyle='#fff';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
-    var t=options[i];if(t.length>8)t=t.substring(0,7)+'..';
-    ctx.fillText(t,130,5);ctx.restore();
+    ctx.fillStyle='#fff';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.shadowColor='rgba(0,0,0,.3)';ctx.shadowBlur=2;
+    var t=options[i];if(t.length>7)t=t.substring(0,6)+'..';
+    ctx.fillText(t,125,5);ctx.restore();
   }
   // Center hub
   ctx.beginPath();ctx.arc(cx,cy,14,0,Math.PI*2);ctx.fillStyle="#1a1a2e";ctx.fill();

@@ -29,7 +29,7 @@ function draw(){
     ctx.fillStyle=colors[i];ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
     // Text rotated in middle of segment
     ctx.save();ctx.translate(cx,cy);ctx.rotate((a1+a2)/2);
-    ctx.fillStyle='#fff';ctx.font='bold 16px sans-serif';ctx.textAlign='center';ctx.shadowColor='rgba(0,0,0,.4)';ctx.shadowBlur=3;
+    ctx.fillStyle='#fff';ctx.font='bold 16px sans-serif';ctx.textAlign='center';ctx.shadowColor='transparent';ctx.shadowBlur=0;
     var t=options[i];if(t.length>6)t=t.substring(0,5)+'..';
     ctx.fillText(t,120,6);ctx.restore();
   }

@@ -421,6 +421,12 @@ function clearInput(id) {
     {property:'og:site_name',content:'兔兔在线工具站 Tutu Tools'},
     {property:'og:locale',content:'zh_CN'}
   ];
+  // Canonical URL
+  var canonical = document.createElement('link');
+  canonical.rel = 'canonical';
+  canonical.href = location.href.replace(/\?.*$/,'').replace(/#.*$/,'');
+  document.head.appendChild(canonical);
+
   ogTags.forEach(function(tag){
     var meta = document.createElement('meta');
     meta.setAttribute('property',tag.property);

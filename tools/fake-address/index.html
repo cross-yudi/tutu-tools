@@ -36,10 +36,10 @@ function generate(country){
     var block=randNum(1,20)+'-'+randNum(1,50);
     var postal='〒'+randNum(100,999)+'-'+randNum(1000,9999);
     var tel='090-'+randNum(1000,9999)+'-'+randNum(1000,9999);
-    out='氏名：'+lastName+' '+firstName+'\n';
-    out+=postal+'\n';
-    out+=city+' '+rand(jpStreets)+' '+block+'\n';
-    out+='電話：'+tel;
+    out='氏名 Name：'+lastName+' '+firstName+'\n';
+    out+='郵便番号 Postal：'+postal+'\n';
+    out+='住所 Address：'+city+' '+rand(jpStreets)+' '+block+'\n';
+    out+='電話 Tel：'+tel;
   }else if(country==='us'){
     var name=rand(usFirst)+' '+rand(usLast);
     var num=randNum(100,9999);
@@ -47,14 +47,23 @@ function generate(country){
     var c=rand(usCities);
     var zip=randNum(10000,99999);
     var tel='('+randNum(200,999)+') '+randNum(200,999)+'-'+randNum(1000,9999);
-    out=name+'\n'+num+' '+street+'\n'+c[0]+', '+c[1]+' '+zip+'\nUnited States\n'+tel;
+    out='Name 姓名：'+name+'\n';
+    out+='Address 地址：'+num+' '+street+'\n';
+    out+='City/State/ZIP 城市：'+c[0]+', '+c[1]+' '+zip+'\n';
+    out+='Country 国家：United States\n';
+    out+='Tel 电话：'+tel;
   }else{
     var name=rand(ukFirst)+' '+rand(ukLast);
     var num=randNum(1,300);
     var street=rand(ukStreets);
     var c=rand(ukCities);
     var tel='07'+randNum(100000000,999999999);
-    out=name+'\n'+num+' '+street+'\n'+c[0]+'\n'+c[1]+'\nUnited Kingdom\n'+tel;
+    out='Name 姓名：'+name+'\n';
+    out+='Address 地址：'+num+' '+street+'\n';
+    out+='City/Postal 城市：'+c[0]+'\n';
+    out+='Postcode 邮编：'+c[1]+'\n';
+    out+='Country 国家：United Kingdom\n';
+    out+='Tel 电话：'+tel;
   }
   document.getElementById('output').textContent=out;
 }

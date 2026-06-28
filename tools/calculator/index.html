@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>在线计算器 Calculator - 兔兔在线工具站</title><meta name="description" content="在线科学计算器，支持加减乘除。Online calculator with basic math operations."><meta name="keywords" content="在线计算器,calculator,科学计算器"><link rel="stylesheet" href="../../css/style.css"><style>
+.calc{width:320px;margin:0 auto;background:var(--bg-card);border-radius:16px;padding:16px;box-shadow:var(--shadow-md);border:1px solid var(--border);}
+.calc-display{width:100%;height:64px;font-size:1.8rem;font-family:monospace;text-align:right;padding:8px 16px;border:2px solid var(--border);border-radius:12px;margin-bottom:12px;background:#f8fafc;color:var(--text);outline:none;}
+.calc-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.ck{padding:16px 8px;font-size:1.2rem;font-weight:600;border:none;border-radius:10px;cursor:pointer;transition:all .1s;background:#f1f5f9;color:var(--text);}
+.ck:active{transform:scale(.95);}
+.ck-num{background:#fff;border:1px solid var(--border);}
+.ck-op{background:var(--primary-light);color:var(--primary-dark);}
+.ck-eq{background:var(--primary);color:#fff;}
+.ck-clr{background:#fee2e2;color:#dc2626;}
+.ck-del{background:#fee2e2;color:#dc2626;font-size:.9rem;}
+</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 在线计算器</div><h2>🔢 在线计算器 Calculator</h2><p class="desc">支持键盘输入，加减乘除基础运算</p><p class="desc-en">Basic calculator with keyboard support</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;">
+<div class="calc">
+<input type="text" class="calc-display" id="display" readonly placeholder="0">
+<div class="calc-keys">
+<button class="ck ck-clr" onclick="clearAll()">AC</button>
+<button class="ck ck-del" onclick="del()">⌫</button>
+<button class="ck ck-op" onclick="appendOp('%')">%</button>
+<button class="ck ck-op" onclick="appendOp('/')">/</button>
+<button class="ck ck-num" onclick="appendNum('7')">7</button>
+<button class="ck ck-num" onclick="appendNum('8')">8</button>
+<button class="ck ck-num" onclick="appendNum('9')">9</button>
+<button class="ck ck-op" onclick="appendOp('*')">x</button>
+<button class="ck ck-num" onclick="appendNum('4')">4</button>
+<button class="ck ck-num" onclick="appendNum('5')">5</button>
+<button class="ck ck-num" onclick="appendNum('6')">6</button>
+<button class="ck ck-op" onclick="appendOp('-')">-</button>
+<button class="ck ck-num" onclick="appendNum('1')">1</button>
+<button class="ck ck-num" onclick="appendNum('2')">2</button>
+<button class="ck ck-num" onclick="appendNum('3')">3</button>
+<button class="ck ck-op" onclick="appendOp('+')">+</button>
+<button class="ck ck-num" onclick="appendNum('0')" style="grid-column:span 2;">0</button>
+<button class="ck ck-num" onclick="appendDot()">.</button>
+<button class="ck ck-eq" onclick="calc()">=</button>
+</div>
+</div>
+<p style="font-size:.75rem;color:var(--text-en);margin-top:8px;">键盘输入 Keyboard supported | 按 Enter 计算 =</p>
+</div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=2"></script><script>
+var display=document.getElementById('display'),expr='';
+function update(){display.value=expr||'0';}
+
+function appendNum(n){expr+=n;update();}
+function appendDot(){if(!expr.endsWith('.')){if(expr===''||/[+\-*/%]/.test(expr.slice(-1)))expr+='0.';else expr+='.';}update();}
+function appendOp(op){if(expr===''&&op==='-'){expr='-';}else if(expr&&!/[+\-*/%.]$/.test(expr)){expr+=op;}update();}
+function clearAll(){expr='';update();}
+function del(){expr=expr.slice(0,-1);update();}
+function calc(){
+  try{var result=eval(expr.replace(/%/g,'/100'));if(!isFinite(result))throw 0;expr=parseFloat(result.toFixed(10)).toString();}catch(e){expr='Error';}
+  update();setTimeout(function(){if(expr==='Error')expr='';update();},1200);
+}
+
+// Keyboard support
+document.addEventListener('keydown',function(e){
+  var k=e.key;
+  if(/[0-9]/.test(k)){e.preventDefault();appendNum(k);}
+  else if(k==='.'){e.preventDefault();appendDot();}
+  else if(k==='+'||k==='-'||k==='*'||k==='/'||k==='%'){e.preventDefault();appendOp(k);}
+  else if(k==='Enter'||k==='='){e.preventDefault();calc();}
+  else if(k==='Backspace'){e.preventDefault();del();}
+  else if(k==='Escape'){e.preventDefault();clearAll();}
+});
+</script></body></html>

@@ -254,6 +254,7 @@ function clearInput(id) {
     'dice-roller':'在线摇骰子工具，可选1-6个骰子，随机摇出结果并显示总和，自动保存历史记录。适用于桌游、抽奖、决策等场景。<br>Online dice roller with 1-6 dice. Roll randomly with sum display and history tracking. Perfect for board games and decision making.',
     'fake-address':'在线虚拟地址生成器，支持日本、美国、英国三个国家的真实格式地址。包含姓名、邮编、地址、电话，适用于表单测试或隐私保护。<br>Fake address generator for Japan, US & UK with realistic formatting. Includes name, postal code, full address and phone number.',
     'whiteboard':'在线白板工具，支持画笔自由绘制、橡皮擦、矩形/圆形/直线几何图形、文字输入，颜色和粗细可调。支持鼠标和触摸屏操作，适用于教学演示、草稿设计、思维导图等场景。<br>Online whiteboard with freehand drawing, eraser, shapes (rect/circle/line), text and color picker. Works with both mouse and touchscreen.',
+    'calculator':'在线计算器，支持加减乘除基础运算和百分比计算，支持键盘和鼠标输入。适用于日常计算、账单核对等场景。<br>Basic online calculator — add, subtract, multiply, divide and percentage. Works with keyboard and mouse.',
     'coin-flip':'在线抛硬币工具，点击硬币或按钮翻转，3D 旋转动画效果。自动统计正反面次数和比例，保存历史记录。适用于决策、游戏、教学等场景。<br>Online coin flip with 3D animation. Auto-counts heads/tails ratio and saves history. Great for decisions, games and demonstrations.',
   };
 
@@ -389,6 +390,7 @@ function clearInput(id) {
     'spin-wheel':[{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'猜拳挑战 RPS',url:'../../tools/rps-challenge/'},{name:'猜数字 Guess Number',url:'../../tools/guess-number/'}],
     'coin-flip':[{name:'摇骰子 Dice Roller',url:'../../tools/dice-roller/'},{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'猜拳挑战 RPS',url:'../../tools/rps-challenge/'}],
     'dice-roller':[{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'随机转盘 Spin Wheel',url:'../../tools/spin-wheel/'},{name:'猜数字 Guess Number',url:'../../tools/guess-number/'}],
+    'calculator':[{name:'个税计算器 Tax Calculator',url:'../../tools/tax-calculator/'},{name:'列表求和 List Calc',url:'../../tools/list-calc/'},{name:'贷款计算器 Loan Calc',url:'../../tools/loan-calc/'}],
     'whiteboard':[{name:'颜色转换 Color Tool',url:'../../tools/color-tool/'},{name:'颜色挑战 Color Challenge',url:'../../tools/color-challenge/'},{name:'图片压缩 Image Compress',url:'../../tools/image-compress/'}],
     'fake-address':[{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'GUID生成器 GUID Generator',url:'../../tools/guid-generator/'},{name:'随机转盘 Spin Wheel',url:'../../tools/spin-wheel/'}],
   };

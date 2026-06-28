@@ -22,7 +22,7 @@ canvas{border:2px solid var(--border);border-radius:8px;display:block;width:100%
 <p style="font-size:.75rem;color:var(--text-en);margin-top:4px;">鼠标/触控均可 | 文字模式点击画布输入 | Mouse & touch supported</p>
 </div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=2"></script><script>
 var canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
-var tool='pen',color='#1a1a2e',size=5,drawing=false,startX,startY,snapshot;
+var tool='pen',color='#1a1a2e',size=5,drawing=false,startX,startY,lastX,lastY,snapshot;
 
 function setTool(t){
   tool=t;document.querySelectorAll('.tbtn').forEach(function(b){b.classList.remove('active');});
@@ -40,15 +40,17 @@ function getPos(e){
 
 function startDraw(e){e.preventDefault();
   color=document.getElementById('color').value;size=parseInt(document.getElementById('size').value);
-  var pos=getPos(e);startX=pos.x;startY=pos.y;drawing=true;
-  if(tool==='pen'||tool==='eraser'){snapshot=ctx.getImageData(0,0,canvas.width,canvas.height);}
+  var pos=getPos(e);startX=pos.x;startY=pos.y;lastX=startX;lastY=startY;drawing=true;
+  if(tool==='pen'){ctx.strokeStyle=color;ctx.lineWidth=size;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(startX,startY);}
+  else if(tool==='eraser'){ctx.strokeStyle='#ffffff';ctx.lineWidth=size*3;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(startX,startY);}
+  else if(tool==='rect'||tool==='circle'||tool==='line'){snapshot=ctx.getImageData(0,0,canvas.width,canvas.height);}
   else if(tool==='text'){var t=prompt('输入文字 Enter text:');if(t){ctx.font='bold '+size*4+'px sans-serif';ctx.fillStyle=color;ctx.fillText(t,startX,startY);}drawing=false;}
 }
 
 function moveDraw(e){e.preventDefault();if(!drawing)return;
   var pos=getPos(e);
-  if(tool==='pen'){ctx.putImageData(snapshot,0,0);ctx.strokeStyle=color;ctx.lineWidth=size;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(startX,startY);ctx.lineTo(pos.x,pos.y);ctx.stroke();}
-  else if(tool==='eraser'){ctx.putImageData(snapshot,0,0);ctx.strokeStyle='#ffffff';ctx.lineWidth=size*3;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(startX,startY);ctx.lineTo(pos.x,pos.y);ctx.stroke();}
+  if(tool==='pen'){ctx.lineTo(pos.x,pos.y);ctx.stroke();}
+  else if(tool==='eraser'){ctx.lineTo(pos.x,pos.y);ctx.stroke();}
   else if(tool==='rect'||tool==='circle'||tool==='line'){ctx.putImageData(snapshot,0,0);ctx.strokeStyle=color;ctx.lineWidth=size;ctx.beginPath();
     if(tool==='rect')ctx.rect(startX,startY,pos.x-startX,pos.y-startY);
     else if(tool==='circle'){var rx=Math.abs(pos.x-startX)/2,ry=Math.abs(pos.y-startY)/2;ctx.ellipse(startX+(pos.x-startX)/2,startY+(pos.y-startY)/2,rx,ry,0,0,Math.PI*2);}

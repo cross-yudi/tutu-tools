@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>大龄宝宝计算器 Baby Age - 兔兔在线工具站</title><meta name="description" content="计算你是多少个月大的宝宝。Calculate how many months old you are."><meta name="keywords" content="宝宝计算,月龄计算,baby age,趣味计算"><link rel="stylesheet" href="../../css/style.css"></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 宝宝计算器</div><h2>👶 大龄宝宝计算器</h2><p class="desc">输入出生日期，算算你是多少个月大的宝宝</p><p class="desc-en">How many months old are you? Find out!</p></div><div class="tool-body"><div class="tool-row"><div class="tool-panel" style="text-align:center;"><label>你的出生日期 <span class="label-en">Your Birth Date</span></label><input type="date" id="birth" style="text-align:center;font-size:1.2rem;"><button class="btn btn-primary" style="margin-top:12px;width:100%;" onclick="calc()">🧮 计算 Calc</button></div></div><div class="tool-panel" style="text-align:center;"><label>结果 <span class="label-en">Result</span></label><div class="result-area" id="output" style="font-family:inherit;font-size:1.1rem;line-height:2.2;min-height:120px;padding:24px;">输入出生日期点击计算</div></div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=3"></script><script>
+document.getElementById('birth').valueAsDate=new Date(1990,0,1);
+function calc(){
+  var birth=document.getElementById('birth').valueAsDate;
+  if(!birth||birth>new Date()){showToast('请选择有效的出生日期');return;}
+  var now=new Date();
+  var months=(now.getFullYear()-birth.getFullYear())*12+(now.getMonth()-birth.getMonth());
+  var days=Math.floor((now-birth)/(86400000));
+  var weeks=Math.floor(days/7);
+  var hours=days*24;
+  var title='',level='';
+  if(months<12){title='🍼 婴儿宝宝';level='Baby';}
+  else if(months<36){title='🧒 幼儿宝宝';level='Toddler';}
+  else if(months<144){title='👦👧 少年宝宝';level='Youth';}
+  else if(months<216){title='🧑 青年宝宝';level='Young Adult';}
+  else if(months<360){title='🧔 中年宝宝';level='Middle-aged';}
+  else{title='👴👵 资深宝宝';level='Senior';}
+
+  document.getElementById('output').innerHTML='<div style="font-size:2rem;">'+title+'</div>'+
+    '<div style="font-size:1.2rem;color:var(--text-en);">'+level+'</div>'+
+    '<div style="margin-top:8px;">你现在是一个 <strong style="font-size:2rem;color:var(--primary);">'+months.toLocaleString()+'</strong> 个月大的宝宝！</div>'+
+    'You are <strong>'+months.toLocaleString()+'</strong> months old!<br>'+
+    '<span style="color:var(--text-secondary);">= '+days.toLocaleString()+' 天 days | '+weeks.toLocaleString()+' 周 weeks | '+hours.toLocaleString()+' 小时 hours</span>';
+}
+</script></body></html>

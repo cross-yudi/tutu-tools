@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>在线白板 Whiteboard - 兔兔在线工具站</title><meta name="description" content="在线白板，支持画笔画画、几何图形、文本、图片，触摸屏和鼠标通用。Online drawing whiteboard with brushes, shapes, text and images."><meta name="keywords" content="在线白板,电子白板,whiteboard,在线画板,drawing board"><link rel="stylesheet" href="../../css/style.css"><style>
+#tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;}
+.tbtn{padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:.82rem;transition:all .15s;white-space:nowrap;}
+.tbtn:hover{border-color:var(--primary);}
+.tbtn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+canvas{border:2px solid var(--border);border-radius:8px;display:block;width:100%;cursor:crosshair;background:#fff;touch-action:none;}
+</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 在线白板</div><h2>🎨 在线白板</h2><p class="desc">支持画笔、形状、文字、橡皮擦，触摸屏和鼠标通用</p><p class="desc-en">A full drawing whiteboard — brushes, shapes, text & eraser</p></div><div class="tool-body"><div class="tool-panel">
+<div id="tools">
+<button class="tbtn active" onclick="setTool('pen')">✏️ 画笔 Pen</button>
+<button class="tbtn" onclick="setTool('eraser')">🧹 橡皮 Eraser</button>
+<button class="tbtn" onclick="setTool('rect')">⬛ 矩形 Rect</button>
+<button class="tbtn" onclick="setTool('circle')">⭕ 圆形 Circle</button>
+<button class="tbtn" onclick="setTool('line')">📏 直线 Line</button>
+<button class="tbtn" onclick="setTool('text')">🔤 文字 Text</button>
+<input type="color" id="color" value="#1a1a2e" style="width:36px;height:36px;border:none;cursor:pointer;border-radius:6px;" title="颜色 Color">
+<select id="size" style="padding:6px;border:1.5px solid var(--border);border-radius:8px;font-size:.82rem;">
+<option value="2">细 Thin</option><option value="5" selected>中 Medium</option><option value="10">粗 Thick</option><option value="18">超粗 Bold</option></select>
+<button class="tbtn" onclick="clearCanvas()">🗑️ 清除 Clear</button>
+<button class="tbtn" onclick="saveImage()">💾 保存 Save</button>
+</div>
+<canvas id="c" width="1000" height="600"></canvas>
+<p style="font-size:.75rem;color:var(--text-en);margin-top:4px;">鼠标/触控均可 | 文字模式点击画布输入 | Mouse & touch supported</p>
+</div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=2"></script><script>
+var canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+var tool='pen',color='#1a1a2e',size=5,drawing=false,startX,startY,snapshot;
+
+function setTool(t){
+  tool=t;document.querySelectorAll('.tbtn').forEach(function(b){b.classList.remove('active');});
+  event.target.classList.add('active');
+}
+
+function getPos(e){
+  var rect=canvas.getBoundingClientRect();
+  var scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;
+  var clientX,clientY;
+  if(e.touches){clientX=e.touches[0].clientX;clientY=e.touches[0].clientY;}
+  else{clientX=e.clientX;clientY=e.clientY;}
+  return {x:(clientX-rect.left)*scaleX,y:(clientY-rect.top)*scaleY};
+}
+
+function startDraw(e){e.preventDefault();
+  color=document.getElementById('color').value;size=parseInt(document.getElementById('size').value);
+  var pos=getPos(e);startX=pos.x;startY=pos.y;drawing=true;
+  if(tool==='pen'||tool==='eraser'){snapshot=ctx.getImageData(0,0,canvas.width,canvas.height);}
+  else if(tool==='text'){var t=prompt('输入文字 Enter text:');if(t){ctx.font='bold '+size*4+'px sans-serif';ctx.fillStyle=color;ctx.fillText(t,startX,startY);}drawing=false;}
+}
+
+function moveDraw(e){e.preventDefault();if(!drawing)return;
+  var pos=getPos(e);
+  if(tool==='pen'){ctx.putImageData(snapshot,0,0);ctx.strokeStyle=color;ctx.lineWidth=size;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(startX,startY);ctx.lineTo(pos.x,pos.y);ctx.stroke();}
+  else if(tool==='eraser'){ctx.putImageData(snapshot,0,0);ctx.strokeStyle='#ffffff';ctx.lineWidth=size*3;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(startX,startY);ctx.lineTo(pos.x,pos.y);ctx.stroke();}
+  else if(tool==='rect'||tool==='circle'||tool==='line'){ctx.putImageData(snapshot,0,0);ctx.strokeStyle=color;ctx.lineWidth=size;ctx.beginPath();
+    if(tool==='rect')ctx.rect(startX,startY,pos.x-startX,pos.y-startY);
+    else if(tool==='circle'){var rx=Math.abs(pos.x-startX)/2,ry=Math.abs(pos.y-startY)/2;ctx.ellipse(startX+(pos.x-startX)/2,startY+(pos.y-startY)/2,rx,ry,0,0,Math.PI*2);}
+    else if(tool==='line'){ctx.moveTo(startX,startY);ctx.lineTo(pos.x,pos.y);}
+    ctx.stroke();
+  }
+}
+
+function endDraw(e){e.preventDefault();drawing=false;}
+
+canvas.addEventListener('mousedown',startDraw);canvas.addEventListener('mousemove',moveDraw);canvas.addEventListener('mouseup',endDraw);canvas.addEventListener('mouseleave',endDraw);
+canvas.addEventListener('touchstart',function(e){e.preventDefault();snapshot=ctx.getImageData(0,0,canvas.width,canvas.height);startDraw(e);});
+canvas.addEventListener('touchmove',function(e){e.preventDefault();moveDraw(e);});
+canvas.addEventListener('touchend',endDraw);
+
+function clearCanvas(){if(confirm('清除画布？Clear canvas?')){ctx.fillStyle='#ffffff';ctx.fillRect(0,0,canvas.width,canvas.height);}}
+
+function saveImage(){var link=document.createElement('a');link.download='whiteboard.png';link.href=canvas.toDataURL();link.click();showToast('已保存 Saved!');}
+</script></body></html>

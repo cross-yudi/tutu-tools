@@ -1,18 +1,25 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>随机点名工具 Name Picker - 兔兔在线工具站</title><meta name="description" content="在线随机点名/抽签工具，输入名单随机抽取。Random name picker for classroom and raffles."><meta name="keywords" content="随机点名,抽签,name picker,随机抽取"><link rel="stylesheet" href="../../css/style.css"></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 随机点名</div><h2>🎯 随机点名工具</h2><p class="desc">输入名单，随机抽取一个或多个名字</p><p class="desc-en">Enter names and pick one or more randomly</p></div><div class="tool-body"><div class="tool-row"><div class="tool-panel"><label>名单 <span class="label-en">Name List</span> <span style="font-size:.75rem;color:var(--text-en);">每行一个 One per line</span></label><textarea id="names" placeholder="张三&#10;李四&#10;王五&#10;赵六&#10;..." style="min-height:200px;">张三&#10;李四&#10;王五&#10;赵六&#10;小明&#10;小红&#10;小刚&#10;小美</textarea><div style="display:flex;gap:8px;align-items:center;margin-top:8px;"><label style="font-size:.85rem;">抽取数量 Count</label><input type="number" id="count" value="1" min="1" max="100" style="width:70px;"></div><div class="btn-row" style="margin-top:8px;"><button class="btn btn-primary" onclick="pick()">🎯 点名 Pick</button><button class="btn btn-outline" onclick="clearInput('names')">清空 Clear</button></div></div><div class="tool-panel"><label>结果 <span class="label-en">Result</span></label><div class="result-area" id="result" style="font-family:inherit;font-size:1.3rem;text-align:center;min-height:120px;padding:24px;line-height:2;">点击「点名」随机抽取</div></div></div><div class="tool-panel"><label>点名记录 <span class="label-en">History</span></label><div class="result-area" id="history" style="font-family:inherit;max-height:200px;overflow:auto;"></div><button class="btn btn-outline btn-sm" style="margin-top:4px;" onclick="clearHist()">清空记录 Clear</button></div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=3"></script><script>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>随机点名工具 Name Picker - 兔兔在线工具站</title><meta name="description" content="在线随机点名/抽签工具，输入名单随机抽取。Random name picker for classroom and raffles."><meta name="keywords" content="随机点名,抽签,name picker,随机抽取"><link rel="stylesheet" href="../../css/style.css"></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 随机点名</div><h2>🎯 随机点名工具</h2><p class="desc">输入名单，随机抽取一个或多个名字</p><p class="desc-en">Enter names and pick one or more randomly</p></div><div class="tool-body"><div class="tool-row"><div class="tool-panel"><label>名单 <span class="label-en">Name List</span> <span style="font-size:.75rem;color:var(--text-en);">每行一个 One per line</span></label><textarea id="names" placeholder="每行一个名字" style="min-height:200px;">张三
+李四
+王五
+赵六
+小明
+小红
+小刚
+小美</textarea><div style="display:flex;gap:8px;align-items:center;margin-top:8px;"><label style="font-size:.85rem;">抽取数量 Count</label><input type="number" id="count" value="1" min="1" max="100" style="width:70px;"></div><div class="btn-row" style="margin-top:8px;"><button class="btn btn-primary" onclick="pick()">🎯 点名 Pick</button><button class="btn btn-outline" onclick="clearInput('names')">清空 Clear</button></div></div><div class="tool-panel"><label>结果 <span class="label-en">Result</span></label><div class="result-area" id="result" style="font-family:inherit;font-size:1.3rem;text-align:center;min-height:120px;padding:24px;line-height:2;">点击「点名」随机抽取</div></div></div><div class="tool-panel"><label>点名记录 <span class="label-en">History</span></label><div class="result-area" id="history" style="font-family:inherit;max-height:200px;overflow:auto;"></div><button class="btn btn-outline btn-sm" style="margin-top:4px;" onclick="clearHist()">清空记录 Clear</button></div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=3"></script><script>
 var hist=JSON.parse(localStorage.getItem('picker_hist')||'[]');
 function pick(){
-  var raw=document.getElementById('names').value.trim();
-  if(!raw){showToast('请输入名单 Enter names');return;}
-  var names=raw.split('\n').filter(function(l){return l.trim();});
-  if(!names.length){showToast('名单为空 No names');return;}
-  var count=parseInt(document.getElementById('count').value)||1;
+  var raw=document.getElementById('names').value;
+  var names=raw.split(/[\n\r]+/).filter(function(l){return l.trim();});
+  if(!names.length){showToast('请输入名单 Enter names');return;}
+  var count=Math.min(parseInt(document.getElementById('count').value)||1,names.length);
+  document.getElementById('count').value=count;
   var pool=[].concat(names);
   var results=[];
-  for(var i=0;i<Math.min(count,pool.length);i++){
+  for(var i=0;i<count;i++){
     var idx=Math.floor(Math.random()*pool.length);
     results.push(pool.splice(idx,1)[0]);
   }
-  document.getElementById('result').innerHTML=results.map(function(n,i){return '<div style="font-size:'+(results.length>3?'1rem':'1.6rem')+';font-weight:700;color:var(--primary);">'+(results.length>1?(i+1)+'. ':'🎉 ')+n+'</div>';}).join('');
+  document.getElementById('result').innerHTML=results.map(function(n,i){return '<div style="font-size:'+(results.length>3?'1.1rem':'1.6rem')+';font-weight:700;color:var(--primary);">'+(i+1)+'. '+n+'</div>';}).join('');
   hist.unshift({picked:results.join(', '),time:new Date().toLocaleString('zh-CN')});
   if(hist.length>30)hist.length=30;
   localStorage.setItem('picker_hist',JSON.stringify(hist));showHist();

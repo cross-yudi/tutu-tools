@@ -254,6 +254,7 @@ function clearInput(id) {
     'dice-roller':'在线摇骰子工具，可选1-6个骰子，随机摇出结果并显示总和，自动保存历史记录。适用于桌游、抽奖、决策等场景。<br>Online dice roller with 1-6 dice. Roll randomly with sum display and history tracking. Perfect for board games and decision making.',
     'fake-address':'在线虚拟地址生成器，支持日本、美国、英国三个国家的真实格式地址。包含姓名、邮编、地址、电话，适用于表单测试或隐私保护。<br>Fake address generator for Japan, US & UK with realistic formatting. Includes name, postal code, full address and phone number.',
     'whiteboard':'在线白板工具，支持画笔自由绘制、橡皮擦、矩形/圆形/直线几何图形、文字输入，颜色和粗细可调。支持鼠标和触摸屏操作，适用于教学演示、草稿设计、思维导图等场景。<br>Online whiteboard with freehand drawing, eraser, shapes (rect/circle/line), text and color picker. Works with both mouse and touchscreen.',
+    'safe-period':'女性安全期在线计算器，输入末次月经日期和月经周期，自动推算排卵日、排卵期和安全期，附带日历视图。仅供参考，不能作为避孕依据。<br>Safe period calculator — enter your last period date and cycle length to estimate ovulation day, fertile window and safe period. Calendar view included. For reference only.',
     'lottery-ssq':'双色球机选号码生成器，随机生成6个红球(1-33)和1个蓝球(1-16)，支持批量生成1/5/10注。适用于彩票机选场景。<br>Double Color Ball random picker — 6 red balls (1-33) + 1 blue ball (1-16). Generate 1/5/10 tickets.',
     'lottery-dlt':'大乐透机选号码生成器，随机生成5个前区(1-35)和2个后区(1-12)，支持批量生成1/5/10注。适用于彩票机选场景。<br>Super Lotto random picker — 5 front (1-35) + 2 back (1-12). Generate 1/5/10 tickets.',
     'calculator':'在线科学计算器，支持三角函数sin/cos/tan/反三角、幂运算x²/xʸ/√、对数log/ln、阶乘n!、指数eˣ、π等科学计算。支持键盘快捷键输入。<br>Scientific calculator with trig, power, log, factorial, exp, π functions. Keyboard supported.',
@@ -395,6 +396,7 @@ function clearInput(id) {
     'lottery-ssq':[{name:'大乐透机选 DLT Picker',url:'../../tools/lottery-dlt/'},{name:'摇骰子 Dice Roller',url:'../../tools/dice-roller/'},{name:'抛硬币 Coin Flip',url:'../../tools/coin-flip/'}],
     'lottery-dlt':[{name:'双色球机选 SSQ Picker',url:'../../tools/lottery-ssq/'},{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'随机转盘 Spin Wheel',url:'../../tools/spin-wheel/'}],
     'calculator':[{name:'个税计算器 Tax Calculator',url:'../../tools/tax-calculator/'},{name:'列表求和 List Calc',url:'../../tools/list-calc/'},{name:'贷款计算器 Loan Calc',url:'../../tools/loan-calc/'}],
+    'safe-period':[{name:'日期计算器 Date Calc',url:'../../tools/date-calc/'},{name:'BMI计算 BMI Calc',url:'../../tools/bmi-calc/'},{name:'血型遗传 Blood Type',url:'../../tools/blood-type/'}],
     'whiteboard':[{name:'颜色转换 Color Tool',url:'../../tools/color-tool/'},{name:'颜色挑战 Color Challenge',url:'../../tools/color-challenge/'},{name:'图片压缩 Image Compress',url:'../../tools/image-compress/'}],
     'fake-address':[{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'GUID生成器 GUID Generator',url:'../../tools/guid-generator/'},{name:'随机转盘 Spin Wheel',url:'../../tools/spin-wheel/'}],
   };

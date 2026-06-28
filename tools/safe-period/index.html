@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>女性安全期计算 Safe Period - 兔兔在线工具站</title><meta name="description" content="在线女性安全期计算器，根据末次月经和周期推算排卵期和安全期。Safe period calculator based on menstrual cycle."><meta name="keywords" content="安全期,排卵期,安全期计算,safe period,排卵日"><link rel="stylesheet" href="../../css/style.css"><style>.cal-result{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;margin-top:10px;}.cal-day{padding:6px 2px;border-radius:4px;font-size:.8rem;}.cal-hdr{font-size:.7rem;color:var(--text-en);font-weight:600;padding:4px 0;}.cal-empty{}.cal-period{background:#fecaca;}.cal-ovulation{background:#fef3c7;font-weight:700;}.cal-fertile{background:#fed7aa;}.cal-safe{background:#dbeafe;}.cal-future{color:var(--text-en);}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 安全期计算</div><h2>🌸 女性安全期计算</h2><p class="desc">根据末次月经日期和周期推算排卵期与安全期</p><p class="desc-en">Calculate ovulation & safe period based on your cycle</p></div><div class="tool-body"><div class="tool-row"><div class="tool-panel"><label>末次月经第一天 <span class="label-en">Last Period Start</span></label><input type="date" id="lastPeriod"><label style="margin-top:8px;">月经周期（天） <span class="label-en">Cycle Length (days)</span></label><input type="number" id="cycleLen" value="28" min="20" max="45"><label style="margin-top:8px;">经期持续（天） <span class="label-en">Period Duration</span></label><input type="number" id="periodLen" value="5" min="2" max="10"><button class="btn btn-primary" style="margin-top:12px;width:100%;" onclick="calc()">计算 Calculate</button></div><div class="tool-panel"><label>计算结果 <span class="label-en">Result</span></label><div class="result-area" id="result" style="font-family:inherit;font-size:.85rem;line-height:2;"></div></div></div><div class="tool-panel"><label>本月日历 <span class="label-en">Calendar</span></label><div class="cal-result" id="calendar"></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:.75rem;color:var(--text-secondary);"><span>🟥 经期 Period</span><span>🟧 排卵期 Fertile</span><span>🟨 排卵日 Ovulation</span><span>🟦 安全期 Safe</span></div></div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=3"></script><script>
+document.getElementById('lastPeriod').valueAsDate=new Date();
+
+function calc(){
+  var lastStart=document.getElementById('lastPeriod').valueAsDate;
+  var cycleLen=parseInt(document.getElementById('cycleLen').value)||28;
+  var periodLen=parseInt(document.getElementById('periodLen').value)||5;
+  if(!lastStart){showToast('请选择日期 Select a date');return;}
+
+  // Period: lastStart ~ lastStart+periodLen-1
+  var periodStart=lastStart;
+  var periodEnd=new Date(lastStart.getTime()+(periodLen-1)*86400000);
+
+  // Next period: lastStart + cycleLen
+  var nextPeriod=new Date(lastStart.getTime()+cycleLen*86400000);
+
+  // Ovulation: 14 days before next period
+  var ovulation=new Date(nextPeriod.getTime()-14*86400000);
+
+  // Fertile window: 5 days before ovulation ~ ovulation + 1 day
+  var fertileStart=new Date(ovulation.getTime()-5*86400000);
+  var fertileEnd=new Date(ovulation.getTime()+1*86400000);
+
+  var fmt=function(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+  var r=document.getElementById('result');
+  r.innerHTML='末次月经 Last Period：<strong>'+fmt(lastStart)+'</strong> （持续 '+periodLen+' 天）<br>'+
+    '下次月经 Next Period：<strong>'+fmt(nextPeriod)+'</strong><br>'+
+    '排卵日 Ovulation Day：<strong style="color:#f59e0b;">'+fmt(ovulation)+'</strong><br>'+
+    '排卵期 Fertile Window：<strong style="color:#ea580c;">'+fmt(fertileStart)+' ~ '+fmt(fertileEnd)+'</strong><br>'+
+    '<span style="color:#64748b;font-size:.78rem;">⚠ 仅供参考，不能作为避孕依据。For reference only.</span>';
+
+  // Build calendar
+  renderCalendar(lastStart,periodLen,fertileStart,fertileEnd,ovulation,nextPeriod);
+}
+
+function renderCalendar(start,periodLen,fertileStart,fertileEnd,ovulation,nextPeriod){
+  var cal=document.getElementById('calendar');
+  var firstDay=new Date(start.getFullYear(),start.getMonth(),1);
+  var lastDay=new Date(start.getFullYear(),start.getMonth()+1,0);
+  var dow=firstDay.getDay();
+
+  var html='<div class="cal-hdr">日 Sun</div><div class="cal-hdr">一 Mon</div><div class="cal-hdr">二 Tue</div><div class="cal-hdr">三 Wed</div><div class="cal-hdr">四 Thu</div><div class="cal-hdr">五 Fri</div><div class="cal-hdr">六 Sat</div>';
+  for(var i=0;i<dow;i++)html+='<div class="cal-empty"></div>';
+
+  for(var d=1;d<=lastDay.getDate();d++){
+    var date=new Date(start.getFullYear(),start.getMonth(),d);
+    var cls='cal-safe';
+    var periodEnd=new Date(start.getTime()+(periodLen-1)*86400000);
+    if(date>=start&&date<=periodEnd)cls='cal-period';
+    else if(date.toDateString()===ovulation.toDateString())cls='cal-ovulation';
+    else if(date>=fertileStart&&date<=fertileEnd)cls='cal-fertile';
+    else if(date>periodEnd&&date<nextPeriod&&!(date>=fertileStart&&date<=fertileEnd))cls='cal-safe';
+    if(date>nextPeriod)cls='cal-future';
+    html+='<div class="cal-day '+cls+'">'+d+'</div>';
+  }
+  cal.innerHTML=html;
+}
+
+calc();
+</script></body></html>

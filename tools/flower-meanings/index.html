@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>花语大全 Flower Meanings - 兔兔在线工具站</title><meta name="description" content="花语大全，了解各种鲜花的象征意义和花语。Flower meanings dictionary — discover the symbolism behind every bloom."><meta name="keywords" content="花语,花语大全,flower meanings,鲜花花语,送花花语"><link rel="stylesheet" href="../../css/style.css"></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 花语大全</div><h2>💐 花语大全</h2><p class="desc">了解各种鲜花的象征意义与花语</p><p class="desc-en">Discover the meanings & symbolism of flowers</p></div><div class="tool-body"><div class="tool-panel"><label>搜索 <span class="label-en">Search</span></label><input type="text" id="search" placeholder="输入花名搜索..." oninput="filter()"></div><div class="tool-panel"><label>花语列表 <span class="label-en">Flower Meanings</span></label><div class="result-area" id="list" style="font-family:inherit;font-size:.82rem;max-height:450px;overflow:auto;"></div></div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=3"></script><script>
+var flowers=[
+  {name:'玫瑰 Rose',emoji:'🌹',meaning:'爱情、热恋、浪漫',en:'Love, passion, romance'},
+  {name:'红玫瑰 Red Rose',emoji:'🌹',meaning:'热烈的爱、我愛你',en:'Deep love, I love you'},
+  {name:'粉玫瑰 Pink Rose',emoji:'🌸',meaning:'初恋、感动、爱的宣言',en:'First love, admiration, gratitude'},
+  {name:'白玫瑰 White Rose',emoji:'🤍',meaning:'纯洁、天真、尊敬',en:'Purity, innocence, reverence'},
+  {name:'黄玫瑰 Yellow Rose',emoji:'🌼',meaning:'友谊、关怀、道歉',en:'Friendship, joy, apology'},
+  {name:'康乃馨 Carnation',emoji:'💮',meaning:'母爱、温馨、感恩',en:'Motherly love, warmth, gratitude'},
+  {name:'百合 Lily',emoji:'🌷',meaning:'纯洁、高贵、百年好合',en:'Purity, nobility, unity'},
+  {name:'郁金香 Tulip',emoji:'🌷',meaning:'爱的表白、永恒的祝福',en:'Declaration of love, eternal blessing'},
+  {name:'向日葵 Sunflower',emoji:'🌻',meaning:'沉默的爱、崇拜、忠诚',en:'Adoration, loyalty, silent love'},
+  {name:'薰衣草 Lavender',emoji:'💜',meaning:'等待爱情、浪漫、宁静',en:'Waiting for love, romance, peace'},
+  {name:'樱花 Cherry Blossom',emoji:'🌸',meaning:'生命之美、纯洁、希望',en:'Beauty of life, purity, hope'},
+  {name:'菊花 Chrysanthemum',emoji:'🏵️',meaning:'高洁、长寿、真诚',en:'Nobility, longevity, honesty'},
+  {name:'牡丹 Peony',emoji:'🌺',meaning:'富贵、圆满、浓情',en:'Wealth, honor, passion'},
+  {name:'荷花 Lotus',emoji:'🪷',meaning:'高洁、清雅、出淤泥不染',en:'Purity, elegance, rising above'},
+  {name:'梅花 Plum Blossom',emoji:'🌸',meaning:'坚韧、高洁、傲骨',en:'Perseverance, nobility, strength'},
+  {name:'兰花 Orchid',emoji:'🪻',meaning:'高雅、贤德、友谊',en:'Elegance, virtue, friendship'},
+  {name:'雏菊 Daisy',emoji:'🌼',meaning:'天真、快乐、暗恋',en:'Innocence, joy, secret love'},
+  {name:'满天星 Baby\'s Breath',emoji:'✨',meaning:'真爱、思念、纯洁',en:'True love, longing, purity'},
+  {name:'紫罗兰 Violet',emoji:'💜',meaning:'永恒的美、忠诚',en:'Eternal beauty, faithfulness'},
+  {name:'茉莉 Jasmine',emoji:'🤍',meaning:'纯洁、亲切、优美',en:'Purity, amiability, grace'},
+  {name:'栀子花 Gardenia',emoji:'🤍',meaning:'永恒的爱、一生守候',en:'Eternal love, lifelong devotion'},
+  {name:'勿忘我 Forget-me-not',emoji:'💙',meaning:'永恒的记忆、真爱',en:'True love, memories, don\'t forget me'},
+  {name:'桔梗花 Bellflower',emoji:'💜',meaning:'永恒不变的爱',en:'Unchanging, everlasting love'},
+  {name:'风信子 Hyacinth',emoji:'💜',meaning:'坚定、执着、胜利',en:'Constancy, determination, victory'},
+  {name:'铃兰 Lily of Valley',emoji:'🔔',meaning:'幸福归来、纯洁',en:'Return of happiness, purity'},
+  {name:'天堂鸟 Bird of Paradise',emoji:'🦜',meaning:'自由、潇洒、吉祥',en:'Freedom, magnificence, good fortune'},
+  {name:'马蹄莲 Calla Lily',emoji:'🌿',meaning:'纯洁、优雅、永恒',en:'Purity, elegance, eternity'},
+  {name:'芍药 Chinese Peony',emoji:'🌺',meaning:'情有所钟、依依不舍',en:'Deep affection, reluctance to part'},
+  {name:'榕树 Banyan',emoji:'🌳',meaning:'长寿、坚韧、繁盛',en:'Longevity, strength, prosperity'},
+  {name:'蒲公英 Dandelion',emoji:'🌬️',meaning:'无法停留的爱、自由',en:'Love that cannot stay, freedom'},
+  {name:'含羞草 Mimosa',emoji:'🌿',meaning:'敏感、害羞、礼貌',en:'Sensitivity, shyness, politeness'},
+  {name:'鸢尾花 Iris',emoji:'💙',meaning:'使命、优雅的心',en:'Mission, elegant heart, faith'},
+  {name:'木棉 Cotton Tree',emoji:'🌸',meaning:'珍惜眼前的幸福',en:'Cherish present happiness'},
+  {name:'海棠 Begonia',emoji:'🌺',meaning:'温和、美丽、思乡',en:'Gentleness, beauty, homesickness'},
+  {name:'杜鹃 Azalea',emoji:'🌸',meaning:'永远属于你、节制',en:'Forever yours, temperance'},
+  {name:'山茶花 Camellia',emoji:'🌺',meaning:'理想的爱、谦让',en:'Ideal love, humility'},
+  {name:'桂花 Osmanthus',emoji:'🌼',meaning:'富贵、崇高、美好',en:'Nobility, sublimity, beauty'},
+  {name:'桃花 Peach Blossom',emoji:'🌸',meaning:'爱情的俘虏、好运',en:'Captive of love, good fortune'},
+  {name:'杏花 Apricot Blossom',emoji:'🌸',meaning:'少女的慕情、娇羞',en:'Maiden\'s love, coyness'},
+  {name:'牵牛花 Morning Glory',emoji:'🌸',meaning:'爱情永固、虚幻',en:'Eternal love, illusion'},
+  {name:'仙人掌 Cactus',emoji:'🌵',meaning:'坚强、刚毅的爱情',en:'Strength, enduring love'},
+  {name:'三叶草 Clover',emoji:'🍀',meaning:'幸运、希望、信仰',en:'Luck, hope, faith'},
+  {name:'罂粟花 Poppy',emoji:'🌸',meaning:'安慰、美丽、遗忘',en:'Consolation, beauty, forgetfulness'},
+  {name:'水仙 Daffodil',emoji:'🌼',meaning:'自恋、尊敬、好运',en:'Self-love, respect, good fortune'},
+  {name:'夹竹桃 Oleander',emoji:'🌸',meaning:'危险的爱情',en:'Dangerous love, caution'},
+  {name:'芙蓉 Hibiscus',emoji:'🌺',meaning:'纤细之美、纯洁',en:'Delicate beauty, purity'},
+  {name:'石榴花 Pomegranate',emoji:'🌺',meaning:'成熟之美、富贵',en:'Mature beauty, prosperity'},
+  {name:'绣球花 Hydrangea',emoji:'🌸',meaning:'希望、美满、团圆',en:'Hope, fulfillment, reunion'}
+];
+
+function render(data){
+  var html=data.map(function(f){return '<div style="padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:8px;"><span style="font-size:1.5rem;">'+f.emoji+'</span><div style="flex:1;"><strong>'+f.name+'</strong><br><span style="color:var(--text-secondary);font-size:.8rem;">'+f.meaning+'</span><br><span style="color:var(--text-en);font-size:.75rem;">'+f.en+'</span></div></div>';}).join('');
+  document.getElementById('list').innerHTML=html||'<div style="color:var(--text-en);">未找到 No results</div>';
+}
+
+function filter(){
+  var kw=document.getElementById('search').value.toLowerCase();
+  if(!kw){render(flowers);return;}
+  render(flowers.filter(function(f){return(f.name+f.meaning+f.en).toLowerCase().indexOf(kw)>=0;}));
+}
+render(flowers);
+</script></body></html>

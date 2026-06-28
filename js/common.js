@@ -254,7 +254,7 @@ function clearInput(id) {
     'dice-roller':'在线摇骰子工具，可选1-6个骰子，随机摇出结果并显示总和，自动保存历史记录。适用于桌游、抽奖、决策等场景。<br>Online dice roller with 1-6 dice. Roll randomly with sum display and history tracking. Perfect for board games and decision making.',
     'fake-address':'在线虚拟地址生成器，支持日本、美国、英国三个国家的真实格式地址。包含姓名、邮编、地址、电话，适用于表单测试或隐私保护。<br>Fake address generator for Japan, US & UK with realistic formatting. Includes name, postal code, full address and phone number.',
     'whiteboard':'在线白板工具，支持画笔自由绘制、橡皮擦、矩形/圆形/直线几何图形、文字输入，颜色和粗细可调。支持鼠标和触摸屏操作，适用于教学演示、草稿设计、思维导图等场景。<br>Online whiteboard with freehand drawing, eraser, shapes (rect/circle/line), text and color picker. Works with both mouse and touchscreen.',
-    'calculator':'在线计算器，支持加减乘除基础运算和百分比计算，支持键盘和鼠标输入。适用于日常计算、账单核对等场景。<br>Basic online calculator — add, subtract, multiply, divide and percentage. Works with keyboard and mouse.',
+    'calculator':'在线科学计算器，支持三角函数sin/cos/tan/反三角、幂运算x²/xʸ/√、对数log/ln、阶乘n!、指数eˣ、π等科学计算。支持键盘快捷键输入。<br>Scientific calculator with trig, power, log, factorial, exp, π functions. Keyboard supported.',
     'coin-flip':'在线抛硬币工具，点击硬币或按钮翻转，3D 旋转动画效果。自动统计正反面次数和比例，保存历史记录。适用于决策、游戏、教学等场景。<br>Online coin flip with 3D animation. Auto-counts heads/tails ratio and saves history. Great for decisions, games and demonstrations.',
   };
 

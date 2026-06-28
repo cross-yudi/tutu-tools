@@ -1,60 +1,117 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>在线计算器 Calculator - 兔兔在线工具站</title><meta name="description" content="在线科学计算器，支持加减乘除。Online calculator with basic math operations."><meta name="keywords" content="在线计算器,calculator,科学计算器"><link rel="stylesheet" href="../../css/style.css"><style>
-.calc{width:320px;margin:0 auto;background:var(--bg-card);border-radius:16px;padding:16px;box-shadow:var(--shadow-md);border:1px solid var(--border);}
-.calc-display{width:100%;height:64px;font-size:1.8rem;font-family:monospace;text-align:right;padding:8px 16px;border:2px solid var(--border);border-radius:12px;margin-bottom:12px;background:#f8fafc;color:var(--text);outline:none;}
-.calc-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.ck{padding:16px 8px;font-size:1.2rem;font-weight:600;border:none;border-radius:10px;cursor:pointer;transition:all .1s;background:#f1f5f9;color:var(--text);}
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>科学计算器 Scientific Calculator - 兔兔在线工具站</title><meta name="description" content="在线科学计算器，支持三角函数、幂运算、对数等。Online scientific calculator with trig, power, log and more."><meta name="keywords" content="科学计算器,scientific calculator,在线计算器"><link rel="stylesheet" href="../../css/style.css"><style>
+.calc{width:360px;margin:0 auto;background:var(--bg-card);border-radius:16px;padding:16px;box-shadow:var(--shadow-md);border:1px solid var(--border);}
+.calc-display{width:100%;height:60px;font-size:1.6rem;font-family:monospace;text-align:right;padding:8px 16px;border:2px solid var(--border);border-radius:12px;margin-bottom:10px;background:#f8fafc;color:var(--text);outline:none;box-sizing:border-box;}
+.calc-history{font-size:.75rem;color:var(--text-en);text-align:right;min-height:18px;margin-bottom:2px;padding-right:8px;}
+.calc-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.ck{padding:12px 6px;font-size:.95rem;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:all .1s;background:#f1f5f9;color:var(--text);}
 .ck:active{transform:scale(.95);}
 .ck-num{background:#fff;border:1px solid var(--border);}
+.ck-func{background:#e0e7ff;color:#4338ca;font-size:.8rem;}
 .ck-op{background:var(--primary-light);color:var(--primary-dark);}
 .ck-eq{background:var(--primary);color:#fff;}
 .ck-clr{background:#fee2e2;color:#dc2626;}
-.ck-del{background:#fee2e2;color:#dc2626;font-size:.9rem;}
-</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 在线计算器</div><h2>🔢 在线计算器 Calculator</h2><p class="desc">支持键盘输入，加减乘除基础运算</p><p class="desc-en">Basic calculator with keyboard support</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;">
+.ck-del{background:#fee2e2;color:#dc2626;font-size:.8rem;}
+</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 科学计算器</div><h2>🔢 科学计算器 Scientific Calculator</h2><p class="desc">支持三角函数、幂运算、对数、阶乘等科学计算</p><p class="desc-en">Trigonometry, power, log, factorial & more</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;">
 <div class="calc">
+<div class="calc-history" id="history"></div>
 <input type="text" class="calc-display" id="display" readonly placeholder="0">
 <div class="calc-keys">
+<button class="ck ck-func" onclick="fn('sin')">sin</button>
+<button class="ck ck-func" onclick="fn('cos')">cos</button>
+<button class="ck ck-func" onclick="fn('tan')">tan</button>
 <button class="ck ck-clr" onclick="clearAll()">AC</button>
 <button class="ck ck-del" onclick="del()">⌫</button>
-<button class="ck ck-op" onclick="appendOp('%')">%</button>
-<button class="ck ck-op" onclick="appendOp('/')">/</button>
+<button class="ck ck-func" onclick="fn('asin')">sin⁻¹</button>
+<button class="ck ck-func" onclick="fn('acos')">cos⁻¹</button>
+<button class="ck ck-func" onclick="fn('atan')">tan⁻¹</button>
+<button class="ck ck-func" onclick="fn('sqrt')">√</button>
+<button class="ck ck-func" onclick="fn('pow')">xʸ</button>
+<button class="ck ck-func" onclick="fn('log')">log</button>
+<button class="ck ck-func" onclick="fn('ln')">ln</button>
+<button class="ck ck-func" onclick="fn('fact')">n!</button>
+<button class="ck ck-op" onclick="appendOp('(')">(</button>
+<button class="ck ck-op" onclick="appendOp(')')">)</button>
 <button class="ck ck-num" onclick="appendNum('7')">7</button>
 <button class="ck ck-num" onclick="appendNum('8')">8</button>
 <button class="ck ck-num" onclick="appendNum('9')">9</button>
-<button class="ck ck-op" onclick="appendOp('*')">x</button>
+<button class="ck ck-op" onclick="appendOp('/')">/</button>
+<button class="ck ck-func" onclick="fn('pi')">π</button>
 <button class="ck ck-num" onclick="appendNum('4')">4</button>
 <button class="ck ck-num" onclick="appendNum('5')">5</button>
 <button class="ck ck-num" onclick="appendNum('6')">6</button>
-<button class="ck ck-op" onclick="appendOp('-')">-</button>
+<button class="ck ck-op" onclick="appendOp('*')">x</button>
+<button class="ck ck-func" onclick="fn('exp')">eˣ</button>
 <button class="ck ck-num" onclick="appendNum('1')">1</button>
 <button class="ck ck-num" onclick="appendNum('2')">2</button>
 <button class="ck ck-num" onclick="appendNum('3')">3</button>
-<button class="ck ck-op" onclick="appendOp('+')">+</button>
-<button class="ck ck-num" onclick="appendNum('0')" style="grid-column:span 2;">0</button>
+<button class="ck ck-op" onclick="appendOp('-')">-</button>
+<button class="ck ck-func" onclick="fn('square')">x²</button>
+<button class="ck ck-num" onclick="appendNum('0')">0</button>
 <button class="ck ck-num" onclick="appendDot()">.</button>
+<button class="ck ck-op" onclick="appendOp('%')">%</button>
+<button class="ck ck-op" onclick="appendOp('+')">+</button>
 <button class="ck ck-eq" onclick="calc()">=</button>
 </div>
 </div>
-<p style="font-size:.75rem;color:var(--text-en);margin-top:8px;">键盘输入 Keyboard supported | 按 Enter 计算 =</p>
+<p style="font-size:.75rem;color:var(--text-en);margin-top:8px;">键盘输入 Keyboard | Enter 计算 | Backspace 删除 | Esc 清除</p>
 </div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=2"></script><script>
-var display=document.getElementById('display'),expr='';
+var display=document.getElementById('display'),historyEl=document.getElementById('history'),expr='',isRad=true;
+
 function update(){display.value=expr||'0';}
 
 function appendNum(n){expr+=n;update();}
-function appendDot(){if(!expr.endsWith('.')){if(expr===''||/[+\-*/%]/.test(expr.slice(-1)))expr+='0.';else expr+='.';}update();}
-function appendOp(op){if(expr===''&&op==='-'){expr='-';}else if(expr&&!/[+\-*/%.]$/.test(expr)){expr+=op;}update();}
-function clearAll(){expr='';update();}
+function appendDot(){if(expr===''||/[+\-*/%(.]$/.test(expr)){expr+='0.';}else if(!expr.endsWith('.')){expr+='.';}update();}
+function appendOp(op){
+  if(expr===''&&op==='-'){expr='-';}else if(expr&&!/[+\-*/%.(]$/.test(expr)){expr+=op;}
+  update();
+}
+function clearAll(){historyEl.textContent='';expr='';update();}
 function del(){expr=expr.slice(0,-1);update();}
-function calc(){
-  try{var result=eval(expr.replace(/%/g,'/100'));if(!isFinite(result))throw 0;expr=parseFloat(result.toFixed(10)).toString();}catch(e){expr='Error';}
-  update();setTimeout(function(){if(expr==='Error')expr='';update();},1200);
+
+function fn(type){
+  var v=parseFloat(expr)||0;
+  var result='';
+  switch(type){
+    case 'sin':result=Math.sin(isRad?v:v*Math.PI/180);break;
+    case 'cos':result=Math.cos(isRad?v:v*Math.PI/180);break;
+    case 'tan':result=Math.tan(isRad?v:v*Math.PI/180);break;
+    case 'asin':result=Math.asin(v)*(isRad?1:180/Math.PI);break;
+    case 'acos':result=Math.acos(v)*(isRad?1:180/Math.PI);break;
+    case 'atan':result=Math.atan(v)*(isRad?1:180/Math.PI);break;
+    case 'sqrt':result=Math.sqrt(v);break;
+    case 'square':result=Math.pow(v,2);break;
+    case 'log':result=Math.log10(v);break;
+    case 'ln':result=Math.log(v);break;
+    case 'exp':result=Math.exp(v);break;
+    case 'pi':result=Math.PI;expr='';break;
+    case 'fact':
+      if(v<0||Math.floor(v)!==v){result='Error';break;}
+      result=1;for(var i=2;i<=v;i++)result*=i;break;
+    case 'pow':expr+='**';update();return;
+  }
+  if(result==='Error'){expr='Error';}else{expr=parseFloat(result.toFixed(10)).toString();}
+  update();if(expr==='Error')setTimeout(function(){expr='';update();},1200);
 }
 
-// Keyboard support
+function calc(){
+  try{
+    var safeExpr=expr.replace(/%/g,'/100').replace(/\^/g,'**');
+    var result=eval(safeExpr);
+    if(!isFinite(result))throw 0;
+    historyEl.textContent=expr+' =';
+    expr=parseFloat(result.toFixed(10)).toString();
+  }catch(e){expr='Error';historyEl.textContent='';}
+  update();
+  if(expr==='Error')setTimeout(function(){expr='';update();},1200);
+}
+
+// Keyboard
 document.addEventListener('keydown',function(e){
   var k=e.key;
   if(/[0-9]/.test(k)){e.preventDefault();appendNum(k);}
   else if(k==='.'){e.preventDefault();appendDot();}
   else if(k==='+'||k==='-'||k==='*'||k==='/'||k==='%'){e.preventDefault();appendOp(k);}
+  else if(k==='('||k===')'){e.preventDefault();appendOp(k);}
   else if(k==='Enter'||k==='='){e.preventDefault();calc();}
   else if(k==='Backspace'){e.preventDefault();del();}
   else if(k==='Escape'){e.preventDefault();clearAll();}

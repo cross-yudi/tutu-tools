@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>计分板 Scoreboard - 兔兔在线工具站</title><meta name="description" content="在线比赛计分板，主客两队实时计分。Online scoreboard for home & away teams."><meta name="keywords" content="计分板,记分板,scoreboard,比赛计分"><link rel="stylesheet" href="../../css/style.css"><style>.sb{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;margin:16px 0;}.team{text-align:center;min-width:140px;padding:20px;background:var(--bg-card);border-radius:16px;border:2px solid var(--border);}.score{font-size:5rem;font-weight:800;line-height:1;}.vs{font-size:2rem;font-weight:800;color:var(--text-en);}.btn-sc{width:48px;height:48px;font-size:1.3rem;font-weight:700;border:2px solid var(--border);border-radius:12px;cursor:pointer;background:#fff;transition:all .1s;}.btn-sc:active{transform:scale(.92);}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 计分板</div><h2>📊 计分板</h2><p class="desc">主客两队比赛实时计分，支持加减和重置</p><p class="desc-en">Home vs Away scoreboard — add, subtract, reset</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;justify-content:center;"><input type="text" id="homeName" value="主队 Home" style="width:120px;text-align:center;font-weight:600;">
+<input type="text" id="awayName" value="客队 Away" style="width:120px;text-align:center;font-weight:600;"></div>
+<div class="sb">
+  <div class="team">
+    <div style="font-size:1rem;font-weight:600;margin-bottom:8px;" id="homeLabel">主队 Home</div>
+    <div class="score" id="homeScore" style="color:#3b82f6;">0</div>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;"><button class="btn-sc" onclick="changeScore('home',1)" style="color:#10b981;">+1</button><button class="btn-sc" onclick="changeScore('home',2)" style="color:#10b981;">+2</button><button class="btn-sc" onclick="changeScore('home',3)" style="color:#10b981;">+3</button><button class="btn-sc" onclick="changeScore('home',-1)" style="color:#ef4444;">-1</button></div>
+  </div>
+  <div class="vs">VS</div>
+  <div class="team">
+    <div style="font-size:1rem;font-weight:600;margin-bottom:8px;" id="awayLabel">客队 Away</div>
+    <div class="score" id="awayScore" style="color:#ef4444;">0</div>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;"><button class="btn-sc" onclick="changeScore('away',1)" style="color:#10b981;">+1</button><button class="btn-sc" onclick="changeScore('away',2)" style="color:#10b981;">+2</button><button class="btn-sc" onclick="changeScore('away',3)" style="color:#10b981;">+3</button><button class="btn-sc" onclick="changeScore('away',-1)" style="color:#ef4444;">-1</button></div>
+  </div>
+</div>
+<div class="btn-row" style="justify-content:center;margin-top:8px;"><button class="btn btn-outline" onclick="resetScores()">🔄 重置 Reset</button><button class="btn btn-outline" onclick="swapScores()">🔄 换边 Swap</button></div>
+</div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=3"></script><script>
+var hs=0,aw=0;
+document.getElementById('homeName').addEventListener('input',function(){document.getElementById('homeLabel').textContent=this.value||'主队 Home';});
+document.getElementById('awayName').addEventListener('input',function(){document.getElementById('awayLabel').textContent=this.value||'客队 Away';});
+
+function changeScore(team,delta){
+  if(team==='home'){hs=Math.max(0,hs+delta);document.getElementById('homeScore').textContent=hs;}
+  else{aw=Math.max(0,aw+delta);document.getElementById('awayScore').textContent=aw;}
+}
+function resetScores(){hs=0;aw=0;document.getElementById('homeScore').textContent='0';document.getElementById('awayScore').textContent='0';}
+function swapScores(){var t=hs;hs=aw;aw=t;document.getElementById('homeScore').textContent=hs;document.getElementById('awayScore').textContent=aw;var tn=document.getElementById('homeName').value;document.getElementById('homeName').value=document.getElementById('awayName').value;document.getElementById('awayName').value=tn;document.getElementById('homeLabel').textContent=document.getElementById('homeName').value||'主队 Home';document.getElementById('awayLabel').textContent=document.getElementById('awayName').value||'客队 Away';}
+</script></body></html>

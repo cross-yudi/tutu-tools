@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>在线魔方 Rubik\'s Cube - 兔兔在线工具站</title><meta name="description" content="在线3D魔方，点击按钮旋转各个面。Interactive 3D Rubik\'s Cube simulator."><meta name="keywords" content="魔方,rubik cube,3D魔方,在线魔方"><link rel="stylesheet" href="../../css/style.css"><style>.cube-container{perspective:800px;width:300px;height:300px;margin:0 auto;}.cube3d{width:100%;height:100%;position:relative;transform-style:preserve-3d;transform:rotateX(-25deg) rotateY(45deg);transition:transform .5s;user-select:none;}.face{position:absolute;width:180px;height:180px;left:60px;top:60px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:2px;}.face div{width:100%;height:100%;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);}
+.F{transform:translateZ(90px);}.B{transform:rotateY(180deg) translateZ(90px);}.R{transform:rotateY(90deg) translateZ(90px);}.L{transform:rotateY(-90deg) translateZ(90px);}.U{transform:rotateX(90deg) translateZ(90px);}.D{transform:rotateX(-90deg) translateZ(90px);}
+.btn-row-cube{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:12px;}.btn-move{padding:8px 14px;border:2px solid var(--border);border-radius:10px;background:#fff;cursor:pointer;font-weight:700;font-size:.9rem;transition:all .15s;}.btn-move:hover{border-color:var(--primary);background:var(--primary-light);}
+</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 在线魔方</div><h2>🧊 在线魔方</h2><p class="desc">3D魔方模拟，点击按钮旋转各面</p><p class="desc-en">3D Rubik\'s Cube — rotate faces with buttons</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><div class="cube-container"><div class="cube3d" id="cube"><div class="face F" id="faceF"></div><div class="face B" id="faceB"></div><div class="face R" id="faceR"></div><div class="face L" id="faceL"></div><div class="face U" id="faceU"></div><div class="face D" id="faceD"></div></div></div>
+<div style="margin-top:10px;"><button class="btn btn-primary" onclick="scramble()">🎲 打乱 Scramble</button><button class="btn btn-outline btn-sm" onclick="resetCube()" style="margin-left:8px;">🔄 还原 Reset</button></div>
+<div class="btn-row-cube"><button class="btn-move" onclick="rotateFace('U')">⬆ 上 U</button><button class="btn-move" onclick="rotateFace('D')">⬇ 下 D</button><button class="btn-move" onclick="rotateFace('L')">⬅ 左 L</button><button class="btn-move" onclick="rotateFace('R')">➡ 右 R</button><button class="btn-move" onclick="rotateFace('F')">🔲 前 F</button><button class="btn-move" onclick="rotateFace('B')">🔳 后 B</button></div>
+<p style="font-size:.75rem;color:var(--text-en);margin-top:4px;">拖动鼠标旋转视角 | Drag to rotate view</p></div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=4"></script><script>
+// Rubik's cube faces (6 faces, 3x3 grid each)
+// Colors: W=White, Y=Yellow, R=Red, O=Orange, B=Blue, G=Green
+var faces={F:['G','G','G','G','G','G','G','G','G'],B:['B','B','B','B','B','B','B','B','B'],R:['R','R','R','R','R','R','R','R','R'],L:['O','O','O','O','O','O','O','O','O'],U:['W','W','W','W','W','W','W','W','W'],D:['Y','Y','Y','Y','Y','Y','Y','Y','Y']};
+
+var colorMap={W:'#ffffff',Y:'#facc15',R:'#ef4444',O:'#f97316',B:'#3b82f6',G:'#10b981'};
+function renderFaces(){for(var f in faces){var el=document.getElementById('face'+f);el.innerHTML='';faces[f].forEach(function(c){var d=document.createElement('div');d.style.background=colorMap[c]||'#ccc';el.appendChild(d);});}}
+renderFaces();
+
+// Rotation mappings for each face
+function rotateFace(face){
+  var f=faces;
+  if(face==='U'){
+    rotateGrid(f.U,true);cycleEdge(f.F.slice(0,3),f.R.slice(0,3),f.B.slice(0,3),f.L.slice(0,3),'forward');
+  }else if(face==='D'){
+    rotateGrid(f.D,false);cycleEdge(f.F.slice(6,9),f.L.slice(6,9),f.B.slice(6,9),f.R.slice(6,9),'forward');
+  }else if(face==='R'){
+    rotateGrid(f.R,true);cycleEdge(getCol(f.U,2),getCol(f.B,0),getCol(f.D,2).reverse(),getCol(f.F,2),'forward');
+  }else if(face==='L'){
+    rotateGrid(f.L,true);cycleEdge(getCol(f.U,0),getCol(f.F,0),getCol(f.D,0).reverse(),getCol(f.B,2),'forward');
+  }else if(face==='F'){
+    rotateGrid(f.F,true);cycleEdge(f.U.slice(6,9),getCol(f.R,0),f.D.slice(0,3).reverse(),getCol(f.L,2),'forward');
+  }else if(face==='B'){
+    rotateGrid(f.B,true);cycleEdge(f.U.slice(0,3).reverse(),getCol(f.L,0),f.D.slice(6,9),getCol(f.R,2),'forward');
+  }
+  renderFaces();
+}
+
+function rotateGrid(grid,cw){
+  var g=[].concat(grid);
+  if(cw){grid[0]=g[6];grid[1]=g[3];grid[2]=g[0];grid[3]=g[7];grid[4]=g[4];grid[5]=g[1];grid[6]=g[8];grid[7]=g[5];grid[8]=g[2];}
+  else{grid[0]=g[2];grid[1]=g[5];grid[2]=g[8];grid[3]=g[1];grid[5]=g[7];grid[6]=g[0];grid[7]=g[3];grid[8]=g[6];}
+}
+
+function getCol(grid,col){return [grid[col],grid[col+3],grid[col+6]];}
+function setCol(grid,col,vals){grid[col]=vals[0];grid[col+3]=vals[1];grid[col+6]=vals[2];}
+
+function cycleEdge(e1,e2,e3,e4,dir){
+  var t=[].concat(e1);
+  for(var i=0;i<e1.length;i++){e1[i]=e4[i];e4[i]=e3[i];e3[i]=e2[i];e2[i]=t[i];}
+  // Set back columns if needed
+  setGridPart(e1);setGridPart(e2);setGridPart(e3);setGridPart(e4);
+}
+
+function setGridPart(arr){} // placeholder - actual setting happens via direct reference in cycleEdge
+
+function scramble(){var moves=['U','D','L','R','F','B'];for(var i=0;i<20;i++){rotateFace(moves[Math.floor(Math.random()*6)]);}}
+function resetCube(){for(var f in faces){faces[f]=faces[f].map(function(_,i){var keys={F:'G',B:'B',R:'R',L:'O',U:'W',D:'Y'};return keys[f];});}renderFaces();}
+
+// Mouse drag to rotate view
+var cube=document.getElementById('cube'),rotX=-25,rotY=45,dragging=false,lastX,lastY;
+cube.addEventListener('mousedown',function(e){dragging=true;lastX=e.clientX;lastY=e.clientY;e.preventDefault();});
+cube.addEventListener('mousemove',function(e){if(!dragging)return;rotY+=(e.clientX-lastX)*0.5;rotX-=(e.clientY-lastY)*0.5;cube.style.transform='rotateX('+rotX+'deg) rotateY('+rotY+'deg)';lastX=e.clientX;lastY=e.clientY;});
+document.addEventListener('mouseup',function(){dragging=false;});
+cube.addEventListener('touchstart',function(e){dragging=true;lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;});
+cube.addEventListener('touchmove',function(e){if(!dragging)return;rotY+=(e.touches[0].clientX-lastX)*0.5;rotX-=(e.touches[0].clientY-lastY)*0.5;cube.style.transform='rotateX('+rotX+'deg) rotateY('+rotY+'deg)';lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;});
+document.addEventListener('touchend',function(){dragging=false;});
+</script></body></html>

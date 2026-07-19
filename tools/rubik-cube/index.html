@@ -17,17 +17,29 @@ renderFaces();
 function rotateFace(face){
   var f=faces;
   if(face==='U'){
-    rotateGrid(f.U,true);cycleEdge(f.F.slice(0,3),f.R.slice(0,3),f.B.slice(0,3),f.L.slice(0,3),'forward');
+    rotateGrid(f.U,true);
+    var r1=f.F.slice(0,3),r2=f.R.slice(0,3),r3=f.B.slice(0,3),r4=f.L.slice(0,3);
+    replaceRow(f.F,0,[].concat(r4));replaceRow(f.R,0,[].concat(r1));replaceRow(f.B,0,[].concat(r2));replaceRow(f.L,0,[].concat(r3));
   }else if(face==='D'){
-    rotateGrid(f.D,false);cycleEdge(f.F.slice(6,9),f.L.slice(6,9),f.B.slice(6,9),f.R.slice(6,9),'forward');
+    rotateGrid(f.D,false);
+    var r1=f.F.slice(6,9),r2=f.L.slice(6,9),r3=f.B.slice(6,9),r4=f.R.slice(6,9);
+    replaceRow(f.F,6,[].concat(r4));replaceRow(f.L,6,[].concat(r1));replaceRow(f.B,6,[].concat(r2));replaceRow(f.R,6,[].concat(r3));
   }else if(face==='R'){
-    rotateGrid(f.R,true);cycleEdge(getCol(f.U,2),getCol(f.B,0),getCol(f.D,2).reverse(),getCol(f.F,2),'forward');
+    rotateGrid(f.R,true);
+    var c1=getCol(f.U,2),c2=getCol(f.B,0).reverse(),c3=getCol(f.D,2).reverse(),c4=getCol(f.F,2);
+    setCol(f.U,2,c4);setCol(f.B,0,c1.reverse());setCol(f.D,2,c2.reverse());setCol(f.F,2,c3);
   }else if(face==='L'){
-    rotateGrid(f.L,true);cycleEdge(getCol(f.U,0),getCol(f.F,0),getCol(f.D,0).reverse(),getCol(f.B,2),'forward');
+    rotateGrid(f.L,true);
+    var c1=getCol(f.U,0),c2=getCol(f.F,0),c3=getCol(f.D,0).reverse(),c4=getCol(f.B,2).reverse();
+    setCol(f.U,0,c4);setCol(f.F,0,c1);setCol(f.D,0,c2.reverse());setCol(f.B,2,c3.reverse());
   }else if(face==='F'){
-    rotateGrid(f.F,true);cycleEdge(f.U.slice(6,9),getCol(f.R,0),f.D.slice(0,3).reverse(),getCol(f.L,2),'forward');
+    rotateGrid(f.F,true);
+    var c1=f.U.slice(6,9),c2=getCol(f.R,0),c3=f.D.slice(0,3).reverse(),c4=getCol(f.L,2);
+    replaceRow(f.U,6,c4);setCol(f.R,0,c1);replaceRow(f.D,0,c3.reverse());setCol(f.L,2,c2);
   }else if(face==='B'){
-    rotateGrid(f.B,true);cycleEdge(f.U.slice(0,3).reverse(),getCol(f.L,0),f.D.slice(6,9),getCol(f.R,2),'forward');
+    rotateGrid(f.B,true);
+    var c1=f.U.slice(0,3).reverse(),c2=getCol(f.L,0),c3=f.D.slice(6,9),c4=getCol(f.R,2);
+    replaceRow(f.U,0,c3.reverse());setCol(f.L,0,c1.reverse());replaceRow(f.D,6,c2);setCol(f.R,2,c4);
   }
   renderFaces();
 }
@@ -40,15 +52,7 @@ function rotateGrid(grid,cw){
 
 function getCol(grid,col){return [grid[col],grid[col+3],grid[col+6]];}
 function setCol(grid,col,vals){grid[col]=vals[0];grid[col+3]=vals[1];grid[col+6]=vals[2];}
-
-function cycleEdge(e1,e2,e3,e4,dir){
-  var t=[].concat(e1);
-  for(var i=0;i<e1.length;i++){e1[i]=e4[i];e4[i]=e3[i];e3[i]=e2[i];e2[i]=t[i];}
-  // Set back columns if needed
-  setGridPart(e1);setGridPart(e2);setGridPart(e3);setGridPart(e4);
-}
-
-function setGridPart(arr){} // placeholder - actual setting happens via direct reference in cycleEdge
+function replaceRow(grid,start,vals){for(var i=0;i<vals.length;i++)grid[start+i]=vals[i];}
 
 function scramble(){var moves=['U','D','L','R','F','B'];for(var i=0;i<20;i++){rotateFace(moves[Math.floor(Math.random()*6)]);}}
 function resetCube(){for(var f in faces){faces[f]=faces[f].map(function(_,i){var keys={F:'G',B:'B',R:'R',L:'O',U:'W',D:'Y'};return keys[f];});}renderFaces();}

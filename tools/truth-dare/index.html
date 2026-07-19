@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>真心话大冒险 Truth or Dare - 兔兔在线工具站</title><meta name="description" content="在线真心话大冒险，随机抽取真心话问题和大冒险任务。Truth or Dare — random truth questions & dare challenges."><meta name="keywords" content="真心话大冒险,truth or dare,聚会游戏,派对游戏"><link rel="stylesheet" href="../../css/style.css"><style>.td-card{text-align:center;padding:30px 20px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:16px;font-size:1.2rem;line-height:1.8;transition:all .3s;}
+.td-truth{background:linear-gradient(135deg,#dbeafe,#ede9fe);border:2px solid #93c5fd;}
+.td-dare{background:linear-gradient(135deg,#fee2e2,#fef3c7);border:2px solid #fca5a5;}
+.td-label{font-weight:800;font-size:1.5rem;margin-bottom:12px;}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 真心话大冒险</div><h2>🎭 真心话大冒险</h2><p class="desc">随机抽取真心话问题或大冒险任务，聚会必备</p><p class="desc-en">Random Truth or Dare — perfect for parties!</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><div class="btn-row" style="justify-content:center;"><button class="btn btn-primary" onclick="pick('truth')" style="font-size:1.1rem;padding:12px 28px;">💬 真心话 Truth</button><button class="btn btn-primary" onclick="pick('dare')" style="font-size:1.1rem;padding:12px 28px;background:#ef4444;">⚡ 大冒险 Dare</button></div><div class="td-card" id="card" style="margin-top:16px;"><div style="color:var(--text-en);">点击上方按钮开始 Click a button to start</div></div><button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="pick(lastType||'truth')">🔄 再来一个 Next</button></div><div class="tool-panel"><label>历史记录 <span class="label-en">History</span></label><div class="result-area" id="history" style="font-family:inherit;max-height:200px;overflow-y:auto;"></div><button class="btn btn-outline btn-sm" style="margin-top:4px;" onclick="clearHist()">清空 Clear</button></div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=3"></script><script>
+var truths=[
+  '你初恋是几岁？','你最尴尬的一件事是什么？','你最近一次撒谎是什么时候？','你最害怕的东西是什么？',
+  '你手机里最不想让人看到的照片是什么？','你暗恋过谁？','你最讨厌自己的哪个缺点？','你做过最疯狂的事是什么？',
+  '你最想对在场的哪个人说对不起？','你的银行卡密码是多少（开玩笑的）？','你有没有后悔和某人在一起过？',
+  '你觉得自己最吸引人的地方是什么？','你最不敢尝试的事情是什么？','你上一次哭是因为什么？',
+  '有没有什么事情你一直瞒着父母？','你最讨厌异性身上的哪种习惯？','你觉得自己最丢人的一次经历是什么？',
+  '有没有哪句话你一直想说却没敢说出口？','你最想问我的一个问题是什么？','你做过最浪漫的事情是什么？',
+  '你一个月花多少钱在游戏/购物上？','你最不想失去的人是谁？','你的理想型是什么样的？','你有几个前任？',
+  '你做过的最后悔的决定是什么？','你有没有对朋友的对象产生过好感？','你上一次生气是为什么？',
+  '你觉得在场的人里谁最帅/最美？','你最怕被问到什么问题？','你的社死瞬间是什么？'
+];
+var dares=[
+  '模仿一种动物叫10秒','对窗外大喊三声"我好开心"','用屁股写出自己的名字','单脚站立唱一首歌',
+  '模仿在场某个人说话的语气','闭眼转5圈然后走直线','和一个异性十指相扣30秒','用港台腔念一段新闻',
+  '给大家表演一段即兴说唱','做一个最丑的鬼脸并拍照','给手机通讯录第三个人打电话说"我想你了"',
+  '用绕口令说一段话','深情朗诵一首诗','表演一段广场舞','模仿一位明星的经典台词',
+  '做10个俯卧撑或深蹲','把右手放在左腋下用左手指天说三遍"我是超人"','学猫叫一分钟',
+  '用方言介绍自己','唱一首歌的第一句并问大家是什么歌','对在场每个人说他的一个优点',
+  '原地转三圈后跳一支舞','用最嗲的声音说"你好讨厌哦"','表演一段即兴小品，主题是"买菜"',
+  '找一个异性对唱《今天你要嫁给我》','说一件自己做过的糗事让大家笑','模仿广告里的台词和动作'
+];
+var lastType='',hist=JSON.parse(localStorage.getItem('td_hist')||'[]');
+
+function pick(type){
+  lastType=type;
+  var pool=type==='truth'?truths:dares;
+  var item=pool[Math.floor(Math.random()*pool.length)];
+  var card=document.getElementById('card');
+  card.className='td-card td-'+(type==='truth'?'truth':'dare');
+  card.innerHTML='<div class="td-label">'+(type==='truth'?'💬 真心话 Truth':'⚡ 大冒险 Dare')+'</div><div>'+item+'</div>';
+  hist.unshift({type:type==='truth'?'💬':'⚡',text:item,time:new Date().toLocaleString('zh-CN')});
+  if(hist.length>30)hist.length=30;
+  localStorage.setItem('td_hist',JSON.stringify(hist));showHist();
+}
+
+function showHist(){
+  var h=document.getElementById('history');
+  if(!hist.length){h.innerHTML='<div style="color:var(--text-en);font-size:.82rem;">抽取后显示记录</div>';return;}
+  h.innerHTML='<div style="font-size:.78rem;color:var(--primary-dark);margin-bottom:4px;">共 '+hist.length+' 条</div>'+hist.map(function(item,i){return '<div style="padding:3px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem;">'+(i+1)+'. '+item.type+' '+item.text+'</div>';}).join('');
+}
+
+function clearHist(){hist=[];localStorage.setItem('td_hist','[]');showHist();}
+showHist();
+</script></body></html>

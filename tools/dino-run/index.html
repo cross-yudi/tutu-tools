@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>恐龙快跑 Dino Run - 兔兔在线工具站</title><meta name="description" content="经典小恐龙跑酷游戏，空格键跳跃、下蹲躲避。Classic Chrome Dino runner — jump & duck to dodge obstacles."><meta name="keywords" content="恐龙快跑,dino run,跑酷游戏,chrome dino"><link rel="stylesheet" href="../../css/style.css"><style>canvas{border:2px solid var(--border);border-radius:8px;display:block;margin:0 auto;background:#f8fafc;}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 恐龙快跑</div><h2>🦕 恐龙快跑</h2><p class="desc">空格/点击跳跃，下键蹲下躲避，看看你能跑多远！</p><p class="desc-en">Space/click to jump, down key to duck — run as far as you can!</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><label>分数 <span class="label-en">Score</span></label><div style="font-size:2rem;font-weight:800;color:var(--primary-dark);" id="score">0</div><div style="font-size:.8rem;color:var(--text-en);" id="speedInfo"></div><canvas id="c" width="700" height="200"></canvas><p style="font-size:.75rem;color:var(--text-en);margin-top:4px;">空格/点击=跳跃 Jump | ↓键=蹲下 Duck | 触屏=点击跳跃</p><button class="btn btn-primary" style="margin-top:8px;" onclick="init()">🔄 重新开始 Restart</button></div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=3"></script><script>
+var c=document.getElementById('c'),ctx=c.getContext('2d'),W=700,H=200,animId;
+var dino={x:60,y:0,vy:0,w:40,h:44,jumping:false,ducking:false};
+var groundY=160,obstacles=[],score=0,speed=5,gameOver=false,frames=0;
+var bgOffset=0,highScore=parseInt(localStorage.getItem('dino_best')||'0');
+
+function init(){
+  dino.y=groundY-dino.h;dino.vy=0;dino.jumping=false;dino.ducking=false;
+  obstacles=[];score=0;speed=5;gameOver=false;frames=0;bgOffset=0;
+  document.getElementById('score').textContent='0';
+  document.getElementById('speedInfo').textContent='最佳 Best: '+highScore;
+  if(animId)cancelAnimationFrame(animId);loop();
+}
+
+function spawnObstacle(){
+  if(frames%Math.floor(90-speed*3)===0){
+    var type=Math.random()>.75?'bird':'cactus';
+    if(type==='bird'){
+      var h=Math.random()>.5?'low':(groundY-80);
+      obstacles.push({x:W,y:h,w:36,h:30,type:'bird'});
+    }else{
+      obstacles.push({x:W,y:groundY-40,w:20,h:40,type:'cactus'});
+    }
+  }
+}
+
+function loop(){
+  if(gameOver)return;frames++;speed=5+Math.floor(score/200);
+  ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,W,H);
+  // Ground
+  bgOffset=(bgOffset+speed*0.5)%24;
+  ctx.strokeStyle='#d4d4d8';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,groundY+2);ctx.lineTo(W,groundY+2);ctx.stroke();
+  for(var i=-1;i<W/24+1;i++){ctx.fillStyle='#a1a1aa';ctx.fillRect(i*24-bgOffset,groundY+2,12,2);}
+
+  spawnObstacle();
+  // Physics
+  if(dino.jumping){dino.vy+=0.6;dino.y+=dino.vy;if(dino.y>=groundY-dino.h){dino.y=groundY-dino.h;dino.jumping=false;dino.vy=0;}}
+  if(dino.ducking){dino.h=28;dino.y=groundY-28;}else{dino.h=44;dino.y=dino.jumping?dino.y:groundY-44;}
+
+  // Dino
+  ctx.fillStyle='#1a1a2e';
+  if(dino.ducking){
+    // Ducking pose
+    ctx.fillRect(dino.x,dino.y+10,dino.w,18);
+    ctx.fillRect(dino.x+8,dino.y,dino.w-8,18);
+    ctx.fillStyle='#fff';ctx.fillRect(dino.x+dino.w-8,dino.y+4,6,6);
+  }else{
+    // Standing/running
+    ctx.fillRect(dino.x,dino.y+10,8,34);
+    ctx.fillRect(dino.x+10,dino.y+14,dino.w-18,30);
+    ctx.fillRect(dino.x+10,dino.y,dino.w-10,14);
+    ctx.fillStyle='#fff';ctx.fillRect(dino.x+dino.w-10,dino.y+4,8,6);
+    // Legs
+    var legPhase=frames%12<6?2:8;
+    ctx.fillStyle='#1a1a2e';ctx.fillRect(dino.x+6,dino.y+dino.h-4,8,4+legPhase);
+    ctx.fillRect(dino.x+18,dino.y+dino.h-4,8,4+(legPhase===2?8:2));
+  }
+
+  // Obstacles
+  ctx.fillStyle='#71717a';
+  for(var i=obstacles.length-1;i>=0;i--){
+    var o=obstacles[i];o.x-=speed;
+    if(o.type==='cactus'){
+      ctx.fillRect(o.x,o.y+10,6,30);ctx.fillRect(o.x-4,o.y+14,14,10);
+      ctx.fillRect(o.x+4,o.y,4,14);ctx.fillRect(o.x+10,o.y+4,6,36);
+    }else{
+      ctx.fillRect(o.x,o.y,o.w,10);
+      ctx.beginPath();ctx.moveTo(o.x+4,o.y+10);ctx.lineTo(o.x+o.w/2,o.y+o.h);ctx.lineTo(o.x+o.w-4,o.y+10);ctx.fill();
+    }
+    // Collision
+    var dx=dino.x+dino.w-8,dy=dino.y,dw=dino.w-4,dh=dino.h;
+    if(dx<o.x+o.w&&dx+dw>o.x&&dy<o.y+o.h&&dy+dh>o.y){
+      gameOver=true;if(score>highScore){highScore=score;localStorage.setItem('dino_best',highScore);}
+      ctx.fillStyle='rgba(0,0,0,.1)';ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='#1a1a2e';ctx.font='20px sans-serif';ctx.textAlign='center';
+      ctx.fillText('Game Over | Score: '+score,W/2,H/2-10);
+      ctx.fillText('点击重新开始 Click to restart',W/2,H/2+20);return;
+    }
+    if(o.x<-50)obstacles.splice(i,1);
+  }
+  score++;document.getElementById('score').textContent=score;
+  document.getElementById('speedInfo').textContent='最佳 Best: '+highScore+' | 速度 Speed: '+(speed-4)+'x';
+  animId=requestAnimationFrame(loop);
+}
+
+function jump(){if(!dino.jumping&&!dino.ducking){dino.vy=-11;dino.jumping=true;}}
+document.addEventListener('keydown',function(e){
+  if(e.key===' '||e.key==='ArrowUp'){e.preventDefault();if(gameOver)init();else jump();}
+  if(e.key==='ArrowDown'){e.preventDefault();dino.ducking=true;}
+});
+document.addEventListener('keyup',function(e){if(e.key==='ArrowDown')dino.ducking=false;});
+c.addEventListener('click',function(){if(gameOver)init();else jump();});
+c.addEventListener('touchstart',function(e){e.preventDefault();if(gameOver)init();else jump();});
+init();
+</script></body></html>

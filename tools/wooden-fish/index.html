@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>在线敲木鱼 Wooden Fish - 兔兔在线工具站</title><meta name="description" content="在线电子木鱼，一键敲心，积攒功德。Electronic wooden fish — tap to accumulate merit."><meta name="keywords" content="电子木鱼,敲木鱼,wooden fish,功德,解压"><link rel="stylesheet" href="../../css/style.css"><style>
+.fish-wrap{text-align:center;padding:20px;}
+.fish{font-size:8rem;cursor:pointer;display:inline-block;transition:transform .08s;user-select:none;}
+.fish.knock{transform:scale(.9);}
+.merit-num{font-size:3rem;font-weight:800;color:var(--primary-dark);transition:all .3s;}
+.merit-pop{animation:popUp .5s ease-out;}
+@keyframes popUp{0%{transform:scale(1);opacity:1;}50%{transform:scale(1.2);opacity:.8;}100%{transform:scale(1);opacity:1;}}
+.quote{font-size:.85rem;color:var(--text-en);margin:8px 0;font-style:italic;}
+.float-text{position:fixed;pointer-events:none;font-weight:700;font-size:1.2rem;color:var(--primary-dark);animation:floatAway 1.2s ease-out forwards;z-index:99;}
+@keyframes floatAway{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-80px);}}
+</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 敲木鱼</div><h2>🪵 在线敲木鱼</h2><p class="desc">禅意随行，一键敲心！点击木鱼或按空格键积攒功德</p><p class="desc-en">Zen wooden fish — click or press Space to accumulate merit</p></div><div class="tool-body"><div class="tool-panel"><div class="fish-wrap">
+<div style="margin-bottom:8px;">今日功德 <span class="label-en">Today\'s Merit</span></div>
+<div class="merit-num" id="merit">0</div>
+<div class="quote" id="quote">心如工画师，能画诸世间</div>
+<div class="fish" id="fish" onclick="knock()">🪵</div>
+<div style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+<button class="btn btn-primary" onclick="toggleAuto()" id="autoBtn">🤖 自动敲击 Auto</button>
+<button class="btn btn-outline" onclick="resetMerit()">🔄 今日归零 Reset</button>
+</div>
+<p style="font-size:.75rem;color:var(--text-en);margin-top:12px;">点击木鱼 / 敲击空格键 | Click fish / Press Space</p>
+</div></div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=4"></script><script>
+var merit=parseInt(localStorage.getItem('fish_merit')||'0'),autoRunning=false,autoTimer=null;
+var quotes=['心如工画师，能画诸世间','一切有为法，如梦幻泡影','菩提本无树，明镜亦非台','本来无一物，何处惹尘埃','色即是空，空即是色','放下屠刀，立地成佛','一花一世界，一叶一菩提','万法皆空，因果不空','心静自然凉','随缘不变，不变随缘','知足常乐','大悲无泪，大悟无言','笑着面对，不去埋怨','悠然，随心，随性，随缘','一念放下，万般自在'];
+
+document.getElementById('merit').textContent=merit;
+document.getElementById('quote').textContent=quotes[Math.floor(Math.random()*quotes.length)];
+
+function knock(){
+  merit++;document.getElementById('merit').textContent=merit;
+  localStorage.setItem('fish_merit',merit);
+  var fish=document.getElementById('fish');fish.classList.add('knock');setTimeout(function(){fish.classList.remove('knock');},80);
+  // Float text
+  var ft=document.createElement('div');ft.className='float-text';ft.textContent='功德 +1';
+  var rect=fish.getBoundingClientRect();ft.style.left=(rect.left+rect.width/2-30)+'px';ft.style.top=(rect.top-10)+'px';
+  document.body.appendChild(ft);setTimeout(function(){document.body.removeChild(ft);},1200);
+  // Change quote occasionally
+  if(merit%10===0)document.getElementById('quote').textContent=quotes[Math.floor(Math.random()*quotes.length)];
+}
+
+document.addEventListener('keydown',function(e){if(e.key===' '&&document.activeElement===document.body){e.preventDefault();knock();}});
+
+function toggleAuto(){
+  if(autoRunning){clearInterval(autoTimer);autoRunning=false;document.getElementById('autoBtn').textContent='🤖 自动敲击 Auto';}
+  else{autoRunning=true;document.getElementById('autoBtn').textContent='⏸ 停止 Stop';autoTimer=setInterval(knock,300);}
+}
+
+function resetMerit(){merit=0;localStorage.setItem('fish_merit','0');document.getElementById('merit').textContent='0';showToast('功德已归零 Merit reset');}
+</script></body></html>

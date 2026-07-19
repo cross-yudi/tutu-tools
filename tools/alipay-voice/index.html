@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>支付宝到账声音生成器 Alipay Voice - 兔兔在线工具站</title><meta name="description" content="模拟支付宝收款到账语音播报，输入金额即可生成声音。仅供娱乐。Alipay payment voice simulator — for entertainment only."><meta name="keywords" content="支付宝到账,到账声音,alipay voice,收款语音"><link rel="stylesheet" href="../../css/style.css"><style>.alipay-card{max-width:400px;margin:0 auto;background:linear-gradient(135deg,#1677ff,#0958d9);border-radius:20px;padding:40px 24px;text-align:center;color:#fff;}.alipay-amount{font-size:3.5rem;font-weight:800;margin:16px 0;}.alipay-label{font-size:1rem;opacity:.85;}.disclaimer{color:#dc2626;font-size:.78rem;margin-top:16px;padding:10px;background:#fef2f2;border-radius:8px;text-align:center;}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 支付宝到账声音</div><h2>📢 支付宝到账声音生成器</h2><p class="desc">输入金额，模拟支付宝收款到账语音播报</p><p class="desc-en">Enter amount to simulate Alipay payment voice notification</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;">
+<div class="alipay-card">
+  <div class="alipay-label">支付宝收款 Alipay Payment</div>
+  <div class="alipay-amount" id="displayAmount">¥ 0.00</div>
+  <div style="font-size:1.1rem;opacity:.9;" id="displayMsg">请输入金额</div>
+</div>
+<div style="margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;align-items:center;">
+  <input type="number" id="amount" value="100" min="0.01" max="99999999" step="0.01" style="width:160px;text-align:center;font-size:1.2rem;padding:10px;" placeholder="金额">
+  <span style="font-size:1.1rem;">元</span>
+</div>
+<div class="btn-row" style="justify-content:center;margin-top:10px;">
+  <button class="btn btn-primary" onclick="playVoice()" style="font-size:1.1rem;padding:10px 24px;">📢 生成到账声音 Play</button>
+  <button class="btn btn-outline" onclick="playRandom()">🎲 随机金额 Random</button>
+</div>
+<div class="disclaimer">⚠️ 此工具仅供娱乐，不得用于违法途径，否则请自行承担后果。<br>For entertainment only. Not for illegal use.</div>
+</div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=4"></script><script>
+function toChineseAmount(num){
+  if(num<=0)return'零元';
+  var units=['','十','百','千','万','十万','百万','千万','亿'];
+  var digits=['零','一','二','三','四','五','六','七','八','九'];
+  var yuan=Math.floor(num);var jiao=Math.round((num-yuan)*100);
+  var yText='';var str=String(yuan);var len=str.length;
+  for(var i=0;i<len;i++){var d=parseInt(str[i]);var uIdx=len-i-1;
+    if(d===0){if(yText&&yText[yText.length-1]!=='零'&&i<len-1)yText+='零';}
+    else{yText+=digits[d]+units[uIdx];}
+  }
+  if(yText)yText+='元';else yText='零元';
+  if(jiao>0){yText+=digits[Math.floor(jiao/10)]+'角';if(jiao%10>0)yText+=digits[jiao%10]+'分';}
+  return yText;
+}
+
+function playVoice(){
+  var amount=parseFloat(document.getElementById('amount').value);
+  if(!amount||amount<=0){showToast('请输入有效金额 Enter valid amount');return;}
+  if(amount>99999999){showToast('金额太大 Amount too large');return;}
+  document.getElementById('displayAmount').textContent='¥ '+amount.toFixed(2);
+  document.getElementById('displayMsg').textContent='收款到账！Payment received!';
+
+  // Speech synthesis
+  var msg='支付宝到账'+toChineseAmount(amount);
+  if('speechSynthesis' in window){
+    window.speechSynthesis.cancel();
+    var utt=new SpeechSynthesisUtterance(msg);
+    utt.lang='zh-CN';utt.rate=1.1;utt.pitch=1;utt.volume=1;
+    // Try to find a Chinese voice
+    var voices=speechSynthesis.getVoices();
+    var cnVoice=voices.find(function(v){return v.lang.indexOf('zh')>=0;});
+    if(cnVoice)utt.voice=cnVoice;
+    speechSynthesis.speak(utt);
+    showToast(msg);
+  }else{
+    showToast(msg+'（浏览器不支持语音 Your browser does not support speech）');
+  }
+}
+
+function playRandom(){
+  var amounts=[0.01,0.5,1,1.68,5,8.8,10,18.88,20,50,66.66,88,99.99,100,168,188,200,520,666,888,1000,1314,5200,8888,9999,10000,12345.67,50000,88888,100000];
+  document.getElementById('amount').value=amounts[Math.floor(Math.random()*amounts.length)];
+  playVoice();
+}
+
+// Preload voices
+if('speechSynthesis' in window){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices();};}
+</script></body></html>

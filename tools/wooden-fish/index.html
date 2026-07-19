@@ -1,6 +1,9 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>在线敲木鱼 Wooden Fish - 兔兔在线工具站</title><meta name="description" content="在线电子木鱼，一键敲心，积攒功德。Electronic wooden fish — tap to accumulate merit."><meta name="keywords" content="电子木鱼,敲木鱼,wooden fish,功德,解压"><link rel="stylesheet" href="../../css/style.css"><style>
 .fish-wrap{text-align:center;padding:20px;}
-.fish{font-size:8rem;cursor:pointer;display:inline-block;transition:transform .08s;user-select:none;}
+.fish{width:160px;height:120px;background:linear-gradient(180deg,#8B4513,#5C2E00);border-radius:50%;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:transform .08s;user-select:none;position:relative;box-shadow:0 8px 24px rgba(92,46,0,.3),inset 0 -8px 16px rgba(0,0,0,.2);margin:20px auto;}
+.fish::before{content:'';position:absolute;top:12px;left:50%;transform:translateX(-50%);width:60px;height:6px;background:#3d1c00;border-radius:3px;}
+.fish::after{content:'';position:absolute;top:26px;right:36px;width:16px;height:50px;background:#654321;border-radius:8px;transform:rotate(-15deg);}
+.fish-text{color:#f5deb3;font-weight:800;font-size:1.5rem;text-shadow:1px 1px 2px rgba(0,0,0,.4);margin-top:20px;}
 .fish.knock{transform:scale(.9);}
 .merit-num{font-size:3rem;font-weight:800;color:var(--primary-dark);transition:all .3s;}
 .merit-pop{animation:popUp .5s ease-out;}
@@ -8,11 +11,11 @@
 .quote{font-size:.85rem;color:var(--text-en);margin:8px 0;font-style:italic;}
 .float-text{position:fixed;pointer-events:none;font-weight:700;font-size:1.2rem;color:var(--primary-dark);animation:floatAway 1.2s ease-out forwards;z-index:99;}
 @keyframes floatAway{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-80px);}}
-</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 敲木鱼</div><h2>🪵 在线敲木鱼</h2><p class="desc">禅意随行，一键敲心！点击木鱼或按空格键积攒功德</p><p class="desc-en">Zen wooden fish — click or press Space to accumulate merit</p></div><div class="tool-body"><div class="tool-panel"><div class="fish-wrap">
+</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 敲木鱼</div><h2>🥁 在线敲木鱼</h2><p class="desc">禅意随行，一键敲心！点击木鱼或按空格键积攒功德</p><p class="desc-en">Zen wooden fish — click or press Space to accumulate merit</p></div><div class="tool-body"><div class="tool-panel"><div class="fish-wrap">
 <div style="margin-bottom:8px;">今日功德 <span class="label-en">Today\'s Merit</span></div>
 <div class="merit-num" id="merit">0</div>
 <div class="quote" id="quote">心如工画师，能画诸世间</div>
-<div class="fish" id="fish" onclick="knock()">🪵</div>
+<div class="fish" id="fish" onclick="knock()"><span class="fish-text">木鱼</span></div>
 <div style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
 <button class="btn btn-primary" onclick="toggleAuto()" id="autoBtn">🤖 自动敲击 Auto</button>
 <button class="btn btn-outline" onclick="resetMerit()">🔄 今日归零 Reset</button>

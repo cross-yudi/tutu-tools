@@ -16,7 +16,7 @@
 <svg id="barcode" style="max-width:100%;"></svg>
 <button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;display:block;margin-left:auto;margin-right:auto;" onclick="copyText(document.getElementById('code').value)">📋 复制条码号 Copy</button></div></div></div></main>
 <footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer>
-<script src="../../js/common.js?v=3"></script>
+<script src="../../js/common.js?v=4"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script>
 function gen(){try{JsBarcode('#barcode',document.getElementById('code').value,{format:document.getElementById('format').value,lineColor:'#000',width:2,height:100,displayValue:true});}catch(e){document.getElementById('barcode').innerHTML='';showToast('条码生成失败 Please check input');}}

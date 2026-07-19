@@ -16,14 +16,23 @@
 </div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=4"></script><script>
 function toChineseAmount(num){
   if(num<=0)return'零元';
-  var units=['','十','百','千','万','十万','百万','千万','亿'];
   var digits=['零','一','二','三','四','五','六','七','八','九'];
+  var radices=['','十','百','千'];
+  var bigs=['','万','亿'];
   var yuan=Math.floor(num);var jiao=Math.round((num-yuan)*100);
-  var yText='';var str=String(yuan);var len=str.length;
-  for(var i=0;i<len;i++){var d=parseInt(str[i]);var uIdx=len-i-1;
-    if(d===0){if(yText&&yText[yText.length-1]!=='零'&&i<len-1)yText+='零';}
-    else{yText+=digits[d]+units[uIdx];}
+  var s=''+yuan;var len=s.length;var yText='';var zero=false;
+  for(var i=0;i<len;i++){
+    var d=parseInt(s[i]);var pos=len-i-1;
+    var radix=pos%4;var big=Math.floor(pos/4);
+    if(d===0){if(radix===0){if(big>0)yText+=bigs[big];}else{if(!zero)zero=true;}}
+    else{
+      if(zero){yText+='零';zero=false;}
+      yText+=digits[d]+radices[radix];
+      if(radix===0&&big>0)yText+=bigs[big];
+    }
   }
+  // Clean trailing zero before 元
+  if(yText.endsWith('零'))yText=yText.slice(0,-1);
   if(yText)yText+='元';else yText='零元';
   if(jiao>0){yText+=digits[Math.floor(jiao/10)]+'角';if(jiao%10>0)yText+=digits[jiao%10]+'分';}
   return yText;

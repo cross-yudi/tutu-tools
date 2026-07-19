@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>烟花小游戏 Fireworks - 兔兔在线工具站</title><meta name="description" content="在线烟花小游戏，点击绽放绚丽烟花。Fireworks display — click to launch colorful fireworks."><meta name="keywords" content="烟花,fireworks,烟花游戏,跨年烟花"><link rel="stylesheet" href="../../css/style.css"><style>canvas{display:block;border-radius:8px;background:#0a0a1e;width:100%;cursor:crosshair;}</style></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 烟花</div><h2>🎆 烟花小游戏</h2><p class="desc">点击屏幕任意位置，绽放绚丽烟花</p><p class="desc-en">Click anywhere to launch beautiful fireworks!</p></div><div class="tool-body"><div class="tool-panel" style="text-align:center;"><label>烟花数 <span class="label-en">Fireworks</span></label><div style="font-size:2rem;font-weight:800;color:var(--primary-dark);" id="count">0</div><canvas id="c" width="700" height="450"></canvas><p style="font-size:.75rem;color:var(--text-en);margin-top:4px;">点击/触屏任意位置 Click or tap to launch</p><button class="btn btn-primary" style="margin-top:8px;" onclick="autoFire()">🎆 自动连续 Auto</button><button class="btn btn-outline" style="margin-top:8px;" onclick="clearSky()">🌙 清空 Clear</button></div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=4"></script><script>
+var c=document.getElementById('c'),ctx=c.getContext('2d'),W=700,H=450,particles=[],fireworkCount=0,animId;
+
+function Particle(x,y,vx,vy,color,life,size){
+  this.x=x;this.y=y;this.vx=vx;this.vy=vy;this.color=color;this.life=life;this.maxLife=life;this.size=size||2;
+}
+
+function launch(x,y){
+  var colors=['#ef4444','#f59e0b','#fbbf24','#10b981','#3b82f6','#8b5cf6','#ec4899','#f97316','#14b8a6','#e11d48','#d946ef','#f43f5e'];
+  var baseColor=colors[Math.floor(Math.random()*colors.length)];
+  var count=80+Math.floor(Math.random()*60);
+  for(var i=0;i<count;i++){
+    var angle=Math.random()*Math.PI*2;
+    var speed=2+Math.random()*6;
+    var life=40+Math.random()*50;
+    var pColor=Math.random()>.3?baseColor:colors[Math.floor(Math.random()*colors.length)];
+    particles.push(new Particle(x,y,Math.cos(angle)*speed,Math.sin(angle)*speed,pColor,life,1.5+Math.random()*2.5));
+  }
+  fireworkCount++;document.getElementById('count').textContent=fireworkCount;
+}
+
+function loop(){
+  ctx.fillStyle='rgba(10,10,30,.25)';ctx.fillRect(0,0,W,H);
+  for(var i=particles.length-1;i>=0;i--){
+    var p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=0.04;p.life--;
+    if(p.life<=0){particles.splice(i,1);continue;}
+    var alpha=p.life/p.maxLife;
+    ctx.globalAlpha=alpha;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  animId=requestAnimationFrame(loop);
+}
+
+c.addEventListener('click',function(e){var rect=c.getBoundingClientRect();launch(e.clientX-rect.left,(e.clientY-rect.top));});
+c.addEventListener('touchstart',function(e){e.preventDefault();var rect=c.getBoundingClientRect();launch(e.touches[0].clientX-rect.left,e.touches[0].clientY-rect.top);});
+
+function autoFire(){
+  var count=0;var timer=setInterval(function(){var x=100+Math.random()*(W-200);var y=100+Math.random()*200;launch(x,y);count++;if(count>=10){clearInterval(timer);}},400);
+}
+
+function clearSky(){particles=[];fireworkCount=0;document.getElementById('count').textContent='0';}
+
+loop();
+</script></body></html>

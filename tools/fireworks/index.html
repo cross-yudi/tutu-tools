@@ -5,18 +5,36 @@ function Particle(x,y,vx,vy,color,life,size){
   this.x=x;this.y=y;this.vx=vx;this.vy=vy;this.color=color;this.life=life;this.maxLife=life;this.size=size||2;
 }
 
-function launch(x,y){
+function launch(lx,ly){
   var colors=['#ef4444','#f59e0b','#fbbf24','#10b981','#3b82f6','#8b5cf6','#ec4899','#f97316','#14b8a6','#e11d48','#d946ef','#f43f5e'];
   var baseColor=colors[Math.floor(Math.random()*colors.length)];
+  // Rocket rising phase: start from bottom
+  var rx=lx,ry=H;
+  var targetY=ly||80+Math.random()*250;
   var count=80+Math.floor(Math.random()*60);
-  for(var i=0;i<count;i++){
-    var angle=Math.random()*Math.PI*2;
-    var speed=2+Math.random()*6;
-    var life=40+Math.random()*50;
-    var pColor=Math.random()>.3?baseColor:colors[Math.floor(Math.random()*colors.length)];
-    particles.push(new Particle(x,y,Math.cos(angle)*speed,Math.sin(angle)*speed,pColor,life,1.5+Math.random()*2.5));
+  // Launch rocket particles (trail)
+  var rocket={x:rx,y:ry,vy:-8-Math.random()*4,trail:[],alive:true,targetY:targetY,color:baseColor,count:count};
+  function animateRocket(){
+    if(!rocket.alive)return;
+    rocket.y+=rocket.vy;
+    // Trail spark
+    particles.push(new Particle(rocket.x+Math.random()*4-2,rocket.y,Math.random()*2-1,Math.random()*2,baseColor,15,1.5));
+    if(rocket.y<=rocket.targetY){
+      rocket.alive=false;
+      // Explode!
+      for(var i=0;i<rocket.count;i++){
+        var angle=Math.random()*Math.PI*2;
+        var speed=2+Math.random()*6;
+        var life=40+Math.random()*50;
+        var pColor=Math.random()>.3?rocket.color:colors[Math.floor(Math.random()*colors.length)];
+        particles.push(new Particle(rocket.x,rocket.y,Math.cos(angle)*speed,Math.sin(angle)*speed,pColor,life,1.5+Math.random()*2.5));
+      }
+      fireworkCount++;document.getElementById('count').textContent=fireworkCount;
+    }else{
+      requestAnimationFrame(animateRocket);
+    }
   }
-  fireworkCount++;document.getElementById('count').textContent=fireworkCount;
+  requestAnimationFrame(animateRocket);
 }
 
 function loop(){

@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>IP地址生成器 IP Generator - 兔兔在线工具站</title><meta name="description" content="在线随机IP地址生成器，支持IPv4和IPv6。Random IP address generator — IPv4 & IPv6."><meta name="keywords" content="IP生成,IP地址,ip generator,随机IP,IPv4,IPv6"><link rel="stylesheet" href="../../css/style.css"></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / IP 生成器</div><h2>🌐 IP 地址生成器</h2><p class="desc">随机生成 IPv4 和 IPv6 地址，支持批量生成</p><p class="desc-en">Generate random IPv4 & IPv6 addresses in bulk</p></div><div class="tool-body"><div class="tool-row"><div class="tool-panel"><label>IP 类型 <span class="label-en">Type</span></label>
+<select id="type" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;">
+  <option value="v4">IPv4 地址</option><option value="v6">IPv6 地址</option><option value="both">混合 Mixed（4+6）</option>
+</select>
+<label style="margin-top:10px;">生成数量 <span class="label-en">Count</span></label>
+<input type="number" id="count" value="10" min="1" max="200" style="width:80px;">
+<div class="btn-row" style="margin-top:10px;"><button class="btn btn-primary" onclick="generate()">🌐 生成 Generate</button></div></div></div>
+<div class="tool-panel"><label>生成结果 <span class="label-en">Generated IPs</span></label><div class="result-area" id="output" style="font-family:monospace;font-size:.85rem;max-height:350px;overflow:auto;line-height:1.8;"></div>
+<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button></div></div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=4"></script><script>
+function randIPv4(){
+  return Math.floor(Math.random()*223+1)+'.'+Math.floor(Math.random()*256)+'.'+Math.floor(Math.random()*256)+'.'+Math.floor(Math.random()*254+1);
+}
+
+function randIPv6(){
+  var segments=[];
+  for(var i=0;i<8;i++){segments.push(Math.floor(Math.random()*65536).toString(16));}
+  return segments.join(':');
+}
+
+function generate(){
+  var type=document.getElementById('type').value;
+  var count=parseInt(document.getElementById('count').value)||10;
+  var results=[];
+  for(var i=0;i<count;i++){
+    if(type==='v4')results.push(randIPv4());
+    else if(type==='v6')results.push(randIPv6());
+    else results.push(i%2===0?randIPv4():randIPv6());
+  }
+  document.getElementById('output').innerHTML=results.map(function(ip,i){return (i+1)+'. '+ip;}).join('<br>');
+}
+
+generate();
+</script></body></html>

@@ -266,6 +266,7 @@ function clearInput(id) {
     'lottery-ssq':'双色球机选号码生成器，随机生成6个红球(1-33)和1个蓝球(1-16)，支持批量生成1/5/10注。适用于彩票机选场景。<br>Double Color Ball random picker — 6 red balls (1-33) + 1 blue ball (1-16). Generate 1/5/10 tickets.',
     'lottery-dlt':'大乐透机选号码生成器，随机生成5个前区(1-35)和2个后区(1-12)，支持批量生成1/5/10注。适用于彩票机选场景。<br>Super Lotto random picker — 5 front (1-35) + 2 back (1-12). Generate 1/5/10 tickets.',
     'calculator':'在线科学计算器，支持三角函数sin/cos/tan/反三角、幂运算x²/xʸ/√、对数log/ln、阶乘n!、指数eˣ、π等科学计算。支持键盘快捷键输入。<br>Scientific calculator with trig, power, log, factorial, exp, π functions. Keyboard supported.',
+    'ip-generator':'在线随机IP地址生成器，支持IPv4和IPv6两种格式，可批量生成1-200个IP地址，支持一键复制。适用于开发测试、网络学习等场景。<br>Random IP generator — supports IPv4 & IPv6 with bulk generation (1-200).',
     'alipay-voice':'支付宝到账声音模拟器，输入金额生成语音播报，支持中文到账语音合成。支付宝蓝视觉风格+随机金额功能。仅供娱乐，请勿用于违法用途。<br>Alipay payment voice simulator — enter amount to generate voice notification. China TTS supported. For entertainment only.',
     'coin-flip':'在线抛硬币工具，点击硬币或按钮翻转，3D 旋转动画效果。自动统计正反面次数和比例，保存历史记录。适用于决策、游戏、教学等场景。<br>Online coin flip with 3D animation. Auto-counts heads/tails ratio and saves history. Great for decisions, games and demonstrations.',
   };
@@ -405,6 +406,7 @@ function clearInput(id) {
     'lottery-ssq':[{name:'大乐透机选 DLT Picker',url:'../../tools/lottery-dlt/'},{name:'摇骰子 Dice Roller',url:'../../tools/dice-roller/'},{name:'抛硬币 Coin Flip',url:'../../tools/coin-flip/'}],
     'lottery-dlt':[{name:'双色球机选 SSQ Picker',url:'../../tools/lottery-ssq/'},{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'随机转盘 Spin Wheel',url:'../../tools/spin-wheel/'}],
     'calculator':[{name:'个税计算器 Tax Calculator',url:'../../tools/tax-calculator/'},{name:'列表求和 List Calc',url:'../../tools/list-calc/'},{name:'贷款计算器 Loan Calc',url:'../../tools/loan-calc/'}],
+    'ip-generator':[{name:'GUID生成器 GUID Generator',url:'../../tools/guid-generator/'},{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'虚拟地址生成器 Fake Address',url:'../../tools/fake-address/'}],
     'alipay-voice':[{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'个税计算器 Tax Calculator',url:'../../tools/tax-calculator/'},{name:'人民币大写 RMB Upper',url:'../../tools/rmb-upper/'}],
     'name-picker':[{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'随机转盘 Spin Wheel',url:'../../tools/spin-wheel/'},{name:'猜拳挑战 RPS',url:'../../tools/rps-challenge/'}],
     'scoreboard':[{name:'乒乓球 Pong',url:'../../tools/pong/'},{name:'CPS连点测试 CPS Test',url:'../../tools/cps-test/'},{name:'猜拳挑战 RPS',url:'../../tools/rps-challenge/'}],

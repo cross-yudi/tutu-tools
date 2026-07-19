@@ -1,8 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>姓名生成器 Name Generator - 兔兔在线工具站</title><meta name="description" content="在线中文姓名生成器，按性别随机取名。Chinese name generator — generate names by gender."><meta name="keywords" content="姓名生成,取名,name generator,起名,随机姓名"><link rel="stylesheet" href="../../css/style.css"></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 姓名生成器</div><h2>📛 姓名生成器</h2><p class="desc">根据性别随机生成中文姓名，可用于小说角色、游戏昵称等</p><p class="desc-en">Generate Chinese names by gender — useful for characters & nicknames</p></div><div class="tool-body"><div class="tool-row"><div class="tool-panel"><label>性别 <span class="label-en">Gender</span></label>
 <select id="gender" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;"><option value="male">男 Male</option><option value="female">女 Female</option><option value="both">随机 Random</option></select>
-<label style="margin-top:8px;">姓氏 <span class="label-en">Surname</span></label>
-<select id="surnameType" onchange="toggleSurname()" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;"><option value="common">常见百家姓 Common</option><option value="rare">稀有复姓 Rare</option><option value="any">不限 Any</option><option value="custom">指定 Custom</option></select>
-<input type="text" id="customSurname" placeholder="请输入姓氏 Enter surname" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;margin-top:4px;display:none;" maxlength="4">
+<label style="margin-top:8px;">姓氏（留空随机） <span class="label-en">Surname</span></label>
+<input type="text" id="customSurname" placeholder="留空随机，或输入姓氏（如：王、欧阳）" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;margin-top:4px;" maxlength="4">
 <label style="margin-top:8px;">名字字数 <span class="label-en">Name Length</span></label>
 <select id="nameLen" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;"><option value="2">单字名 (如：张伟)</option><option value="3">双字名 (如：张晓明)</option><option value="any">随机 Random</option></select>
 <label style="margin-top:8px;">生成数量 <span class="label-en">Count</span></label>
@@ -15,17 +14,15 @@ var maleChars=['伟','强','磊','洋','勇','军','杰','涛','明','辉','鹏'
 var femaleChars=['芳','敏','静','丽','婷','雪','玲','萍','燕','红','霞','梅','兰','娟','娜','莉','英','颖','秀','洁','琴','珍','慧','欣','怡','瑶','菲','媛','萱','怡','诗','雅','韵','婉','月','秀','佳','怡','琳','蓉','薇','蕾','莎','彤','巧','蝶','悦','晴','曼','珊'];
 
 function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
-function toggleSurname(){document.getElementById('customSurname').style.display=document.getElementById('surnameType').value==='custom'?'':'none';}
 
 function generate(){
   var gender=document.getElementById('gender').value;
-  var st=document.getElementById('surnameType').value;
   var nl=document.getElementById('nameLen').value;
   var count=parseInt(document.getElementById('count').value)||10;
   var customSurname=document.getElementById('customSurname').value.trim();
   var results=[];
   for(var i=0;i<count;i++){
-    var surName=st==='custom'&&customSurname?customSurname:(st==='rare'?rand(rareSurnames):st==='any'?rand(surnames.concat(rareSurnames)):rand(surnames));
+    var surName=customSurname||rand(surnames.concat(rareSurnames));
     var g=(gender==='both'?rand(['male','female']):gender);
     var pool=g==='male'?maleChars:femaleChars;
     var len=(nl==='any'?rand([2,3]):parseInt(nl));

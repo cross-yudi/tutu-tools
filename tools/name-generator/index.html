@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>姓名生成器 Name Generator - 兔兔在线工具站</title><meta name="description" content="在线中文姓名生成器，按性别随机取名。Chinese name generator — generate names by gender."><meta name="keywords" content="姓名生成,取名,name generator,起名,随机姓名"><link rel="stylesheet" href="../../css/style.css"></head><body><header class="header"><div class="header-inner"><a href="../../index.html" class="logo"><span class="logo-emoji">🐰</span><span class="logo-text"><span class="logo-cn">兔兔在线工具站</span><span class="logo-en">Tutu Tools</span></span></a></div></header><main class="main"><div class="tool-header"><div class="breadcrumb"><a href="../../index.html">首页 Home</a> / 姓名生成器</div><h2>📛 姓名生成器</h2><p class="desc">根据性别随机生成中文姓名，可用于小说角色、游戏昵称等</p><p class="desc-en">Generate Chinese names by gender — useful for characters & nicknames</p></div><div class="tool-body"><div class="tool-row"><div class="tool-panel"><label>性别 <span class="label-en">Gender</span></label>
+<select id="gender" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;"><option value="male">男 Male</option><option value="female">女 Female</option><option value="both">随机 Random</option></select>
+<label style="margin-top:8px;">姓氏 <span class="label-en">Surname</span></label>
+<select id="surnameType" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;"><option value="common">常见百家姓 Common</option><option value="rare">稀有姓氏 Rare</option><option value="any">不限 Any</option></select>
+<label style="margin-top:8px;">名字字数 <span class="label-en">Name Length</span></label>
+<select id="nameLen" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;"><option value="2">单字名 (如：张伟)</option><option value="3">双字名 (如：张晓明)</option><option value="any">随机 Random</option></select>
+<label style="margin-top:8px;">生成数量 <span class="label-en">Count</span></label>
+<input type="number" id="count" value="10" min="1" max="100" style="width:80px;">
+<button class="btn btn-primary" style="margin-top:12px;width:100%;" onclick="generate()">📛 生成名字 Generate</button></div><div class="tool-panel"><label>生成结果 <span class="label-en">Names</span></label><div class="result-area" id="output" style="font-family:inherit;font-size:.9rem;line-height:2;max-height:350px;overflow:auto;"></div>
+<button class="btn btn-outline btn-sm copy-btn" style="margin-top:8px;" onclick="copyText(document.getElementById('output').textContent)">📋 复制 Copy</button></div></div></div></main><footer class="footer"><p style="margin-bottom:4px;font-size:.78rem;">兔兔在线工具站 — 免费在线工具集合，无需下载安装，打开即用。Tutu Tools — free online tools, no download required.</p>© 2026 兔兔在线工具站 Tutu Tools — 联系 Contact: gubaby@proton.me</footer><script src="../../js/common.js?v=4"></script><script>
+var surnames=['王','李','张','刘','陈','杨','黄','赵','吴','周','徐','孙','马','朱','胡','郭','何','高','林','罗','郑','梁','谢','宋','唐','许','韩','冯','邓','曹','彭','曾','萧','田','董','潘','袁','于','蒋','蔡','余','杜','叶','程','苏','魏','吕','丁','任','沈','姚','卢','姜','崔','钟','谭','陆','汪','范','金','石','廖','贾','夏','韦','付','方','白','邹','孟','熊','秦','邱','江','尹','薛','闫','段','雷','侯','龙','史','陶','黎','贺','顾','毛','郝','龚','邵','万','钱','严','覃','武','戴','莫','孔','向','汤'];
+var rareSurnames=['欧阳','司马','上官','诸葛','东方','独孤','皇甫','尉迟','公孙','令狐','慕容','宇文','长孙','司徒','司空','夏侯','端木','申屠','轩辕','濮阳','闾丘','公冶','太叔','西门','南宫','东郭','呼延','羊舌','微生','梁丘','左丘','谷梁','宰父','百里','第五','段干','亓','仉','佘','冼','厍','厍','双','句','后','富','巫','巴','巩','帅','席','廉','归','旷','爱','犹','胥','芮','谌','赫','过','逯','郏','郝','郜','郦','荆','荀','薄','鞠','项','颉','颛','阮','阳','阴','齐','龙','龚'];
+var maleChars=['伟','强','磊','洋','勇','军','杰','涛','明','辉','鹏','浩','峰','超','波','刚','毅','斌','文','亮','宇','轩','晨','飞','鑫','健','志','建','成','康','平','宁','安','龙','翔','博','毅','恒','睿','哲','泽','然','远','达','诚','铭','骏','威','翰','毅'];
+var femaleChars=['芳','敏','静','丽','婷','雪','玲','萍','燕','红','霞','梅','兰','娟','娜','莉','英','颖','秀','洁','琴','珍','慧','欣','怡','瑶','菲','媛','萱','怡','诗','雅','韵','婉','月','秀','佳','怡','琳','蓉','薇','蕾','莎','彤','巧','蝶','悦','晴','曼','珊'];
+
+function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+function generate(){
+  var gender=document.getElementById('gender').value;
+  var st=document.getElementById('surnameType').value;
+  var nl=document.getElementById('nameLen').value;
+  var count=parseInt(document.getElementById('count').value)||10;
+  var results=[];
+  for(var i=0;i<count;i++){
+    var surName=st==='rare'?rand(rareSurnames):st==='any'?rand(surnames.concat(rareSurnames)):rand(surnames);
+    var g=(gender==='both'?rand(['male','female']):gender);
+    var pool=g==='male'?maleChars:femaleChars;
+    var len=(nl==='any'?rand([2,3]):parseInt(nl));
+    var given='';
+    if(len===2){given=rand(pool);}else{given=rand(pool)+rand(pool);while(given[0]===given[1]){given=rand(pool)+rand(pool);}}
+    results.push(surName+given+' ('+(g==='male'?'男':'女')+')');
+  }
+  document.getElementById('output').innerHTML=results.map(function(n,i){return (i+1)+'. '+n;}).join('<br>');
+}
+generate();
+</script></body></html>

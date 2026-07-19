@@ -406,6 +406,7 @@ function clearInput(id) {
     'lottery-ssq':[{name:'大乐透机选 DLT Picker',url:'../../tools/lottery-dlt/'},{name:'摇骰子 Dice Roller',url:'../../tools/dice-roller/'},{name:'抛硬币 Coin Flip',url:'../../tools/coin-flip/'}],
     'lottery-dlt':[{name:'双色球机选 SSQ Picker',url:'../../tools/lottery-ssq/'},{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'随机转盘 Spin Wheel',url:'../../tools/spin-wheel/'}],
     'calculator':[{name:'个税计算器 Tax Calculator',url:'../../tools/tax-calculator/'},{name:'列表求和 List Calc',url:'../../tools/list-calc/'},{name:'贷款计算器 Loan Calc',url:'../../tools/loan-calc/'}],
+    'name-generator':[{name:'虚拟地址生成器 Fake Address',url:'../../tools/fake-address/'},{name:'GUID生成器 GUID Generator',url:'../../tools/guid-generator/'},{name:'IP地址生成器 IP Generator',url:'../../tools/ip-generator/'}],
     'ip-generator':[{name:'GUID生成器 GUID Generator',url:'../../tools/guid-generator/'},{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'虚拟地址生成器 Fake Address',url:'../../tools/fake-address/'}],
     'alipay-voice':[{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'个税计算器 Tax Calculator',url:'../../tools/tax-calculator/'},{name:'人民币大写 RMB Upper',url:'../../tools/rmb-upper/'}],
     'name-picker':[{name:'随机数生成器 Random Number',url:'../../tools/random-number-generator/'},{name:'随机转盘 Spin Wheel',url:'../../tools/spin-wheel/'},{name:'猜拳挑战 RPS',url:'../../tools/rps-challenge/'}],
